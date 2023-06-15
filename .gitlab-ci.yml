@@ -16,8 +16,12 @@ variables:
 stages:
   - test
   - build
+  - scan
+  - generate_sbom
   - deploy_dev
+  - functional_tests
   - deploy_staging
+  - performance_tests
   - deploy_prod
 
 run_unit_tests:
@@ -62,6 +66,39 @@ build_image:
     paths:
       - version-file.txt
 
+scan-job:
+  image:
+    name: registry.aquasec.com/scanner:2022.4
+    entrypoint: [""]
+  stage: scan
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  script:
+    - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "pp-aq-glab" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
+  artifacts:
+    paths:
+      - aqua-scan.html
+  tags:
+    - docker
+    - ec2
+    - remote
+
+generate_sbom:
+  stage: generate_sbom
+  needs: ["scan-job"]
+  image: aquasec/aqua-scanner
+  script:
+    - export AQUA_KEY=$AQUA_KEY
+    - export AQUA_SECRET=$AQUA_SECRET
+    - export GITLAB_TOKEN=$GITLAB_TOKEN
+    - export AQUA_URL=https://api.dev.supply-chain.cloud.aquasec.com
+    - export CSPM_URL=https://stage.api.cloudsploit.com
+    - export TRIVY_RUN_AS_PLUGIN=aqua
+    - trivy fs --scanners config,vuln,secret .
+  tags:
+    - docker
+    - ec2
+    - remote  
 
 push_image:
   stage: build
