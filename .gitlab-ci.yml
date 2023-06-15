@@ -130,7 +130,10 @@ run_functional_tests:
   needs:
     - deploy_to_dev
   script:
-    - echo "running functional tests"
+    - 'curl -f http://$DEV_ENDPOINT || exit 1'
+  only:
+    - branches
+
 
 deploy_to_staging:
   extends: .deploy
@@ -149,8 +152,12 @@ run_performance_tests:
   stage: deploy_staging
   needs:
     - deploy_to_staging
-  script: 
-    - echo "Running performance tests"
+  script:
+    - apt-get update -qq && apt-get install -y apache2-utils
+    - ab -n 100 -c 10 http://$STAGING_ENDPOINT/
+  only:
+    - branches
+
 
 deploy_to_prod:
   extends: .deploy
