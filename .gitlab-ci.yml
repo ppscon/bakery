@@ -28,8 +28,8 @@ run_unit_tests:
     paths:
       - app/node_modules
   tags:
-    - ec2
     - docker
+    - ec2
     - remote
   before_script:
     - cd app
