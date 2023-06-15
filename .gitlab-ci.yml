@@ -72,7 +72,7 @@ scan-job:
     entrypoint: [""]
   stage: scan
   variables:
-    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    IMAGE_TAG: $IMAGE_NAME:$VERSION
   script:
     - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "pp-aq-glab" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
   artifacts:
@@ -82,6 +82,7 @@ scan-job:
     - docker
     - ec2
     - remote
+
 
 generate_sbom:
   stage: generate_sbom
