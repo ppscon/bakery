@@ -94,7 +94,7 @@ push_image:
     ENDPOINT: ""
   before_script:
     - echo $SSH_KEY | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g"\ > deploy-key.pem
-    - chmod 400 deploy-key.pem
+    - chmod 400 pp-glab-pl.pem
     - export VERSION=$(cat version-file.txt)
   script:
     - scp -o StrictHostKeyChecking=no -i deploy-key.pem ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
