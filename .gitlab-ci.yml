@@ -16,6 +16,7 @@ variables:
 stages:
   - test
   - build
+  - vulnerability-scan
   - scan
   - generate_sbom
   - deploy_dev
@@ -70,11 +71,12 @@ scan-job:
   image:
     name: registry.aquasec.com/scanner:2022.4
     entrypoint: [""]
-  stage: scan
+  stage: vulnerability-scan
   variables:
-    IMAGE_TAG: $IMAGE_NAME:$VERSION
+    IMAGE_TAG: $CI_PROJECT_PATH:$CI_COMMIT_SHORT_SHA
   script:
     - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "bakery-glab" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
+    
   artifacts:
     paths:
       - aqua-scan.html
@@ -82,6 +84,8 @@ scan-job:
     - docker
     - ec2
     - remote
+
+
 
 
 generate_sbom:
@@ -124,6 +128,7 @@ push_image:
     - remote
   dependencies:
     - build_image
+  needs: ["scan-job"]
   variables:
     SSH_KEY: ""
     SERVER_HOST: ""
