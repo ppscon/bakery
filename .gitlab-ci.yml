@@ -71,12 +71,14 @@ scan-job:
     name: registry.aquasec.com/scanner:2022.4
     entrypoint: [""]
   stage: scan
-  variables:
-    IMAGE_TAG: $CI_COMMIT_REF_NAME
+  dependencies:
+    - build_image
+  before_script:
+    - export VERSION=$(cat version-file.txt)
   script:
     - mkdir -p /root/.docker
     - echo $DOCKER_AUTH_CONFIG > /root/.docker/config.json
-    - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "glab" $IMAGE_NAME:$IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
+    - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "glab" $IMAGE_NAME:$VERSION --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
   artifacts:
     paths:
       - aqua-scan.html
@@ -108,15 +110,15 @@ push_image:
     - build_image
   needs:
     - build_image
-  tags:
-    - ec2
-    - shell
-    - remote
   before_script:
     - export VERSION=$(cat version-file.txt)
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker push $IMAGE_NAME:$VERSION
+  tags:
+    - ec2
+    - shell
+    - remote
 
 .deploy:
   tags:
