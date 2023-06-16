@@ -57,15 +57,8 @@ build_image:
     - ec2
     - shell
     - remote
-  before_script:
-    - export PACKAGE_JSON_VERSION=$(cat app/package.json | jq -r .version)
-    - export VERSION=$PACKAGE_JSON_VERSION.$CI_PIPELINE_IID
-    - echo $VERSION > version-file.txt
   script:
-    - docker build -t $IMAGE_NAME:$VERSION .
-  artifacts:
-    paths:
-      - version-file.txt
+    - docker build -t $IMAGE_NAME:latest .
 
 scan-job:
   image:
@@ -73,10 +66,9 @@ scan-job:
     entrypoint: [""]
   stage: vulnerability-scan
   variables:
-    IMAGE_TAG: IMAGE_TAG="registry.gitlab.com/[MASKED]/bakery-demo:$VERSION"
+    IMAGE_TAG: IMAGE_TAG="$IMAGE_NAME:latest"
   script:
     - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "bakery-glab" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
-    
   artifacts:
     paths:
       - aqua-scan.html
@@ -84,9 +76,6 @@ scan-job:
     - docker
     - ec2
     - remote
-
-
-
 
 generate_sbom:
   stage: generate_sbom
@@ -116,18 +105,15 @@ push_image:
     - shell
     - remote
   before_script:
-    - export VERSION=$(cat version-file.txt)
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker push $IMAGE_NAME:$VERSION
+    - docker push $IMAGE_NAME:latest
 
 .deploy:
   tags: 
     - ec2
     - shell
     - remote
-  dependencies:
-    - build_image
   needs: ["scan-job"]
   variables:
     SSH_KEY: ""
@@ -136,19 +122,15 @@ push_image:
     APP_PORT: ""
     ENDPOINT: ""
   before_script:
-  #   # - echo $SSH_KEY | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g"\ > deploy-key.pem
     - chmod 400 $SSH_PRIVATE_KEY
-    - export VERSION=$(cat version-file.txt)
   script:
     - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$SERVER_HOST "
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
-
         export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
         export DC_IMAGE_NAME=$IMAGE_NAME && 
-        export DC_IMAGE_TAG=$VERSION &&
+        export DC_IMAGE_TAG=latest &&
         export DC_APP_PORT=$APP_PORT
-
         docker-compose down &&
         docker-compose up -d"
   environment:
@@ -167,7 +149,6 @@ deploy_to_dev:
     APP_PORT: 3000
     ENDPOINT: $DEV_ENDPOINT
 
-
 run_functional_tests:
   stage: deploy_dev
   needs:
@@ -176,7 +157,6 @@ run_functional_tests:
     - 'curl -f http://$DEV_ENDPOINT || exit 1'
   only:
     - branches
-
 
 deploy_to_staging:
   extends: .deploy
@@ -201,7 +181,6 @@ run_performance_tests:
   only:
     - branches
 
-
 deploy_to_prod:
   extends: .deploy
   stage: deploy_prod
@@ -215,8 +194,6 @@ deploy_to_prod:
     APP_PORT: 3002
     ENDPOINT: $PROD_ENDPOINT
   when: manual
-
-
 
 include:
   - template: Jobs/SAST.gitlab-ci.yml
