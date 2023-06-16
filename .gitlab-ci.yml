@@ -73,10 +73,9 @@ scan-job:
   stage: scan
   variables:
     IMAGE_TAG: latest
-  before_script:
-    - echo $DOCKER_AUTH_CONFIG > /root/.docker/config.json
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
+    - mkdir -p /root/.docker
+    - echo $DOCKER_AUTH_CONFIG > /root/.docker/config.json
     - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "glab" $IMAGE_NAME:$IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
   artifacts:
     paths:
