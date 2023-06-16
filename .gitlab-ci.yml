@@ -73,6 +73,9 @@ scan-job:
   stage: scan
   variables:
     IMAGE_TAG: latest
+  before_script:
+    - echo $DOCKER_AUTH_CONFIG > /root/.docker/config.json
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "glab" $IMAGE_NAME:$IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
   artifacts:
@@ -99,6 +102,7 @@ generate_sbom:
     - docker
     - ec2
     - remote  
+
 push_image:
   stage: build
   dependencies:
@@ -159,7 +163,6 @@ deploy_to_dev:
     APP_PORT: 3000
     ENDPOINT: $DEV_ENDPOINT
 
-
 run_functional_tests:
   stage: deploy_dev
   needs:
@@ -168,7 +171,6 @@ run_functional_tests:
     - 'curl -f http://$DEV_ENDPOINT || exit 1'
   only:
     - branches
-
 
 deploy_to_staging:
   extends: .deploy
@@ -192,7 +194,6 @@ run_performance_tests:
     - ab -n 100 -c 10 http://$STAGING_ENDPOINT/
   only:
     - branches
-
 
 deploy_to_prod:
   extends: .deploy
