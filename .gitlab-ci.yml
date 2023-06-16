@@ -68,7 +68,8 @@ scan-job:
   variables:
     IMAGE_TAG: IMAGE_TAG="$IMAGE_NAME:latest"
   script:
-    - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "bakery-glab" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
+  - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "bakery-glab" ${IMAGE_TAG} --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
+
   artifacts:
     paths:
       - aqua-scan.html
