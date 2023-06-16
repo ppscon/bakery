@@ -74,7 +74,7 @@ scan-job:
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   script:
-    - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "pp-aq-glab" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
+    - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "bakery-glab" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
   artifacts:
     paths:
       - aqua-scan.html
