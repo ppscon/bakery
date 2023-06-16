@@ -66,7 +66,7 @@ scan-job:
     entrypoint: [""]
   stage: vulnerability-scan
   variables:
-    IMAGE_TAG: IMAGE_TAG="$IMAGE_NAME:latest"
+    IMAGE_TAG: IMAGE_TAG="registry.gitlab.com/pp-aq-ms/bakery-demo:latest"
   script:
   - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "bakery-glab" ${IMAGE_TAG} --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
 
