@@ -1,6 +1,6 @@
 workflow:
   rules:
-    - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"      
+    - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
       when: never
     - when: always
 
@@ -74,7 +74,7 @@ scan-job:
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   script:
-    - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "bakery-glab" $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
+    - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "bakery-glab" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
   artifacts:
     paths:
       - aqua-scan.html
@@ -98,7 +98,8 @@ generate_sbom:
   tags:
     - docker
     - ec2
-    - remote  
+    - remote
+
 push_image:
   stage: build
   dependencies:
@@ -116,7 +117,7 @@ push_image:
     - docker push $IMAGE_NAME:$VERSION
 
 .deploy:
-  tags: 
+  tags:
     - ec2
     - shell
     - remote
@@ -129,7 +130,6 @@ push_image:
     APP_PORT: ""
     ENDPOINT: ""
   before_script:
-  #   # - echo $SSH_KEY | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g"\ > deploy-key.pem
     - chmod 400 $SSH_PRIVATE_KEY
     - export VERSION=$(cat version-file.txt)
   script:
@@ -138,7 +138,7 @@ push_image:
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
 
         export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
-        export DC_IMAGE_NAME=$IMAGE_NAME && 
+        export DC_IMAGE_NAME=$IMAGE_NAME &&
         export DC_IMAGE_TAG=$VERSION &&
         export DC_APP_PORT=$APP_PORT
 
@@ -151,7 +151,7 @@ push_image:
 deploy_to_dev:
   extends: .deploy
   stage: deploy_dev
-  needs: 
+  needs:
     - build_image
   variables:
     SSH_KEY: $SSH_PRIVATE_KEY
@@ -159,7 +159,6 @@ deploy_to_dev:
     DEPLOY_ENV: development
     APP_PORT: 3000
     ENDPOINT: $DEV_ENDPOINT
-
 
 run_functional_tests:
   stage: deploy_dev
@@ -170,11 +169,10 @@ run_functional_tests:
   only:
     - branches
 
-
 deploy_to_staging:
   extends: .deploy
   stage: deploy_staging
-  needs: 
+  needs:
     - build_image
     - run_functional_tests
   variables:
@@ -194,7 +192,6 @@ run_performance_tests:
   only:
     - branches
 
-
 deploy_to_prod:
   extends: .deploy
   stage: deploy_prod
@@ -208,8 +205,6 @@ deploy_to_prod:
     APP_PORT: 3002
     ENDPOINT: $PROD_ENDPOINT
   when: manual
-
-
 
 include:
   - template: Jobs/SAST.gitlab-ci.yml
