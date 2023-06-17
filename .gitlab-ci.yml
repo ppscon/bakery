@@ -129,9 +129,8 @@ push_image:
   needs:
     - build_image
   before_script:
-    - export PACKAGE_JSON_VERSION=$(cat app/package.json | jq -r .version)
-    - export VERSION=$PACKAGE_JSON_VERSION.$CI_PIPELINE_IID
-    - echo $VERSION > version-file.txt
+    - export IMAGE_TAG=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker push $IMAGE_TAG
   tags:
