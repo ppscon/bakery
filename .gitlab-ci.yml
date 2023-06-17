@@ -150,10 +150,10 @@ push_image:
   - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
   - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$SERVER_HOST "
       docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
-      export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
-      export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
-      export DC_IMAGE_TAG=$(cat version-file.txt)
-      export DC_APP_PORT=$APP_PORT
+      COMPOSE_PROJECT_NAME=$DEPLOY_ENV
+      DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
+      DC_IMAGE_TAG=$(cat version-file.txt)
+      DC_APP_PORT=$APP_PORT
       docker-compose pull
       docker-compose down
       docker-compose up -d"
