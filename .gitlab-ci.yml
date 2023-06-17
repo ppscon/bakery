@@ -139,11 +139,12 @@ push_image:
   dependencies:
     - build_image
   before_script:
-    - chmod 400 /Users/home/keys/pp-glab-pl.pem
+    - echo "$SSH_PRIVATE_KEY" > pp-glab-pl.pem
+    - chmod 400 pp-glab-pl.pem
     - export VERSION=$(cat version-file.txt)
   script:
-    - scp -o StrictHostKeyChecking=no -i /Users/home/keys/pp-glab-pl.pem ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
-    - ssh -o StrictHostKeyChecking=no -i /Users/home/keys/pp-glab-pl.pem ubuntu@$SERVER_HOST "
+    - scp -o StrictHostKeyChecking=no -i pp-glab-pl.pem ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
+    - ssh -o StrictHostKeyChecking=no -i pp-glab-pl.pem ubuntu@$SERVER_HOST "
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
 
         export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
@@ -153,6 +154,9 @@ push_image:
 
         docker-compose down &&
         docker-compose up -d"
+  environment:
+    name: $DEPLOY_ENV
+    url: $ENDPOINT
   
   
 deploy_to_dev:
