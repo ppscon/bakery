@@ -139,27 +139,28 @@ push_image:
   dependencies:
     - build_image
   variables:
-    SSH_KEY: $SSH_PRIVATE_KEY
-    SERVER_HOST: $DEV_SERVER_HOST
-    DEPLOY_ENV: $CI_COMMIT_REF_NAME
-    APP_PORT: 3000
-    ENDPOINT: $DEV_ENDPOINT
+    SSH_KEY: "$SSH_PRIVATE_KEY"
+    SERVER_HOST: "$SERVER_HOST"
+    DEPLOY_ENV: "$DEPLOY_ENV"
+    APP_PORT: "$APP_PORT"
+    ENDPOINT: "$ENDPOINT"
   before_script:
-    - chmod 400 $SSH_PRIVATE_KEY
+    - echo "$SSH_KEY" | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g" > deploy-key.pem
+    - chmod 400 deploy-key.pem
+    - export VERSION=$(cat version-file.txt)
   script:
-  - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
-  - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$SERVER_HOST "
-      docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
-      COMPOSE_PROJECT_NAME=$DEPLOY_ENV
-      DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
-      DC_IMAGE_TAG=$(cat version-file.txt)
-      DC_APP_PORT=$APP_PORT
-      docker-compose pull
-      docker-compose down
-      docker-compose up -d"
+    - scp -o StrictHostKeyChecking=no -i deploy-key.pem ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
+    - ssh -o StrictHostKeyChecking=no -i deploy-key.pem ubuntu@$SERVER_HOST "
+        docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+        export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
+        export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
+        export DC_IMAGE_TAG=$VERSION
+        export DC_APP_PORT=$APP_PORT
+        docker-compose down &&
+        docker-compose up -d"
   environment:
-    name: $DEPLOY_ENV
-    url: $ENDPOINT
+    name: "$DEPLOY_ENV"
+    url: "$ENDPOINT"
 
 deploy_to_dev:
   extends: .deploy
