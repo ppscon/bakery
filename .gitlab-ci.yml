@@ -11,19 +11,11 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   CI_REGISTRY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH
   CI_APPLICATION_REPOSITORY: $CI_REGISTRY_IMAGE
-  # IMAGE_NAME: registry.gitlab.com/pp-aq-ms/bakery-demo
-  DEV_SERVER_HOST: 18.169.187.161
-  DEV_ENDPOINT: 18.169.187.161:3000
-  STAGING_SERVER_HOST: 18.169.187.161
-  STAGING_ENDPOINT: 18.169.187.161:3001
-  PROD_SERVER_HOST: 18.169.187.161
-  PROD_ENDPOINT: 18.169.187.161:3002
 
 stages:
-  - install_jq
   - test
   - build
-  - vulnerability-scan
+  - scan
   - generate_sbom
   - deploy_dev
   - functional_tests
@@ -60,12 +52,6 @@ sast:
 services:
   - docker:19.03.12-dind
 
-install_jq:
-  stage: install_jq
-  image: alpine
-  script:
-    - apk add --no-cache jq  
-
 build_image:
   image: docker:19.03.13 
   services:
@@ -76,12 +62,14 @@ build_image:
   
   before_script:
     - export PACKAGE_JSON_VERSION=$(cat app/package.json | jq -r .version)
-    - export VERSION=$PACKAGE_JSON_VERSION.$CI_PIPELINE_IID
-    - echo $VERSION > version-file.txt
+    - echo $PACKAGE_JSON_VERSION.$CI_PIPELINE_IID > version-file.txt
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
+  artifacts:
+    paths:
+      - version-file.txt
   tags:
     - ec2
     - shell
@@ -91,12 +79,11 @@ scan-job:
   image:
     name: registry.aquasec.com/scanner:2022.4
     entrypoint: [""]
-  stage: vulnerability-scan
+  stage: scan
   variables:
     IMAGE_TAG: $CI_PROJECT_PATH:$CI_COMMIT_SHORT_SHA
   script:
     - /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "glab" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $CI_PROJECT_DIR/aqua-scan.html >/dev/null
-    
   artifacts:
     paths:
       - aqua-scan.html
@@ -122,22 +109,6 @@ generate_sbom:
     - ec2
     - remote
 
-push_image:
-  stage: build
-  dependencies:
-    - build_image
-  needs:
-    - build_image
-  before_script:
-    - export IMAGE_TAG=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker push $IMAGE_TAG
-  tags:
-    - ec2
-    - shell
-    - remote
-
 .deploy:
   tags:
     - ec2
@@ -153,15 +124,14 @@ push_image:
     ENDPOINT: $DEV_ENDPOINT
   before_script:
     - chmod 400 $SSH_PRIVATE_KEY
-    - export VERSION=$(cat version-file.txt)
   script:
     - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
     - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$SERVER_HOST "
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
 
         export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
-        export DC_IMAGE_NAME=$IMAGE_NAME &&
-        export DC_IMAGE_TAG=$VERSION &&
+        export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
+        export DC_IMAGE_TAG=$(cat version-file.txt)
         export DC_APP_PORT=$APP_PORT
 
         docker-compose down &&
