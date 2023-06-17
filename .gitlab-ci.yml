@@ -139,7 +139,6 @@ push_image:
   dependencies:
     - build_image
   before_script:
-    - echo $SSH_KEY | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g"\ > deploy-key.pem
     - chmod 400 deploy-key.pem
     - export VERSION=$(cat version-file.txt)
   script:
@@ -157,9 +156,7 @@ push_image:
   environment:
     name: $DEPLOY_ENV
     url: $ENDPOINT
-  environment:
-    name: $DEPLOY_ENV
-    url: $ENDPOINT
+  
 
 deploy_to_dev:
   extends: .deploy
