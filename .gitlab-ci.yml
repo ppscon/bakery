@@ -154,8 +154,9 @@ push_image:
 
         export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
         export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
-        export DC_IMAGE_TAG=$VERSION
+        export DC_IMAGE_TAG=$VERSION &&
         export DC_APP_PORT=$APP_PORT
+
 
         docker-compose down &&
         docker-compose up -d"
