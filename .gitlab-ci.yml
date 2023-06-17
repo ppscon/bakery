@@ -140,10 +140,10 @@ push_image:
     - build_image
   variables:
     SSH_KEY: "$SSH_PRIVATE_KEY"
-    SERVER_HOST: "$SERVER_HOST"
-    DEPLOY_ENV: "$DEPLOY_ENV"
-    APP_PORT: "$APP_PORT"
-    ENDPOINT: "$ENDPOINT"
+    SERVER_HOST: "$DEV_SERVER_HOST"  # Replace with the appropriate server host variable
+    DEPLOY_ENV: "$CI_COMMIT_REF_NAME"
+    APP_PORT: 3000  # Update with the desired application port
+    ENDPOINT: "$DEV_ENDPOINT"  # Replace with the appropriate endpoint
   before_script:
     - echo "$SSH_KEY" | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g" > deploy-key.pem
     - chmod 400 deploy-key.pem
