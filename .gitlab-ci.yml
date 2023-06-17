@@ -154,7 +154,7 @@ push_image:
 
         export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
         export DC_IMAGE_NAME=$IMAGE_NAME && 
-        export DC_IMAGE_TAG=$VERSION &&
+        export DC_IMAGE_TAG=233cda2c &&
         export DC_APP_PORT=$APP_PORT
 
 
