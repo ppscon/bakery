@@ -154,8 +154,8 @@ push_image:
       export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
       export DC_IMAGE_TAG=$(cat version-file.txt)
       export DC_APP_PORT=$APP_PORT
-      docker-compose pull &&
-      docker-compose down &&
+      docker-compose pull
+      docker-compose down
       docker-compose up -d"
   environment:
     name: $DEPLOY_ENV
