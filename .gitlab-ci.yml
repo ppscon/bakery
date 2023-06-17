@@ -153,9 +153,10 @@ push_image:
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
 
         export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
-        export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE
+        export DC_IMAGE_NAME=$IMAGE_NAME && 
         export DC_IMAGE_TAG=$VERSION &&
         export DC_APP_PORT=$APP_PORT
+
 
 
         docker-compose down &&
