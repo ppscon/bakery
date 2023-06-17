@@ -139,7 +139,7 @@ push_image:
   dependencies:
     - build_image
   before_script:
-    - chmod 400 deploy-key.pem
+    - chmod 400 pp-glab-pl.pem
     - export VERSION=$(cat version-file.txt)
   script:
     - scp -o StrictHostKeyChecking=no -i pp-glab-pl.pem ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
