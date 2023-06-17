@@ -153,11 +153,7 @@ push_image:
 
         docker-compose down &&
         docker-compose up -d"
-  environment:
-    name: $DEPLOY_ENV
-    url: $ENDPOINT
   
-
 deploy_to_dev:
   extends: .deploy
   stage: deploy_dev
