@@ -122,10 +122,11 @@ push_image:
   needs:
     - build_image
   before_script:
+    - export VERSION=$(cat version-file.txt)
     - export IMAGE_TAG=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker push $IMAGE_TAG
+    - docker push $IMAGE_NAME:$VERSION
   tags:
     - ec2
     - shell
@@ -138,23 +139,33 @@ push_image:
     - remote
   dependencies:
     - build_image
+  variables:
+    SSH_KEY: ""
+    SERVER_HOST: ""
+    DEPLOY_ENV: ""
+    APP_PORT: ""
+    ENDPOINT: ""
   before_script:
-    - chmod 400 $SSH_PRIVATE_KEY
+    - echo $SSH_KEY | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g"\ > deploy-key.pem
+    - chmod 400 deploy-key.pem
+    - export VERSION=$(cat version-file.txt)
   script:
-    - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$DEV_SERVER_HOST:/home/ubuntu
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$DEV_SERVER_HOST "
+    - scp -o StrictHostKeyChecking=no -i deploy-key.pem ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
+    - ssh -o StrictHostKeyChecking=no -i deploy-key.pem ubuntu@$SERVER_HOST "
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
 
+        export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
         export DC_IMAGE_NAME=$IMAGE_NAME && 
-        export DC_IMAGE_TAG=$IMAGE_TAG &&
+        export DC_IMAGE_TAG=$VERSION &&
+        export DC_APP_PORT=$APP_PORT
 
         docker-compose down &&
         docker-compose up -d"
+  environment:
+    name: $DEPLOY_ENV
+    url: $ENDPOINT
 
-  variables:
-    DEPLOY_ENV: dev
-    IMAGE_NAME: $CI_REGISTRY_IMAGE
-    APP_PORT: 3000
+
  
   
 deploy_to_dev:
