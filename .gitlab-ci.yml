@@ -131,20 +131,22 @@ push_image:
     - shell
     - remote
     
-deploy_dev:
-  stage: deploy_dev
+# ... rest of your file above...
+
+.deploy:
+  stage: deploy
   dependencies:
     - build_image
   before_script:
     - chmod 400 $SSH_PRIVATE_KEY
     - export VERSION=$(cat version-file.txt)
   script:
-    - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$DEV_SERVER_HOST:/home/ubuntu
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$DEV_SERVER_HOST "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
-      export COMPOSE_PROJECT_NAME=dev &&
+    - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$SERVER_HOST "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+      export COMPOSE_PROJECT_NAME=$DEPLOY_ENV &&
       export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE &&
       export DC_IMAGE_TAG=$CI_COMMIT_SHORT_SHA &&
-      export DC_APP_PORT=3000 &&
+      export DC_APP_PORT=$APP_PORT &&
       echo \$DC_IMAGE_NAME &&
       echo \$DC_IMAGE_TAG &&
       docker-compose down && docker-compose up -d"
@@ -152,6 +154,34 @@ deploy_dev:
     - ec2
     - shell
     - remote
+
+deploy_dev:
+  extends: .deploy
+  stage: deploy_dev
+  variables:
+    SERVER_HOST: $DEV_SERVER_HOST
+    DEPLOY_ENV: dev
+    APP_PORT: 3000
+
+deploy_staging:
+  extends: .deploy
+  stage: deploy_staging
+  variables:
+    SERVER_HOST: $STAGING_SERVER_HOST
+    DEPLOY_ENV: staging
+    APP_PORT: 3001
+
+deploy_prod:
+  extends: .deploy
+  stage: deploy_prod
+  variables:
+    SERVER_HOST: $PROD_SERVER_HOST
+    DEPLOY_ENV: prod
+    APP_PORT: 3002
+
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+
 
 
 include:
