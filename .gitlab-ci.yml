@@ -162,6 +162,7 @@ deploy_to_dev:
     - build_image
   variables:
     SERVER_HOST: $DEV_SERVER_HOST
+    APP_PORT: 3000
 
 run_functional_tests:
   stage: deploy_dev
