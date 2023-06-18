@@ -131,8 +131,6 @@ push_image:
     - shell
     - remote
     
-# ... rest of your file above...
-
 .deploy:
   stage: deploy
   dependencies:
@@ -163,6 +161,13 @@ deploy_dev:
     DEPLOY_ENV: dev
     APP_PORT: 3000
 
+run_functional_tests:
+  stage: deploy_dev
+  needs:
+    - deploy_dev
+  script:
+    - 'curl -f http://$DEV_ENDPOINT || exit 1'
+
 deploy_staging:
   extends: .deploy
   stage: deploy_staging
@@ -171,6 +176,14 @@ deploy_staging:
     DEPLOY_ENV: staging
     APP_PORT: 3001
 
+run_performance_tests:
+  stage: deploy_staging
+  needs:
+    - deploy_staging
+  script:
+    - apt-get update -qq && apt-get install -y apache2-utils
+    - ab -n 100 -c 10 http://$STAGING_ENDPOINT/
+
 deploy_prod:
   extends: .deploy
   stage: deploy_prod
@@ -178,11 +191,6 @@ deploy_prod:
     SERVER_HOST: $PROD_SERVER_HOST
     DEPLOY_ENV: prod
     APP_PORT: 3002
-
-include:
-  - template: Jobs/SAST.gitlab-ci.yml
-
-
 
 include:
   - template: Jobs/SAST.gitlab-ci.yml
