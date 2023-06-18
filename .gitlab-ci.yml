@@ -166,7 +166,9 @@ run_functional_tests:
   needs:
     - deploy_dev
   script:
+    - apk --no-cache add curl
     - 'curl -f http://$DEV_ENDPOINT || exit 1'
+
 
 deploy_staging:
   extends: .deploy
@@ -181,8 +183,9 @@ run_performance_tests:
   needs:
     - deploy_staging
   script:
-    - apt-get update -qq && apt-get install -y apache2-utils
+    - apk --no-cache add curl apache2-utils
     - ab -n 100 -c 10 http://$STAGING_ENDPOINT/
+
 
 deploy_prod:
   extends: .deploy
