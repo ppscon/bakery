@@ -152,12 +152,13 @@ push_image:
       export DC_IMAGE_TAG=$VERSION &&
       export DC_APP_PORT=$APP_PORT
 
-      echo $DC_IMAGE_NAME
-      echo $DC_IMAGE_TAG
+      echo \"DC_IMAGE_NAME is $DC_IMAGE_NAME\"
+      echo \"DC_IMAGE_TAG is $DC_IMAGE_TAG\"
 
       docker ps -aq --no-trunc | xargs -r docker rm -f &&
       docker-compose down &&
       docker-compose up -d"
+
 
  
   
