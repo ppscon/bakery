@@ -146,12 +146,12 @@ push_image:
     APP_PORT: ""
     ENDPOINT: ""
   before_script:
-    - echo $SSH_KEY | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g"\ > deploy-key.pem
-    - chmod 400 deploy-key.pem
+    # - echo $SSH_KEY | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g"\ > deploy-key.pem
+    - chmod 400 $SSH_PRIVATE_KEY
     - export VERSION=$(cat version-file.txt)
   script:
-    - scp -o StrictHostKeyChecking=no -i deploy-key.pem ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
-    - ssh -o StrictHostKeyChecking=no -i deploy-key.pem ubuntu@$SERVER_HOST "
+    - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$SERVER_HOST "
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
 
         export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
