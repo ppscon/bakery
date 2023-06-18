@@ -151,6 +151,9 @@ push_image:
         export DC_IMAGE_TAG=$VERSION &&
         export DC_APP_PORT=$APP_PORT
 
+        echo $DC_IMAGE_NAME
+        echo $DC_IMAGE_TAG
+
         docker-compose down &&
         docker-compose up -d"
  
