@@ -147,12 +147,16 @@ push_image:
         docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
 
         export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
-        export DC_IMAGE_NAME=$IMAGE_NAME && 
+        export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE && 
         export DC_IMAGE_TAG=$VERSION &&
         export DC_APP_PORT=$APP_PORT
 
         docker-compose down &&
         docker-compose up -d"
+  variables:
+    DEPLOY_ENV: dev
+    IMAGE_NAME: $CI_REGISTRY_IMAGE
+    APP_PORT: 3000
  
   
 deploy_to_dev:
@@ -162,6 +166,8 @@ deploy_to_dev:
     - build_image
   variables:
     SERVER_HOST: $DEV_SERVER_HOST
+    DEPLOY_ENV: dev
+    APP_PORT: 3000
 
 run_functional_tests:
   stage: deploy_dev
@@ -182,7 +188,6 @@ deploy_to_staging:
     SERVER_HOST: $STAGING_SERVER_HOST
     DEPLOY_ENV: staging
     APP_PORT: 3001
-    ENDPOINT: $STAGING_ENDPOINT
 
 run_performance_tests:
   stage: deploy_staging
@@ -204,7 +209,6 @@ deploy_to_prod:
     SERVER_HOST: $PROD_SERVER_HOST
     DEPLOY_ENV: production
     APP_PORT: 3002
-    ENDPOINT: $PROD_ENDPOINT
   when: manual
 
 include:
