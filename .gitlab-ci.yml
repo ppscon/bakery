@@ -166,11 +166,12 @@ push_image:
       export DC_IMAGE_TAG=$CI_COMMIT_SHORT_SHA &&
       echo \$DC_IMAGE_NAME &&
       echo \$DC_IMAGE_TAG &&
-      docker-compose down && docker-compose up -d"
+      DC_APP_PORT=$DC_APP_PORT docker-compose down && DC_APP_PORT=$DC_APP_PORT docker-compose up -d"
   tags:
     - ec2
     - shell
     - remote
+
 
 deploy_dev:
   stage: deploy_dev
