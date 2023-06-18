@@ -131,89 +131,28 @@ push_image:
     - shell
     - remote
     
-.deploy:
-  tags: 
-    - ec2
-    - shell
-    - remote
+deploy_dev:
+  stage: deploy_dev
   dependencies:
     - build_image
   before_script:
     - chmod 400 $SSH_PRIVATE_KEY
     - export VERSION=$(cat version-file.txt)
   script:
-    - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
-    - >
-      ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$SERVER_HOST "
-      docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+    - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$DEV_SERVER_HOST:/home/ubuntu
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$DEV_SERVER_HOST "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+      export COMPOSE_PROJECT_NAME=dev &&
+      export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE &&
+      export DC_IMAGE_TAG=$CI_COMMIT_SHORT_SHA &&
+      export DC_APP_PORT=3000 &&
+      echo \$DC_IMAGE_NAME &&
+      echo \$DC_IMAGE_TAG &&
+      docker-compose down && docker-compose up -d"
+  tags:
+    - ec2
+    - shell
+    - remote
 
-      export COMPOSE_PROJECT_NAME=$DEPLOY_ENV
-      export DC_IMAGE_NAME=$IMAGE_NAME && 
-      export DC_IMAGE_TAG=$VERSION &&
-      export DC_APP_PORT=$APP_PORT
-
-      echo \"DC_IMAGE_NAME is $DC_IMAGE_NAME\"
-      echo \"DC_IMAGE_TAG is $DC_IMAGE_TAG\"
-
-      docker ps -aq --no-trunc | xargs -r docker rm -f &&
-      docker-compose down &&
-      docker-compose up -d"
-
-
- 
-  
-deploy_to_dev:
-  extends: .deploy
-  stage: deploy_dev
-  needs:
-    - build_image
-  variables:
-    SERVER_HOST: $DEV_SERVER_HOST
-    APP_PORT: 3000
-
-run_functional_tests:
-  stage: deploy_dev
-  needs:
-    - deploy_to_dev
-  script:
-    - 'curl -f http://$DEV_ENDPOINT || exit 1'
-  only:
-    - branches
-
-deploy_to_staging:
-  extends: .deploy
-  stage: deploy_staging
-  needs:
-    - build_image
-    - run_functional_tests
-  variables:
-    SERVER_HOST: $STAGING_SERVER_HOST
-    DEPLOY_ENV: staging
-    APP_PORT: 3001
-    ENDPOINT: $STAGING_ENDPOINT
-
-run_performance_tests:
-  stage: deploy_staging
-  needs:
-    - deploy_to_staging
-  script:
-    - apt-get update -qq && apt-get install -y apache2-utils
-    - ab -n 100 -c 10 http://$STAGING_ENDPOINT/
-  only:
-    - branches
-
-deploy_to_prod:
-  extends: .deploy
-  stage: deploy_prod
-  needs:
-    - build_image
-    - run_performance_tests
-  variables:
-    SERVER_HOST: $PROD_SERVER_HOST
-    DEPLOY_ENV: production
-    APP_PORT: 3002
-    ENDPOINT: $PROD_ENDPOINT
-  when: manual
 
 include:
   - template: Jobs/SAST.gitlab-ci.yml
