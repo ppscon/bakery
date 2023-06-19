@@ -135,12 +135,15 @@ push_image:
   stage: deploy
   dependencies:
     - build_image
+  variables:
+    SSH_KEY: ""
   before_script:
-    - chmod 400 $SSH_PRIVATE_KEY
+    - echo $SSH_KEY | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&\n/" -e "s/-----END RSA PRIVATE KEY-----/\n&/" -e "s/\S\{64\}/&\n/g"\ > deploy-key.pem
+    - chmod 400 deploy-key.pem
     - export VERSION=$(cat version-file.txt)
   script:
-    - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$SERVER_HOST "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+    - scp -o StrictHostKeyChecking=no -i deploy-key.pem ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
+    - ssh -o StrictHostKeyChecking=no -i deploy-key.pem ubuntu@$SERVER_HOST "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
       export COMPOSE_PROJECT_NAME=$DEPLOY_ENV &&
       export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE &&
       export DC_IMAGE_TAG=$CI_COMMIT_SHORT_SHA &&
@@ -157,6 +160,7 @@ deploy_dev:
   extends: .deploy
   stage: deploy_dev
   variables:
+    SSH_KEY: $SSH_PRIVATE_KEY
     SERVER_HOST: $DEV_SERVER_HOST
     DEPLOY_ENV: dev
     APP_PORT: 3000
@@ -174,6 +178,7 @@ deploy_staging:
   extends: .deploy
   stage: deploy_staging
   variables:
+    SSH_KEY: $SSH_PRIVATE_KEY
     SERVER_HOST: $STAGING_SERVER_HOST
     DEPLOY_ENV: staging
     APP_PORT: 3001
@@ -191,6 +196,7 @@ deploy_prod:
   extends: .deploy
   stage: deploy_prod
   variables:
+    SSH_KEY: $SSH_PRIVATE_KEY
     SERVER_HOST: $PROD_SERVER_HOST
     DEPLOY_ENV: prod
     APP_PORT: 3002
