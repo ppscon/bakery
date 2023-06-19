@@ -123,6 +123,7 @@ generate_sbom:
      --aqua-secret $AQUA_SECRET /
      --cspm-url https://stage.api.cloudsploit.com /
      --artifact-path "$CI_PROJECT_DIR"
+     --sast
     - export AQUA_KEY=$AQUA_KEY
     - export AQUA_SECRET=$AQUA_SECRET
     - export GITLAB_TOKEN=$GITLAB_TOKEN
