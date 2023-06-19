@@ -134,6 +134,8 @@ scan-job:
 #     - trivy fs --scanners config,vuln,secret .
 generate_sbom:
   stage: generate_sbom
+  needs: ["scan-job"]
+  image: aquasec/aqua-scanner
   script:
     - export BILLY_SERVER=https://billy.codesec.aquasec.com
     - apk --no-cache add curl apache2-utils
