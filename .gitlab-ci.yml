@@ -186,7 +186,7 @@ run_functional_tests:
     - deploy_dev
   script:
     - apk --no-cache add curl
-    - 'curl -f http://$DEV_ENDPOINT || exit 1'
+    - 'curl -f $DEV_ENDPOINT || exit 1'
 
 
 deploy_staging:
