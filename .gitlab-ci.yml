@@ -81,6 +81,15 @@ build_image:
     - ec2
     - shell
     - remote
+integration_tests:
+  image: node:17-alpine3.14
+  stage: test
+  tags:
+    - docker
+    - ec2
+    - remote
+  script:
+    - echo "Placeholder for running integration tests."
 
 scan-job:
   image:
