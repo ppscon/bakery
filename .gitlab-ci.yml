@@ -203,7 +203,7 @@ run_performance_tests:
     - deploy_staging
   script:
     - apk --no-cache add curl apache2-utils
-    - ab -n 100 -c 10 http://$STAGING_ENDPOINT/
+    - ab -n 100 -c 10 $STAGING_ENDPOINT/
 
 
 deploy_prod:
