@@ -136,6 +136,7 @@ generate_sbom:
   stage: generate_sbom
   script:
     - export BILLY_SERVER=https://billy.codesec.aquasec.com
+    - apk --no-cache add curl apache2-utils
     - curl -sLo install.sh download.codesec.aquasec.com/billy/install.sh
     - curl -sLo install.sh.checksum https://github.com/argonsecurity/releases/releases/latest/download/install.sh.checksum
     - |
