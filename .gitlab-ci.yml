@@ -56,9 +56,6 @@ run_unit_tests:
 sast:
   stage: test
 
-services:
-  - docker:19.03.12-dind
-
 build_image:
   image: docker:19.03.13 
   services:
@@ -66,14 +63,18 @@ build_image:
   stage: build
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-  
+    DOCKER_BUILDKIT: 1
+    DOCKER_TLS_CERTDIR: "/certs"
   before_script:
     - export PACKAGE_JSON_VERSION=$(cat app/package.json | jq -r .version)
     - echo $PACKAGE_JSON_VERSION.$CI_PIPELINE_IID > version-file.txt
   script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $IMAGE_TAG .
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t $IMAGE_TAG .
     - docker push $IMAGE_TAG
+  after_script:
+    - docker pull $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
   artifacts:
     paths:
       - version-file.txt
@@ -81,6 +82,7 @@ build_image:
     - ec2
     - shell
     - remote
+
 
 
 scan-job:
