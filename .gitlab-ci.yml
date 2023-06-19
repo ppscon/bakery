@@ -218,7 +218,7 @@ acceptance_stage:
       echo "3. Integration Tests: Check all integration tests have been completed successfully."
       echo "4. Security: Make sure all security scans have been passed and necessary security standards are met."
       echo "5. Manual Review: Confirm that the manual code review has been done by the team."
-      echo "If all guidelines are met, proceed with production deployment."
+      echo "If all guidelines are met, proceed to prod-acceptance stage."
 
 # job: Aqua Guidelines
 aqua_security_guidelines:
@@ -229,7 +229,7 @@ aqua_security_guidelines:
     - |
       echo "Critical! before deploying to production, ensure the following Aqua Security Runtime controls are applied:"
       echo "1. Drift Prevention: Check if drift prevention is configured and working correctly."
-      echo "2. Any Risks are accepted in the aqua and a fix date (if available) has been agreed."
+      echo "2. Any Risks are accepted in Aqua and fix a date for resolution (if available)."
       echo "3. Verify 'ENFORCE' is selected."
       echo "4. Finally check, the Software Bill of Materials (SBOM) to confirm that only approved and secure software components, libraries, and dependencies are part of the build."
       echo "If all the guidelines are met, you can proceed with production deployment."
