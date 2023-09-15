@@ -146,7 +146,8 @@ profile_image_with_aqua:
   services:
     - docker:19.03.13-dind
   script:
-    - docker run --rm -it -e AQUA_PROFILE=true $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker run --rm -e AQUA_PROFILE=true $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
   tags:
     - docker
     - ec2
