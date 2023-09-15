@@ -23,7 +23,6 @@ stages:
   - build
   - security_scan
   - generate_sbom
-  - profile_image
   - deploy_dev
   - functional_tests
   - deploy_staging
@@ -139,19 +138,7 @@ generate_sbom:
     - docker
     - ec2
     - remote
-# Aqua Image Profiling
-profile_image_with_aqua:
-  stage: profile_image
-  image: docker:19.03.13
-  services:
-    - docker:19.03.13-dind
-  script:
-    - docker run --rm -e AQUA_PROFILE=true $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
-  tags:
-    - docker
-    - ec2
-    - remote
 
 integration_tests:
   image: node:17-alpine3.14
