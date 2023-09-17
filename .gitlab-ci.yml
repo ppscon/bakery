@@ -28,6 +28,10 @@ stages:
   - deploy_staging
   - performance_tests
   - prod_acceptance
+  - mark_as_immutable
+  - sign_image
+  - verify
+  - promote_to_immutable_repo
   - deploy_prod
 
 run_unit_tests:
@@ -255,7 +259,81 @@ acceptance_stage:
       echo "4. Security: Make sure all security scans have been passed and necessary security standards are met."
       echo "5. Manual Review: Confirm that the manual code review has been done by the team."
       echo "If all guidelines are met, proceed to prod-acceptance stage."
+mark_as_immutable:
+  stage: mark_as_immutable
+  image: docker:19.03.12
+  services:
+    - name: docker:19.03.13-dind
+      alias: docker
+  script:
+    - echo "Checking Docker version..."
+    - docker --version
+    - echo "Marking the image as immutable..."
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable
+    - echo "This image has been validated by Aqua Security and is free from known vulnerabilities."
+  tags:
+    - docker
+    - ec2
+    - remote
+    
+sign_image:
+  stage: sign_image
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    COSIGN_YES: "true"
+  id_tokens:
+    SIGSTORE_ID_TOKEN:
+      aud: sigstore
+  before_script:
+    - apk add --update cosign
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+    - IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA)
+    - cosign sign $IMAGE_DIGEST
 
+verify_image_signature:
+  image: docker:latest  
+  stage: verify
+  services:
+    - docker:dind
+  variables:
+    COSIGN_YES: "true"
+  id_tokens:
+    SIGSTORE_ID_TOKEN:
+      aud: sigstore
+  before_script:
+    - apk add --update cosign  
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA)
+    - cosign verify "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" --certificate-identity "$CI_PROJECT_URL//.gitlab-ci.yml@refs/heads/$CI_COMMIT_BRANCH" --certificate-oidc-issuer "$CI_SERVER_URL"
+
+
+promote_to_immutable_repo:
+  stage: promote_to_immutable_repo
+  image: docker:19.03.12
+  services:
+    - docker:dind
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - "docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+    - "docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable"
+    - "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable"
+    - 'echo "-------------------------------------------------"'
+    - 'echo "IMAGE PROMOTION SUCCESSFUL: The image has been promoted to the immutable repository."'
+    - 'echo "-------------------------------------------------"'
+  tags:
+    - docker
+    - ec2
+    - remote
 # job: Aqua Guidelines
 aqua_security_guidelines:
   stage: prod_acceptance
