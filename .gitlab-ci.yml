@@ -1,38 +1,95 @@
 image: docker:19.03.12
 
-stages:
-  - build
-  - security_scan
-  - generate_sbom
-  - mark_as_immutable
-  - sign_image
-  - verify
-  - promote_to_immutable_repo
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"'
+      when: never
+    - when: always
 
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
   CI_REGISTRY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH
   CI_APPLICATION_REPOSITORY: $CI_REGISTRY_IMAGE
+  DEV_SERVER_HOST: 18.169.187.161
+  DEV_ENDPOINT: http://18.169.187.161:3000
+  STAGING_SERVER_HOST: 18.169.187.161
+  STAGING_ENDPOINT: http://18.169.187.161:3001
+  PROD_SERVER_HOST: 18.169.187.161
+  PROD_ENDPOINT: http://18.169.187.161:3002
+
+stages:
+  - test
+  - build
+  - security_scan
+  - generate_sbom
+  - deploy_dev
+  - functional_tests
+  - deploy_staging
+  - performance_tests
+  - prod_acceptance
+  - mark_as_immutable
+  - sign_image
+  - verify
+  - promote_to_immutable_repo
+  - deploy_prod
+
+run_unit_tests:
+  image: node:17-alpine3.14
+  stage: test
+  cache:
+    key: '$CI_COMMIT_REF_NAME'
+    paths:
+      - app/node_modules
+  tags:
+    - docker
+    - ec2
+    - remote
+  before_script:
+    - cd app
+    - npm install
+  script:
+    - npm test
+  artifacts:
+    when: always
+    paths:
+      - app/junit.xml
+    reports:
+      junit: app/junit.xml
+
+sast:
+  stage: test
 
 build_image:
-  stage: build
+  image: docker:19.03.13 
   services:
     - docker:19.03.13-dind
+  stage: build
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    DOCKER_BUILDKIT: 1
+    DOCKER_TLS_CERTDIR: "/certs"
   before_script:
-    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - export PACKAGE_JSON_VERSION=$(cat app/package.json | jq -r .version)
+    - echo $PACKAGE_JSON_VERSION.$CI_PIPELINE_IID > version-file.txt
   script:
-    - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+  after_script:
+    - docker pull $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
+  artifacts:
+    paths:
+      - version-file.txt
   tags:
     - ec2
     - shell
     - remote
 
 
+
 scan-job:
-  rules:
-    - if: '$SKIP_SECURITY_JOBS != "true"'
   image:
     name: registry.aquasec.com/scanner:2022.4
     entrypoint: [""]
@@ -50,8 +107,6 @@ scan-job:
     - remote
 
 generate_sbom:
-  rules:
-    - if: '$SKIP_SECURITY_JOBS != "true"'
   stage: generate_sbom
   needs: ["scan-job"]
   image: aquasec/aqua-scanner
@@ -89,6 +144,121 @@ generate_sbom:
     - remote
 
 
+integration_tests:
+  image: node:17-alpine3.14
+  stage: build
+  needs:
+  - build_image
+  tags:
+    - docker
+    - ec2
+    - remote
+  script:
+    - echo "Placeholder for running integration tests."
+    
+push_image:
+  stage: build
+  dependencies:
+    - build_image
+  needs:
+    - build_image
+  before_script:
+    - export IMAGE_TAG=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker push $IMAGE_TAG
+  tags:
+    - ec2
+    - shell
+    - remote
+    
+.deploy:
+  stage: deploy
+  needs:
+    - scan-job
+    - build_image
+  dependencies:
+    - build_image
+  before_script:
+    - chmod 400 $SSH_PRIVATE_KEY
+    - export VERSION=$(cat version-file.txt)
+  script:
+    - scp -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ./docker-compose.yaml ubuntu@$SERVER_HOST:/home/ubuntu
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY ubuntu@$SERVER_HOST "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY &&
+      export COMPOSE_PROJECT_NAME=$DEPLOY_ENV &&
+      export DC_IMAGE_NAME=$CI_REGISTRY_IMAGE &&
+      export DC_IMAGE_TAG=$CI_COMMIT_SHORT_SHA &&
+      export DC_APP_PORT=$APP_PORT &&
+      echo \$DC_IMAGE_NAME &&
+      echo \$DC_IMAGE_TAG &&
+      docker-compose down && docker-compose up -d"
+  tags:
+    - ec2
+    - shell
+    - remote
+
+deploy_dev:
+  extends: .deploy
+  stage: deploy_dev
+  variables:
+    SERVER_HOST: $DEV_SERVER_HOST
+    DEPLOY_ENV: dev
+    APP_PORT: 3000
+
+run_functional_tests:
+  stage: deploy_dev
+  needs:
+    - deploy_dev
+  script:
+    - apk --no-cache add curl
+    - 'curl -f $DEV_ENDPOINT || exit 1'
+
+
+deploy_staging:
+  extends: .deploy
+  stage: deploy_staging
+  variables:
+    SERVER_HOST: $STAGING_SERVER_HOST
+    DEPLOY_ENV: staging
+    APP_PORT: 3001
+
+run_performance_tests:
+  stage: deploy_staging
+  needs:
+    - deploy_staging
+  script:
+    - apk --no-cache add curl apache2-utils
+    - ab -n 100 -c 10 $STAGING_ENDPOINT/
+
+
+deploy_prod:
+  extends: .deploy
+  stage: deploy_prod
+  needs:
+    - acceptance_stage
+    - aqua_security_guidelines
+    - build_image
+  variables:
+    SERVER_HOST: $PROD_SERVER_HOST
+    DEPLOY_ENV: prod
+    APP_PORT: 3002
+  when: manual
+
+acceptance_stage:
+  stage: prod_acceptance
+  needs:
+    - run_performance_tests
+    - scan-job
+    - generate_sbom
+  script:
+    - |
+      echo "Reminder before deploying to Production:"
+      echo "1. Code Quality: Ensure that code quality has been assessed and meets the team's quality metrics."
+      echo "2. Unit Tests: Verify that all unit tests have passed."
+      echo "3. Integration Tests: Check all integration tests have been completed successfully."
+      echo "4. Security: Make sure all security scans have been passed and necessary security standards are met."
+      echo "5. Manual Review: Confirm that the manual code review has been done by the team."
+      echo "If all guidelines are met, proceed to prod-acceptance stage."
 mark_as_immutable:
   stage: mark_as_immutable
   image: docker:19.03.12
@@ -164,3 +334,19 @@ promote_to_immutable_repo:
     - docker
     - ec2
     - remote
+# job: Aqua Guidelines
+aqua_security_guidelines:
+  stage: prod_acceptance
+  needs:
+    - acceptance_stage
+  script:
+    - |
+      echo "Critical! before deploying to production, ensure the following Aqua Security Runtime controls are applied:"
+      echo "1. Drift Prevention: Check if drift prevention is configured and working correctly."
+      echo "2. Any Risks are accepted in Aqua and fix a date for resolution (if available)."
+      echo "3. Verify 'ENFORCE' is selected."
+      echo "4. Finally check, the Software Bill of Materials (SBOM) to confirm that only approved and secure software components, libraries, and dependencies are part of the build."
+      echo "If all the guidelines are met, you can proceed with production deployment."
+
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
