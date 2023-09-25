@@ -19,7 +19,7 @@ variables:
   PROD_ENDPOINT: http://18.169.187.161:3002
   SIGNATURE_FILE: "signature_file.txt"
   TIMESTAMP_FILE: "timestamp_file.txt"
-  METADATA_ARTIFACT: "metadata_artifact.json"
+  METADATA_ARTIFACT: "metadata_artifact"
 
 stages:
   - test
