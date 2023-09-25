@@ -292,7 +292,7 @@ record_metadata:
     - python3 --version # Debug: Show Python version
     - echo "Recording Metadata and Timestamp..."
     - date +%s > $TIMESTAMP_FILE
-    - python3 ci_scripts/generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
+    - python3 generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
 
 
 
