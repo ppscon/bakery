@@ -357,19 +357,26 @@ promote_to_immutable_repo:
     - ec2
     - remote
 
-# job: Aqua Guidelines
+# job: Aqua Security Guidelines
 aqua_security_guidelines:
   stage: prod_acceptance
   needs:
     - acceptance_stage
   script:
     - |
-      echo "Critical! before deploying to production, ensure the following Aqua Security Runtime controls are applied:"
-      echo "1. Drift Prevention: Check if drift prevention is configured and working correctly."
-      echo "2. Any Risks are accepted in Aqua and fix a date for resolution (if available)."
-      echo "3. Verify 'ENFORCE' is selected."
-      echo "4. Finally check, the Software Bill of Materials (SBOM) to confirm that only approved and secure software components, libraries, and dependencies are part of the build."
-      echo "If all the guidelines are met, you can proceed with production deployment."
+      echo "Critical! Before deploying to production, ensure the following Aqua Security Runtime controls and best practices are applied:"
+      echo "1. Drift Prevention: Validate that drift prevention is configured and active."
+      echo "2. Risk Acceptance: Confirm that all risks are accepted in Aqua and set a resolution date for each."
+      echo "3. Enforcement Mode: Verify that the policy enforcement mode is set to 'ENFORCE'."
+      echo "4. SBOM: Review the Software Bill of Materials to ensure only approved and secure components are part of the build."
+      echo "5. User Permissions: Double-check that least-privilege principles have been applied to all users and service accounts."
+      echo "6. Vulnerability Scanning: Ensure that the latest vulnerability scans have been run and passed."
+      echo "7. Image Signing: Verify that the image has been signed by an authorized entity."
+      echo "8. Incident Response Plan: Confirm that an incident response plan is in place and up-to-date."
+      echo "9. Network Policies: Validate that network segmentation and firewall rules have been properly configured."
+      echo "10. Logging and Monitoring: Confirm that all required logging and monitoring integrations are functioning."
+      echo "If all the guidelines are met, you may proceed with production deployment."
+
 
 include:
   - template: Jobs/SAST.gitlab-ci.yml
