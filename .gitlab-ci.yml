@@ -344,14 +344,14 @@ verify_image_signature:
 
 promote_to_immutable_repo:
   stage: promote_to_immutable_repo
-  image: python:3.9 # Using Python 3.9 as the base image
+  image: docker:19.03.12
   services:
     - docker:dind
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
     - "docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
-    - "python3 verify_image_immutable.py $METADATA_ARTIFACT && docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable && docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable || (echo 'Image verification failed. Not promoting to immutable repo.' && exit 1)"
+    - "python3 ci_scripts/verify_image_immutable.py $METADATA_ARTIFACT && docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable && docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable || (echo 'Image verification failed. Not promoting to immutable repo.' && exit 1)"
     - 'echo "-------------------------------------------------"'
     - 'echo "IMAGE PROMOTION SUCCESSFUL: The image has been promoted to the immutable repository."'
     - 'echo "-------------------------------------------------"'
@@ -359,6 +359,7 @@ promote_to_immutable_repo:
     - docker
     - ec2
     - remote
+
 
 
 # job: Aqua Guidelines
