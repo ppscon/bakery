@@ -287,15 +287,16 @@ mark_as_immutable:
 
 record_metadata:
   stage: record_metadata
-  image: python:3.9 # Using Python 3.9 as the base image
+  image: python:3.9
   script:
-    - python3 --version # Debug: Show Python version
+    - python3 --version
     - echo "Recording Metadata and Timestamp..."
-    - date +%s > $TIMESTAMP_FILE
-    - python3 generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
+    - date +%s > timestamp_file.txt  # Hardcoding the file name for now
+    - echo "PlaceholderSignature" > signature_file.txt  # Hardcoding the file name
+    - python3 generate_metadata_artifact.py signature_file.txt timestamp_file.txt metadata.json  # Hardcoding the output file
   artifacts:
     paths:
-      - $METADATA_ARTIFACT
+      - metadata.json  # Hardcoding the output file
 
 
 sign_image:
