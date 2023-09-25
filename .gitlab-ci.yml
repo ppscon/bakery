@@ -291,12 +291,19 @@ record_metadata:
   script:
     - python3 --version
     - echo "Recording Metadata and Timestamp..."
-    - date +%s > $TIMESTAMP_FILE
+    - pwd  # Print the current directory
+    - ls -al  # List all files in the current directory
+    - echo "SIGNATURE_FILE: $SIGNATURE_FILE"
+    - echo "TIMESTAMP_FILE: $TIMESTAMP_FILE"
+    - echo "METADATA_ARTIFACT: $METADATA_ARTIFACT"
+    - date +%s > $TIMESTAMP_FILE  # Create the timestamp file
+    - echo "PlaceholderSignature" > $SIGNATURE_FILE  # Placeholder for the signature file
     - python3 generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
   artifacts:
     paths:
       - $METADATA_ARTIFACT.json
       - $METADATA_ARTIFACT.html
+
 
 
 sign_image:
