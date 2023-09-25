@@ -263,7 +263,13 @@ acceptance_stage:
 
 mark_as_immutable:
   stage: mark_as_immutable
+  image: docker:19.03.12
+  services:
+    - name: docker:19.03.13-dind
+      alias: docker
   script:
+    - echo "Checking Docker version..."
+    - docker --version
     - echo "Marking the image as immutable..."
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
