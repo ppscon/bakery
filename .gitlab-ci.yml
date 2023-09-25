@@ -287,14 +287,15 @@ mark_as_immutable:
 
 record_metadata:
   stage: record_metadata
+  image: docker:19.03.12
+  before_script:
+    - apk add --update python3 python3-dev
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
     - echo "Recording Metadata and Timestamp..."
     - date +%s > $TIMESTAMP_FILE
     - python3 ci_scripts/generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
-  artifacts:
-    paths:
-      - $TIMESTAMP_FILE
-      - $METADATA_ARTIFACT
+
 
 
 
