@@ -293,6 +293,9 @@ record_metadata:
     - echo "Recording Metadata and Timestamp..."
     - date +%s > $TIMESTAMP_FILE
     - python3 generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
+  artifacts:
+    paths:
+      - $METADATA_ARTIFACT
 
 
 
