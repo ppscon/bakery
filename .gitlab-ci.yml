@@ -289,10 +289,13 @@ record_metadata:
   stage: record_metadata
   image: docker:19.03.12
   script:
-    - apk add --update python3 py3-pip # This installs Python 3 and pip
+    - apk --no-cache add python3 # Install Python 3
+    - apk info | grep python # Debug: Show installed Python packages
+    - python3 --version # Debug: Show Python version
     - echo "Recording Metadata and Timestamp..."
     - date +%s > $TIMESTAMP_FILE
     - python3 ci_scripts/generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
+
 
 
 
