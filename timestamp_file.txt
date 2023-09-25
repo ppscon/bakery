@@ -1,65 +1,23 @@
 import json
-import os
 import sys
-from datetime import datetime
 
-
-def generate_pretty_metadata_artifact(signature_file, timestamp_file, artifact_file):
-    # Read signature and timestamp
+def generate_metadata_artifact(signature_file, timestamp_file, artifact_file):
     with open(signature_file, 'r') as f:
         signature = f.read().strip()
 
     with open(timestamp_file, 'r') as f:
         timestamp = f.read().strip()
 
-    # Convert UNIX timestamp to human-readable date-time
-    human_readable_date = datetime.utcfromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S UTC')
-
-    # Create metadata dictionary
-    metadata = {
-        "signature": signature,
-        "timestamp": timestamp,
-        "human_readable_date": human_readable_date
+    artifact = {
+        'signature': signature,
+        'timestamp': timestamp,
     }
 
-    # Save as JSON
-    with open(f"{artifact_file}.json", 'w') as f:
-        json.dump(metadata, f, indent=4)
-
-    # Generate HTML
-    html_content = f"""
-    <html>
-    <head><title>Metadata Artifact</title></head>
-    <body>
-    <h1>Metadata Artifact</h1>
-    <table border="1">
-        <tr>
-            <th>Attribute</th>
-            <th>Value</th>
-        </tr>
-        <tr>
-            <td>Signature</td>
-            <td>{signature}</td>
-        </tr>
-        <tr>
-            <td>Timestamp</td>
-            <td>{timestamp} ({human_readable_date})</td>
-        </tr>
-    </table>
-    </body>
-    </html>
-    """
-
-    # Save as HTML
-    with open(f"{artifact_file}.html", 'w') as f:
-        f.write(html_content)
-
+    with open(artifact_file, 'w') as f:
+        json.dump(artifact, f)
 
 if __name__ == "__main__":
-    # Read file paths from arguments or environment variables
-    signature_file = sys.argv[1] if len(sys.argv) > 1 else os.environ.get('SIGNATURE_FILE', 'signature_file.txt')
-    timestamp_file = sys.argv[2] if len(sys.argv) > 2 else os.environ.get('TIMESTAMP_FILE', 'timestamp_file.txt')
-    artifact_file = sys.argv[3] if len(sys.argv) > 3 else os.environ.get('METADATA_ARTIFACT', 'metadata_artifact')
-
-    # Generate the pretty metadata artifact
-    generate_pretty_metadata_artifact(signature_file, timestamp_file, artifact_file)
+    signature_file = sys.argv[1]
+    timestamp_file = sys.argv[2]
+    artifact_file = sys.argv[3]
+    generate_metadata_artifact(signature_file, timestamp_file, artifact_file)
