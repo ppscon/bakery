@@ -17,6 +17,9 @@ variables:
   STAGING_ENDPOINT: http://18.169.187.161:3001
   PROD_SERVER_HOST: 18.169.187.161
   PROD_ENDPOINT: http://18.169.187.161:3002
+  SIGNATURE_FILE: "signature_file.txt"
+  TIMESTAMP_FILE: "timestamp_file.txt"
+  METADATA_ARTIFACT: "metadata_artifact.json"
 
 stages:
   - test
@@ -286,8 +289,13 @@ record_metadata:
   stage: record_metadata
   script:
     - echo "Recording Metadata and Timestamp..."
-    # TODO: Insert code to record metadata and timestamp
-    - echo "Metadata and Timestamp recorded."
+    - date +%s > $TIMESTAMP_FILE
+    - python3 ci_scripts/generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
+  artifacts:
+    paths:
+      - $TIMESTAMP_FILE
+      - $METADATA_ARTIFACT
+
 
 
     
@@ -337,8 +345,7 @@ promote_to_immutable_repo:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
     - "docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
-    - "docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable"
-    - "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable"
+    - "python3 ci_scripts/verify_image_immutable.py $METADATA_ARTIFACT && docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable && docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA-immutable || (echo 'Image verification failed. Not promoting to immutable repo.' && exit 1)"
     - 'echo "-------------------------------------------------"'
     - 'echo "IMAGE PROMOTION SUCCESSFUL: The image has been promoted to the immutable repository."'
     - 'echo "-------------------------------------------------"'
@@ -346,6 +353,8 @@ promote_to_immutable_repo:
     - docker
     - ec2
     - remote
+
+
 # job: Aqua Guidelines
 aqua_security_guidelines:
   stage: prod_acceptance
