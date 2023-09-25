@@ -344,7 +344,7 @@ verify_image_signature:
 
 promote_to_immutable_repo:
   stage: promote_to_immutable_repo
-  image: docker:19.03.12
+  image: python:3.9 # Using Python 3.9 as the base image
   services:
     - docker:dind
   before_script:
