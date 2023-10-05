@@ -365,6 +365,7 @@ aqua_security_guidelines:
   script:
     - |
       echo "Critical! Before deploying to production, ensure the following Aqua Security Runtime controls and best practices are applied:"
+      echo "0. Ensure Approved Base Image is applied in Image assurance:"
       echo "1. Drift Prevention: Validate that drift prevention is configured and active."
       echo "2. Risk Acceptance: Confirm that all risks are accepted in Aqua and set a resolution date for each."
       echo "3. Enforcement Mode: Verify that the policy enforcement mode is set to 'ENFORCE'."
