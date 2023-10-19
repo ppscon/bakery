@@ -25,6 +25,8 @@ stages:
   - test
   - build
   - security_scan
+  - add_labels
+  - automated_task_assigment
   - generate_sbom
   - deploy_dev
   - functional_tests
@@ -108,6 +110,30 @@ scan-job:
   tags:
     - docker
     - ec2
+    - remote
+
+add_labels:
+  stage: add_labels
+  script:
+    - echo "LABEL=Philip" >> build.env  # This sets a CI/CD variable named LABEL with the value 'Philip'
+  artifacts:
+    reports:
+      dotenv: build.env
+  tags:
+    - ec2
+    - shell
+    - remote
+
+automated_task_assignment:
+  image: python:3.9
+  stage: automated_task_assignment
+  needs: ["scan-job"]
+  script:
+    - pip install requests  # Required for Teams notifications
+    - python automated_task_assignment.py  # This script handles parsing the HTML and sending Teams notifications.
+  tags:
+    - ec2
+    - shell
     - remote
 
 generate_sbom:
@@ -294,7 +320,7 @@ record_metadata:
     - echo "Recording Metadata and Timestamp..."
     - date +%s > $TIMESTAMP_FILE
     - echo "PlaceholderSignature" > $SIGNATURE_FILE
-    - python3 generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
+    - python3 ci_scripts/generate_metadata_artifact.py $SIGNATURE_FILE $TIMESTAMP_FILE $METADATA_ARTIFACT
   artifacts:
     paths:
       - ${METADATA_ARTIFACT}.json
