@@ -130,8 +130,8 @@ automated_task_assignment:
   stage: automated_task_assignment
   needs: ["scan-job"]
   script:
-    - pip3 install requests  # Required for Teams notifications
-    - python3 automated_task_assignment.py  # This script handles parsing the HTML and sending Teams notifications.
+    - /usr/bin/pip3 install requests  # Required for Teams notifications
+    - /usr/bin/python3 automated_task_assignment.py  # This script handles parsing the HTML and sending Teams notifications.
   tags:
     - ec2
     - shell
