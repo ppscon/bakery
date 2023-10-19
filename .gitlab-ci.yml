@@ -128,7 +128,7 @@ add_labels:
 
 assign_task:
   image: python:3.9
-  stage: task_management
+  stage: assign_task
   needs: ["scan-job"]
   script:
     - /usr/bin/pip3 install requests
@@ -144,7 +144,7 @@ assign_task:
 
 notify_teams:
   image: python:3.9
-  stage: task_management
+  stage: assign_task
   needs:
     - job: assign_task
       artifacts: true
