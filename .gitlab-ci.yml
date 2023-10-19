@@ -26,7 +26,8 @@ stages:
   - build
   - security_scan
   - add_labels
-  - automated_task_assignment
+  - assign_task
+  - notify_teams
   - generate_sbom
   - deploy_dev
   - functional_tests
@@ -125,18 +126,38 @@ add_labels:
     - shell
     - remote
 
-automated_task_assignment:
+assign_task:
   image: python:3.9
-  stage: automated_task_assignment
+  stage: task_management
   needs: ["scan-job"]
   script:
-    - /usr/bin/pip3 install requests  # Required for Teams notifications
+    - /usr/bin/pip3 install requests
     - cd ci_scripts
-    - /usr/bin/python3 automated_task_assignment.py  # This script handles parsing the HTML and sending Teams notifications.
+    - /usr/bin/python3 assign_task.py
+  artifacts:
+    paths:
+      - assigned_task.json
   tags:
     - ec2
     - shell
     - remote
+
+notify_teams:
+  image: python:3.9
+  stage: task_management
+  needs:
+    - job: assign_task
+      artifacts: true
+  script:
+    - /usr/bin/pip3 install requests
+    - cd ci_scripts
+    - /usr/bin/python3 assign_task.py  # This script handles sending Teams notifications.
+  tags:
+    - ec2
+    - shell
+    - remote
+
+
 
 generate_sbom:
   stage: generate_sbom
