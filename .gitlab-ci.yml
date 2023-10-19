@@ -26,7 +26,7 @@ stages:
   - build
   - security_scan
   - add_labels
-  - automated_task_assigment
+  - automated_task_assignment
   - generate_sbom
   - deploy_dev
   - functional_tests
