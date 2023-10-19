@@ -131,6 +131,7 @@ automated_task_assignment:
   needs: ["scan-job"]
   script:
     - /usr/bin/pip3 install requests  # Required for Teams notifications
+    - cd ci_scripts
     - /usr/bin/python3 automated_task_assignment.py  # This script handles parsing the HTML and sending Teams notifications.
   tags:
     - ec2
