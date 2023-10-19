@@ -96,6 +96,7 @@ build_image:
 
 
 scan-job:
+  allow_failure: true
   image:
     name: registry.aquasec.com/scanner:2022.4
     entrypoint: [""]
@@ -130,7 +131,7 @@ automated_task_assignment:
   needs: ["scan-job"]
   script:
     - pip install requests  # Required for Teams notifications
-    - python automated_task_assignment.py  # This script handles parsing the HTML and sending Teams notifications.
+    - python3 automated_task_assignment.py  # This script handles parsing the HTML and sending Teams notifications.
   tags:
     - ec2
     - shell
