@@ -1,0 +1,5 @@
+# Use an existing docker image as a base
+FROM alpine
+
+# Run a command in the container
+CMD ["echo", "Hello, world!"]
