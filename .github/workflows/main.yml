@@ -6,11 +6,11 @@ on:
       - main
 
 jobs:
-  scan_job:
-    runs-on: ubuntu-latest  # This ensures an AMD64 architecture
-    needs: build_image
+  aqua_scan:
+    runs-on: ubuntu-latest
     env:
-      DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}  # Assuming you've added this secret in GitHub
+      DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -19,13 +19,12 @@ jobs:
       run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
 
     - name: Pull Aqua Scanner
-      run: docker pull ppcon/your-custom-aqua-scanner:latest  # Replace with official image if you're not using a custom one
+      run: docker pull registry.aquasec.com/scanner:2022.4
 
     - name: Run Aqua Security Scan
       run: |
-        IMAGE_NAME="bakery-app"  # Replace with your actual Docker image name
-        IMAGE_TAG=ppcon/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}  # Replace 'ppcon' with your actual registry if different
-        docker run --rm ppcon/your-custom-aqua-scanner:latest "scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry 'Github' $IMAGE_TAG --show-negligible --register-compliant --htmlfile aqua-scan.html >/dev/null"
+        IMAGE_TAG=ghcr.io/${{ github.repository }}:${{ github.sha }}
+        docker run --rm registry.aquasec.com/scanner:2022.4 scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile aqua-scan.html >/dev/null
 
     - name: Upload Aqua Scan Results
       uses: actions/upload-artifact@v2
