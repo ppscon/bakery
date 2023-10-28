@@ -22,25 +22,16 @@ jobs:
           docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
 
   scan_job:
-    runs-on: ubuntu-latest  # This ensures an AMD64 architecture
-    needs: build_image
-    env:
-      DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}  # Assuming you've added this secret in GitHub
-    steps:
+      runs-on: ubuntu-latest
+      steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Docker Login to Aqua Registry
-        run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
-
-      - name: Pull Aqua Scanner
-        run: docker pull registry.aquasec.com/scanner:2022.4
-
-      - name: Debug Aqua Scanner Container
+      - name: Run Aqua Security Scan
         run: |
-          docker run --rm registry.aquasec.com/scanner:2022.4 /bin/sh -c "ls -al /; which scannercli; echo $PATH"
-
-
+          IMAGE_TAG=ghcr.io/${{ github.repository }}:${{ github.sha }}
+          docker pull registry.aquasec.com/scanner:2022.4
+          docker run --rm --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile aqua-scan.html >/dev/null
 
       - name: Upload Aqua Scan Results
         uses: actions/upload-artifact@v2
