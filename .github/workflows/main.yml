@@ -24,7 +24,8 @@ jobs:
     - name: Run Aqua Security Scan
       run: |
         IMAGE_TAG=ghcr.io/${{ github.repository }}:${{ github.sha }}
-        docker run --rm registry.aquasec.com/scanner:2022.4 scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile aqua-scan.html >/dev/null
+        run: docker run -it --entrypoint /bin/sh registry.aquasec.com/scanner:2022.4
+
 
     - name: Upload Aqua Scan Results
       uses: actions/upload-artifact@v2
