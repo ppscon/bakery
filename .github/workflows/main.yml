@@ -1,0 +1,65 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  DEV_SERVER_HOST: 18.169.187.161
+  DEV_ENDPOINT: http://18.169.187.161:3000
+  STAGING_SERVER_HOST: 18.169.187.161
+  STAGING_ENDPOINT: http://18.169.187.161:3001
+  PROD_SERVER_HOST: 18.169.187.161
+  PROD_ENDPOINT: http://18.169.187.161:3002
+  SIGNATURE_FILE: "signature_file.txt"
+  TIMESTAMP_FILE: "timestamp_file.txt"
+  METADATA_ARTIFACT: "metadata_artifact"
+  # ... Additional GitHub Actions-specific variables here
+
+jobs:
+  run_unit_tests:
+    runs-on: ubuntu-latest
+    container:
+      image: node:17-alpine3.14
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      # ... Rest of the unit tests steps here
+
+  build_image:
+    runs-on: ubuntu-latest
+    needs: run_unit_tests
+    steps:
+      # ... Docker build steps here
+
+  scan_job:
+      runs-on: ubuntu-latest
+      continue-on-error: true # Equivalent to allow_failure: true in GitLab
+      container:
+        image: registry.aquasec.com/scanner:2022.4
+        options: --entrypoint ""
+      env:
+        AQUA_SERVER: ${{ secrets.AQUA_SERVER }}
+        AQUA_TOKEN: ${{ secrets.AQUA_TOKEN }}
+        IMAGE_TAG: ${{ github.repository }}:${{ github.sha }}
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Run Aqua Security Scan
+          run: /opt/aquasec/scannercli scan -H $AQUA_SERVER --token $AQUA_TOKEN --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile $GITHUB_WORKSPACE/aqua-scan.html >/dev/null
+
+        - name: Upload Artifacts
+          uses: actions/upload-artifact@v2
+          with:
+            name: aqua-scan-results
+            path: |
+              aqua-scan.html
+              aqua-scan.json
+
