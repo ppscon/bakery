@@ -40,14 +40,8 @@ jobs:
 
     - name: Run Aqua Security Scan
       run: |
+        mkdir -p artifacts  # Create artifacts directory
         IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
-        docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html
+        docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html > artifacts/aqua-scan.log 2>&1  # Redirect both stdout and stderr to log file
 
     # Removed the step to copy Aqua scan results.
-#
-#    - name: Upload Aqua Scan Results (if exists)
-#      uses: actions/upload-artifact@v2
-#      with:
-#        name: aqua-scan-results
-#        path: aqua-scan.html
-#      continue-on-error: true  # This will continue the workflow even if this step fails
