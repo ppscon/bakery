@@ -24,10 +24,14 @@ jobs:
   scan_job:
     runs-on: ubuntu-latest
     needs: build_image
+    env:
+      IMAGE_NAME: "bakery-app"  # Replace with your actual Docker image name
     steps:
+      - name: Debugging
+        run: echo "AQUA_SERVER = ${{ secrets.AQUA_SERVER }}"
+
       - name: Run Aqua Security Scan
         run: |
-          IMAGE_NAME="bakery-app"  # Replace with your actual Docker image name
           IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
           docker pull registry.aquasec.com/scanner:2022.4
           docker run --rm registry.aquasec.com/scanner:2022.4 scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile aqua-scan.html >/dev/null
@@ -37,3 +41,4 @@ jobs:
         with:
           name: aqua-scan-results
           path: aqua-scan.html
+
