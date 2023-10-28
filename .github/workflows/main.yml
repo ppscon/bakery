@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}
+      IMAGE_TAG: ghcr.io/${{ github.repository }}:${{ github.sha }}  # Setting IMAGE_TAG as an environment variable
 
     steps:
     - name: Checkout code
@@ -23,13 +24,11 @@ jobs:
 
     - name: Run Aqua Security Scan
       run: |
-        IMAGE_TAG=ghcr.io/${{ github.repository }}:${{ github.sha }}
-        run: docker run -it --entrypoint /bin/sh registry.aquasec.com/scanner:2022.4
-
+        docker run -it --entrypoint /bin/sh registry.aquasec.com/scanner:2310.2.5
+        # You can replace this part with the actual scanner command, utilizing the IMAGE_TAG environment variable.
 
     - name: Upload Aqua Scan Results
       uses: actions/upload-artifact@v2
       with:
         name: aqua-scan-results
-        path: aqua-scan.html
-
+        path: aqua-scan.html  # Make sure the Aqua scanner actually generates this file.
