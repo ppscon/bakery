@@ -21,9 +21,6 @@ jobs:
           docker build -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
           docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
 
-  scan_job:
-
-jobs:
   aqua_scan:
     runs-on: ubuntu-latest
     env:
