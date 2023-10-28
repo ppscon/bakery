@@ -22,4 +22,5 @@ jobs:
         run: docker build -t ghcr.io/${{ github.repository }}/hello-world:${{ github.sha }} -f Dockerfile.hello .
 
       - name: Push Docker Image
-        run: docker push ghcr.io/${{ github.repository }}/hello-world:${{ github.sha }}
+        run: docker push ghcr.io/${{ github.actor }}/hello-world:${{ github.sha }}
+
