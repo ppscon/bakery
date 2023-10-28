@@ -21,32 +21,32 @@ jobs:
           docker build -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
           docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
 
-  aqua_scan:
-    runs-on: ubuntu-latest
-      needs: build_image
-      env:
-        IMAGE_NAME: "bakery-app"
-      steps:
-        - name: Debug - Print environment variables
-          run: echo "AQUA_SERVER = ${{ secrets.AQUA_SERVER }}"
+scan_job:
+  runs-on: ubuntu-latest
+  needs: build_image
+  env:
+    IMAGE_NAME: "bakery-app"
+  steps:
+    - name: Debug - Print environment variables
+      run: echo "AQUA_SERVER = ${{ secrets.AQUA_SERVER }}"
 
-        - name: Setup Docker Authentication
-          run: |
-            echo ${{ secrets.DOCKER_AUTH_CONFIG }} > $HOME/.docker/config.json
-            cat $HOME/.docker/config.json  # Optional, for debugging
+    - name: Setup Docker Authentication
+      run: echo '${{ secrets.DOCKER_AUTH_CONFIG }}' > $HOME/.docker/config.json
 
-        - name: Pull Aqua Security Scanner Image
-          run: |
-            export DOCKER_CONFIG=$HOME/.docker/
-            docker pull registry.aquasec.com/scanner:2022.4
+    - name: Debug - Print Docker config file
+      run: cat $HOME/.docker/config.json
 
-        - name: Run Aqua Security Scan
-          run: |
-            IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
-            docker run --rm registry.aquasec.com/scanner:2022.4 scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile aqua-scan.html >/dev/null
+    - name: Pull Aqua Security Scanner Image
+      run: |
+        docker pull registry.aquasec.com/scanner:2022.4
 
-        - name: Upload Aqua Scan Results
-          uses: actions/upload-artifact@v2
-          with:
-            name: aqua-scan-results
-            path: aqua-scan.html
+    - name: Run Aqua Security Scan
+      run: |
+        IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
+        docker run --rm registry.aquasec.com/scanner:2022.4 scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile aqua-scan.html >/dev/null
+
+    - name: Upload Aqua Scan Results
+      uses: actions/upload-artifact@v2
+      with:
+        name: aqua-scan-results
+        path: aqua-scan.html
