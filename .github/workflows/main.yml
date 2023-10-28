@@ -23,9 +23,9 @@ jobs:
       run: docker pull registry.aquasec.com/scanner:2310.2.5
 
     - name: Run Aqua Security Scan
-      run: |
-        docker run -it --entrypoint /bin/sh registry.aquasec.com/scanner:2310.2.5
-        # You can replace this part with the actual scanner command, utilizing the IMAGE_TAG environment variable.
+      run: docker run --entrypoint /bin/sh registry.aquasec.com/scanner:2310.2.5
+      # Add your scanning commands here
+
 
     - name: Upload Aqua Scan Results
       uses: actions/upload-artifact@v2
