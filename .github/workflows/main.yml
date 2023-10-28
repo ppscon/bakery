@@ -31,11 +31,11 @@ jobs:
         run: echo "AQUA_SERVER = ${{ secrets.AQUA_SERVER }}"
 
       - name: Setup Docker Authentication
-        run: echo '${{ secrets.DOCKER_AUTH_CONFIG }}' > docker_auth.json
+        run: |
+          echo "${{ secrets.DOCKER_AUTH_CONFIG }}" > $HOME/.docker/config.json
 
       - name: Pull Aqua Security Scanner Image
         run: |
-          docker login registry.aquasec.com --config=docker_auth.json
           docker pull registry.aquasec.com/scanner:2022.4
 
       - name: Run Aqua Security Scan
@@ -48,6 +48,7 @@ jobs:
         with:
           name: aqua-scan-results
           path: aqua-scan.html
+
 
 
 
