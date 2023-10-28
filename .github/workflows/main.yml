@@ -17,34 +17,30 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          IMAGE_NAME="bakery-app"  # Replace with your actual Docker image name
+          IMAGE_NAME="bakery-app"
           docker build -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
           docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
 
   aqua_scan:
     runs-on: ubuntu-latest
     needs: build_image
-    env:
-      DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}
-      IMAGE_TAG: ghcr.io/${{ github.repository }}:${{ github.sha }}  # Setting IMAGE_TAG as an environment variable
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Docker Login to Aqua Registry
-      run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
+      run: echo ${{ secrets.DOCKER_AUTH_CONFIG }} > /home/runner/.docker/config.json
 
     - name: Pull Aqua Scanner
       run: docker pull registry.aquasec.com/scanner:2310.2.5
 
     - name: Run Aqua Security Scan
-      run: docker run --entrypoint /bin/sh registry.aquasec.com/scanner:2310.2.5
-      # Add your scanning commands here
-
+      run: |
+        IMAGE_TAG=ghcr.io/${{ github.repository }}:${{ github.sha }}
+        docker run --rm registry.aquasec.com/scanner:2310.2.5 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile aqua-scan.html >/dev/null
 
     - name: Upload Aqua Scan Results
       uses: actions/upload-artifact@v2
       with:
         name: aqua-scan-results
-        path: aqua-scan.html  # Make sure the Aqua scanner actually generates this file.
+        path: aqua-scan.html
