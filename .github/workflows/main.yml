@@ -32,7 +32,9 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Docker Login to Aqua Registry
-      run: echo ${{ secrets.DOCKER_AUTH_CONFIG }} > /home/runner/.docker/config.json
+      run: echo "${{ secrets.DOCKER_AUTH_CONFIG }}" > /home/runner/.docker/config.json
+
+
 
     - name: Pull Aqua Scanner
       run: docker pull registry.aquasec.com/scanner:2310.2.5
