@@ -23,6 +23,7 @@ jobs:
 
   aqua_scan:
     runs-on: ubuntu-latest
+    needs: build_image
     env:
       DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}
       IMAGE_TAG: ghcr.io/${{ github.repository }}:${{ github.sha }}  # Setting IMAGE_TAG as an environment variable
