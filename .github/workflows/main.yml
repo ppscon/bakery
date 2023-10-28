@@ -29,19 +29,16 @@ jobs:
       IMAGE_NAME: "bakery-app"
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Docker Login to Aqua Registry
-      run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
+      - name: Docker Login to Aqua Registry
+        run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
 
-    - name: Pull Aqua Scanner
-      run: docker pull registry.aquasec.com/scanner:2022.4
+      - name: Pull Aqua Scanner
+        run: docker pull registry.aquasec.com/scanner:2022.4
 
-    - name: Run Aqua Security Scan
-      run: |
-        mkdir -p artifacts  # Create artifacts directory
-        IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
-        docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html > artifacts/aqua-scan.log 2>&1  # Redirect both stdout and stderr to log file
-
-    # Removed the step to copy Aqua scan results.
+      - name: Run Aqua Security Scan
+        run: |
+          IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
+          docker run --rm registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant
