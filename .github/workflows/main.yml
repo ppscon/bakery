@@ -49,3 +49,4 @@ jobs:
         with:
           name: aqua-scan-results
           path: aqua-scan.html
+        continue-on-error: true
