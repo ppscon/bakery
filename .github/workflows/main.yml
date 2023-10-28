@@ -1,4 +1,4 @@
-name: Hello World CI/CD Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
@@ -11,9 +11,15 @@ on:
 jobs:
   build_hello_world_image:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: hello-world
+
     steps:
+      - name: Debugging
+        run: |
+          echo "Listing all files"
+          ls -al
+          echo "Checking Docker version"
+          docker --version
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -22,7 +28,5 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          echo "Building Docker Image"
-          docker build -f Dockerfile.hello -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
-          echo "Pushing Docker Image"
-          docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
+          docker build -t ghcr.io/${{ github.repository }}/hello-world:${{ github.sha }} -f Dockerfile.hello .
+          docker push ghcr.io/${{ github.repository }}/hello-world:${{ github.sha }}
