@@ -2,18 +2,18 @@
 
 This project demonstrates the workings of a "Container Bakery" following a basic framework. It involves an end-to-end CI/CD pipeline that not only builds Docker images from source code but also tests and scans them before deploying. Our goal is to produce a "Golden Image", our high-quality standard, much like a bakery aims to recreate their signature bread consistently.
 
-## Testing
+## Testing:
 
 The project uses the Jest library for tests (see the "test" script in `package.json`). We perform both unit and integration tests to ensure the integrity and functionality of our code.
 
-### Unit Tests
+### Unit Tests:
 
 Our unit tests check if essential files (like `index.html`, `Dockerfile`, and `.gitignore`) exist in our project.
 
-### Integration Tests
+### Integration Tests:
 
 Integration tests simulate real-world interactions with our server and endpoints, verifying the correct responses and behaviors.
-To run the tests:
+To run the tests
 
 ```bash
 npm install
