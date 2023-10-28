@@ -19,7 +19,7 @@ jobs:
       run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
 
     - name: Pull Aqua Scanner
-      run: docker pull registry.aquasec.com/scanner:2022.4
+      run: docker pull registry.aquasec.com/scanner:2310.2.5
 
     - name: Run Aqua Security Scan
       run: |
