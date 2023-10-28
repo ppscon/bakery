@@ -36,11 +36,10 @@ jobs:
       - name: Pull Aqua Scanner
         run: docker pull registry.aquasec.com/scanner:2022.4
 
-      - name: Run Aqua Security Scan
+      - name: Debug Aqua Scanner Container
         run: |
-          IMAGE_NAME="bakery-app"  # Replace with your actual Docker image name
-          IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
-          docker run --rm registry.aquasec.com/scanner:2022.4 scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile aqua-scan.html >/dev/null
+          docker run --rm -it registry.aquasec.com/scanner:2022.4 /bin/sh -c "ls -al /; which scannercli; echo $PATH"
+
 
       - name: Upload Aqua Scan Results
         uses: actions/upload-artifact@v2
