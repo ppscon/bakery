@@ -59,9 +59,11 @@ jobs:
       steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Docker Login to GHCR
+        run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Run Aqua SBOM and Code Scan
         run: |
-          export IMAGE_NAME="bakery-app"  # Explicitly set IMAGE_NAME if not set elsewhere
+          export IMAGE_NAME="bakery-app"
           export IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
           docker pull $IMAGE_TAG  # Make sure the image exists
           export BILLY_SERVER=https://billy.dev-aqua.codesec.aquasec.com
@@ -87,4 +89,5 @@ jobs:
           AQUA_URL: https://api.dev.supply-chain.cloud.aquasec.com
           CSPM_URL: https://stage.api.cloudsploit.com
           TRIVY_RUN_AS_PLUGIN: 'aqua'
+
 
