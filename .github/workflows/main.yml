@@ -55,7 +55,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Debug step to echo the artifact path
       - name: Debug Artifact Path
         run: echo "Artifact Path: ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}"
 
@@ -82,5 +81,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AQUA_URL: https://api.dev.supply-chain.cloud.aquasec.com
           CSPM_URL: https://stage.api.cloudsploit.com
+
 
 
