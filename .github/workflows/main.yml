@@ -36,7 +36,7 @@ jobs:
 
   aqua_scan:
     runs-on: ubuntu-latest
-    needs: [build_image, label_image]
+    needs: build_image
     env:
       DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}
       IMAGE_NAME: "bakery-app"
