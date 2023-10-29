@@ -121,6 +121,21 @@ jobs:
     - name: Save Cosign Public Key
       run: echo "${{ secrets.COSIGN_PUBLIC_KEY }}" > cosign.pub
 
+   # Debugging steps
+     - name: Check Cosign Version
+       run: cosign version
+
+     - name: List Directory (Debug)
+       run: ls -al
+
+     - name: Output SHA (Debug)
+       run: echo "SHA: ${{ github.sha }}"
+
+     # Verify the Docker Image
+     - name: Verify the Docker Image
+       run: |
+         cosign verify --key cosign.pub ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
+
     # List files and output public key (Optional)
     - name: List files and output public key (Debug)
       run: |
