@@ -115,15 +115,9 @@ jobs:
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3.1.2
 
-    # Debug: Check Cosign Version
-    - name: Check Cosign Version
-      run: cosign version
-
-    # Docker Login to authenticate before pulling the image
     - name: Docker Login
       run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    # Save the public key from GitHub secrets to a file
     - name: Save Cosign Public Key
       run: echo "${{ secrets.COSIGN_PUBLIC_KEY }}" > cosign.pub
 
@@ -133,10 +127,16 @@ jobs:
         ls -al
         cat cosign.pub
 
+    # Print Transparency Log (Debug)
+    - name: Print Transparency Log
+      run: |
+        cosign transparency log info
+
     # Verify the Docker Image
     - name: Verify the Docker Image
       run: |
         cosign verify --key cosign.pub ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
+
 
 
 
