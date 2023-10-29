@@ -59,6 +59,7 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
     - name: Debugging image path
       run: echo "Debug: Image path is ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}"
 
@@ -100,6 +101,7 @@ jobs:
         AQUA_URL: https://api.dev.supply-chain.cloud.aquasec.com
         CSPM_URL: https://stage.api.cloudsploit.com
         TRIVY_RUN_AS_PLUGIN: 'aqua'
+
 
 
 
