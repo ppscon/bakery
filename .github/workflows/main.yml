@@ -17,8 +17,11 @@ jobs:
         node-version: '14'
     - name: Install dependencies
       run: npm install
+      working-directory: ./app
     - name: Run tests
       run: npm test
+      working-directory: ./app
+
 
   build_image:
     runs-on: ubuntu-latest
