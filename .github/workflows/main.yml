@@ -113,6 +113,9 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3.1.2
+    - name: Save Cosign Public Key
+      run: echo "${{ secrets.COSIGN_PUBLIC_KEY }}" > cosign.pub
     - name: Verify the Docker Image
       run: |
-        cosign verify -key cosign.pub ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
+        cosign verify --key cosign.pub ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
+
