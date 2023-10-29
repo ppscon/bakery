@@ -67,7 +67,7 @@ jobs:
           BINDIR="." sh install.sh
           rm install.sh install.sh.checksum
           ./billy generate \
-            --access-token "${{ secrets.GITHUB_TOKEN }}" \
+            --access-token "${{ secrets.CI_TOKEN }}" \
             --aqua-key "${{ secrets.AQUA_KEY }}" \
             --aqua-secret "${{ secrets.AQUA_SECRET }}" \
             --cspm-url https://stage.api.cloudsploit.com \
@@ -75,7 +75,7 @@ jobs:
         env:
           AQUA_KEY: ${{ secrets.AQUA_KEY }}
           AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
           AQUA_URL: https://api.dev.supply-chain.cloud.aquasec.com
           CSPM_URL: https://stage.api.cloudsploit.com
 
