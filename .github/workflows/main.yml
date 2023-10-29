@@ -57,8 +57,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_image
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Debugging image path
+        run: echo "Debug: Image path is ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}"
 
     - name: Docker Login to GHCR
       run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
