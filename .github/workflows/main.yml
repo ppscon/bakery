@@ -111,12 +111,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Docker Login
-      run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3.1.2
+    - name: Save Cosign Public Key
+      run: echo "${{ secrets.COSIGN_PUBLIC_KEY }}" > cosign.pub
     - name: Verify the Docker Image
       run: |
         cosign verify --key cosign.pub ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
+
 
 
