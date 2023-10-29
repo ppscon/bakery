@@ -128,9 +128,9 @@ jobs:
         cat cosign.pub
 
     # Print Transparency Log (Debug)
-    - name: Print Transparency Log
-      run: |
-        cosign transparency log info
+#    - name: Print Transparency Log
+#      run: |
+#        cosign transparency log info
 
     # Verify the Docker Image
     - name: Verify the Docker Image
