@@ -114,7 +114,7 @@ jobs:
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3.1.2
     - name: Docker Login
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Save Cosign Public Key
       run: echo "${{ secrets.COSIGN_PUBLIC_KEY }}" > cosign.pub
     - name: Verify the Docker Image
