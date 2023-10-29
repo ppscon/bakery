@@ -127,10 +127,10 @@ jobs:
         ls -al
         cat cosign.pub
 
-    # Print Transparency Log (Debug)
-#    - name: Print Transparency Log
-#      run: |
-#        cosign transparency log info
+    - name: Verify the Docker Image
+      run: |
+        cosign verify --key cosign.pub --no-tlog ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
+
 
     # Verify the Docker Image
     - name: Verify the Docker Image
