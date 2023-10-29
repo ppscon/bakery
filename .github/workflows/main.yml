@@ -92,7 +92,7 @@ jobs:
             export CSPM_URL=https://stage.api.cloudsploit.com
             export TRIVY_RUN_AS_PLUGIN=aqua
 
-            # Run Trivy file system scan
+            # Run Trivy file system scanner
             trivy fs --scanners config,vuln,secret .
 
 
