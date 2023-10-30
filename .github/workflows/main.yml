@@ -95,7 +95,7 @@ jobs:
       - name: Notify Teams
         env:
           TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
-        run: python ci_scripts/notify_teams.py
+        run: python ci_scripts/assign_task.py
 
   generate_sbom:
     runs-on: ubuntu-latest
