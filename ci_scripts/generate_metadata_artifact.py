@@ -2,7 +2,7 @@ import json
 import sys
 from datetime import datetime
 
-def generate_metadata_artifact(signature_file, timestamp_file, acceptance_criteria_file, artifact_file):
+def generate_metadata_artifact(signature_file, timestamp_file, acceptance_criteria_file, actual_signature_file, artifact_file):
     with open(signature_file, 'r') as f:
         signature = f.read().strip()
 
