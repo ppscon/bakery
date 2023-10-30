@@ -148,15 +148,14 @@ jobs:
       - name: Generate Timestamp and Signature Placeholder
         run: |
           date +%s > timestamp_file.txt
-          echo "PlaceholderSignature" > signature_file.txt
-
-      - name: Generate Acceptance Criteria and Actual Signature
-        run: |
           echo "Your Acceptance Criteria Here" > acceptance_criteria.txt
-          echo "Your Actual Signature Here" > actual_signature.txt
 
       - name: Run Python Script to Generate Metadata
         run: python3 ci_scripts/generate_metadata_artifact.py signature_file.txt timestamp_file.txt acceptance_criteria.txt actual_signature.txt metadata_artifact
+
+      # Debugging: List all files in the current directory and sub-directories
+      - name: List files in all directories
+        run: find . -type f
 
       - name: Upload Metadata Artifact
         uses: actions/upload-artifact@v2
@@ -165,6 +164,7 @@ jobs:
           path: |
             metadata_artifact.json
             metadata_artifact.html
+
 
 
   publish_to_gh_pages:
