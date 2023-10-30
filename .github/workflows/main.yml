@@ -45,13 +45,18 @@ jobs:
         run: docker pull registry.aquasec.com/scanner:2022.4
       - name: Run Aqua Security Scan and Save Logs
         run: |
+          mkdir -p artifacts
           IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
-          docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html > aqua_scan.log
-      - name: Upload Aqua scan log
+          docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html --jsonfile /artifacts/aqua-scan.json > artifacts/aqua_scan.log
+      - name: Package Reports into ZIP
+        run: |
+          zip -r aqua_reports.zip artifacts/
+      - name: Upload Aqua Reports ZIP
         uses: actions/upload-artifact@v2
         with:
-          name: aqua-scan-log
-          path: aqua_scan.log
+          name: aqua-reports
+          path: aqua_reports.zip
+
 
 
 
