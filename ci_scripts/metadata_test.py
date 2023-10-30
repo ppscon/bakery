@@ -1,56 +1,65 @@
+#
 # import json
 # import sys
 # from datetime import datetime
 #
-# def generate_metadata_artifact(signature_file, timestamp_file, artifact_file):
-#     with open(signature_file, 'r') as f:
-#         signature = f.read().strip()
+# # Placeholder for signature, timestamp, and acceptance criteria
+# signature_file = sys.argv[1]
+# timestamp_file = sys.argv[2]
+# output_file_prefix = sys.argv[3]
 #
-#     with open(timestamp_file, 'r') as f:
-#         timestamp = f.read().strip()
+# # Read the signature
+# with open(signature_file, 'r') as f:
+#     signature = f.read().strip()
 #
-#     # Convert UNIX timestamp to human-readable date-time
-#     human_readable_date = datetime.utcfromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S UTC')
+# # Read the timestamp
+# with open(timestamp_file, 'r') as f:
+#     timestamp = f.read().strip()
 #
-#     artifact = {
-#         'signature': signature,
-#         'timestamp': timestamp,
-#         'human_readable_date': human_readable_date
-#     }
+# # Convert Unix timestamp to human-readable format
+# timestamp_human_readable = datetime.utcfromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S UTC')
 #
-#     with open(f"{artifact_file}.json", 'w') as f:
-#         json.dump(artifact, f)
+# # Create a JSON metadata artifact
+# metadata_json = {
+#     'signature': signature,
+#     'timestamp': timestamp,
+#     'timestamp_human_readable': timestamp_human_readable
+# }
 #
-#     # Generate HTML content
-#     html_content = f"""
-#     <html>
-#     <head><title>Metadata Artifact</title></head>
-#     <body>
+# # Create HTML metadata artifact with modern styling and acceptance criteria
+# metadata_html = f'''
+# <!DOCTYPE html>
+# <html lang="en">
+# <head>
+#     <meta charset="UTF-8">
+#     <title>Metadata Artifact</title>
+#     <style>
+#         body {{ font-family: Arial, sans-serif; }}
+#         h1, h2 {{ color: #333366; }}
+#         ul {{ list-style: none; padding-left: 0; }}
+#         ul li::before {{ content: "✔ "; color: #009966; }}
+#     </style>
+# </head>
+# <body>
 #     <h1>Metadata Artifact</h1>
-#     <table border="1">
-#         <tr>
-#             <th>Attribute</th>
-#             <th>Value</th>
-#         </tr>
-#         <tr>
-#             <td>Signature</td>
-#             <td>{signature}</td>
-#         </tr>
-#         <tr>
-#             <td>Timestamp</td>
-#             <td>{timestamp} ({human_readable_date})</td>
-#         </tr>
-#     </table>
-#     </body>
-#     </html>
-#     """
+#     <h2>Timestamp</h2>
+#     <p>{timestamp_human_readable}</p>
+#     <h2>Acceptance Criteria</h2>
+#     <ul>
+#         <li>Code Quality: Ensure that code quality has been assessed and meets the team's quality metrics.</li>
+#         <li>Unit Tests: Verify that all unit tests have passed.</li>
+#         <li>Integration Tests: Check all integration tests have been completed successfully.</li>
+#         <li>Vulnerability Threshold: No critical or high vulnerabilities as reported by Aqua Trivy or Scanner.</li>
+#         <li>Manual Review: Confirm that the manual code review has been done by the team.</li>
+#     </ul>
+# </body>
+# </html>
+# '''
 #
-#     # Save as HTML
-#     with open(f"{artifact_file}.html", 'w') as f:
-#         f.write(html_content)
+# # Save JSON metadata artifact
+# with open(f"{output_file_prefix}.json", 'w') as f:
+#     json.dump(metadata_json, f, indent=4)
 #
-# if __name__ == "__main__":
-#     signature_file = sys.argv[1]
-#     timestamp_file = sys.argv[2]
-#     artifact_file = sys.argv[3]
-#     generate_metadata_artifact(signature_file, timestamp_file, artifact_file)
+# # Save HTML metadata artifact
+# with open(f"{output_file_prefix}.html", 'w') as f:
+#     f.write(metadata_html)

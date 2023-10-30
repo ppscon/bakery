@@ -43,19 +43,15 @@ jobs:
       - run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
       - id: docker-pull-scanner
         run: docker pull registry.aquasec.com/scanner:2022.4
-      - name: Run Aqua Security Scan and Save Logs
+      - name: Run Aqua Security Scan
         run: |
-          mkdir -p artifacts
           IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
-          docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html --jsonfile /artifacts/aqua-scan.json > artifacts/aqua_scan.log
-      - name: Package Reports into ZIP
-        run: |
-          zip -r aqua_reports.zip artifacts/
-      - name: Upload Aqua Reports ZIP
+          docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html --jsonfile /artifacts/aqua-scan.json >/dev/null
+      - name: Upload Aqua Reports as Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: aqua-reports
-          path: aqua_reports.zip
+          path: artifacts/
 
 
 
@@ -80,11 +76,16 @@ jobs:
 
   notify_teams:
     runs-on: ubuntu-latest
-    needs: assign_task
-    if: always()  # This ensures the job runs even if assign_task fails
+    needs: aqua_scan
+    if: always()  # This ensures the job runs even if aqua_scan fails
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Download Aqua Scan JSON artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: aqua-scan-json
+          path: artifacts/
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
