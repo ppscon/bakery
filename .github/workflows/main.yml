@@ -150,8 +150,13 @@ jobs:
           date +%s > timestamp_file.txt
           echo "PlaceholderSignature" > signature_file.txt
 
+      - name: Generate Acceptance Criteria and Actual Signature
+        run: |
+          echo "Your Acceptance Criteria Here" > acceptance_criteria.txt
+          echo "Your Actual Signature Here" > actual_signature.txt
+
       - name: Run Python Script to Generate Metadata
-        run: python3 ci_scripts/generate_metadata_artifact.py signature_file.txt timestamp_file.txt metadata_artifact
+        run: python3 ci_scripts/generate_metadata_artifact.py signature_file.txt timestamp_file.txt acceptance_criteria.txt actual_signature.txt metadata_artifact
 
       - name: Upload Metadata Artifact
         uses: actions/upload-artifact@v2
@@ -160,11 +165,11 @@ jobs:
           path: |
             metadata_artifact.json
             metadata_artifact.html
-  # ... Existing jobs like verify_image, record_metadata, etc.
+
 
   publish_to_gh_pages:
     runs-on: ubuntu-latest
-    needs: record_metadata # Assuming this job runs after metadata recording
+    needs: record_metadata
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
