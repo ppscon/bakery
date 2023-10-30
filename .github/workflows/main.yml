@@ -9,28 +9,28 @@ jobs:
   run_unit_tests:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16' #version
-    - run: npm install
-      working-directory: ./app
-    - run: npm test
-      working-directory: ./app
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - run: npm install
+        working-directory: ./app
+      - run: npm test
+        working-directory: ./app
 
   build_image:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - id: docker-login
-      run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-    - name: Build and Push Docker Image
-      run: |
-        IMAGE_NAME="bakery-app"
-        docker build --label "com.aqua.security.policy=immutable" -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
-        docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
+      - uses: actions/checkout@v2
+      - id: docker-login
+        run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE_NAME="bakery-app"
+          docker build --label "com.aqua.security.policy=immutable" -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
+          docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
 
   aqua_scan:
     runs-on: ubuntu-latest
@@ -39,18 +39,20 @@ jobs:
       DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}
       IMAGE_NAME: "bakery-app"
     steps:
-    - uses: actions/checkout@v2
-    - run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
-    - id: docker-pull-scanner
-      run: docker pull registry.aquasec.com/scanner:2022.4
-    - name: Run Aqua Security Scan
-      run: |
-        IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
-        docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html >/dev/null
+      - uses: actions/checkout@v2
+      - run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
+      - id: docker-pull-scanner
+        run: docker pull registry.aquasec.com/scanner:2022.4
+      - name: Run Aqua Security Scan
+        run: |
+          IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
+          docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html >/dev/null
+
+  # Newly added jobs
   assign_task:
-      runs-on: ubuntu-latest
-      needs: aqua_scan # Assuming this job runs after the Aqua scan
-      steps:
+    runs-on: ubuntu-latest
+    needs: aqua_scan
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup Python
@@ -64,10 +66,10 @@ jobs:
           TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
         run: python ci_scripts/assign_task.py
 
-    notify_teams:
-      runs-on: ubuntu-latest
-      needs: assign_task
-      steps:
+  notify_teams:
+    runs-on: ubuntu-latest
+    needs: assign_task
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup Python
