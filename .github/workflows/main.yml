@@ -134,3 +134,30 @@ jobs:
         run: |
           IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }})
           cosign verify --key cosign.pub $IMAGE_DIGEST
+
+
+  record_metadata:
+    runs-on: ubuntu-latest
+    needs: verify_image # Assuming this job runs after image verification
+    container:
+      image: python:3.9
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate Timestamp and Signature Placeholder
+        run: |
+          date +%s > timestamp_file.txt
+          echo "PlaceholderSignature" > signature_file.txt
+
+      - name: Run Python Script to Generate Metadata
+        run: python3 ci_scripts/generate_metadata_artifact.py signature_file.txt timestamp_file.txt metadata_artifact
+
+      - name: Upload Metadata Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: metadata-artifact
+          path: |
+            metadata_artifact.json
+            metadata_artifact.html
+
