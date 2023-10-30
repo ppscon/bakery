@@ -61,5 +61,11 @@ if __name__ == "__main__":
     signature_file = sys.argv[1]
     timestamp_file = sys.argv[2]
     acceptance_criteria_file = sys.argv[3]
-    artifact_file = sys.argv[4]
-    generate_metadata_artifact(signature_file, timestamp_file, acceptance_criteria_file, artifact_file)
+    actual_signature_file = sys.argv[4]
+    artifact_file = sys.argv[5]
+
+    # Ensure '.txt' is not in the artifact_file name
+    artifact_file = artifact_file.replace('.txt', '')
+
+    generate_metadata_artifact(signature_file, timestamp_file, acceptance_criteria_file, actual_signature_file, artifact_file)
+
