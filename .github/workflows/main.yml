@@ -96,11 +96,14 @@ jobs:
       run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Pull Docker Image
       run: docker pull ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
+    - name: Debug Docker Inspect
+      run: docker inspect ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
     - name: Save Cosign Private Key
       run: echo "${{ secrets.COSIGN_PRIVATE_KEY }}" > cosign.key
     - name: Sign the Docker Image
       run: |
         IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }})
+        echo "Image Digest: $IMAGE_DIGEST"
         cosign sign --key cosign.key $IMAGE_DIGEST
     - name: Extract Signature
       run: cosign verify --key cosign.key $IMAGE_DIGEST > signature_output.txt
