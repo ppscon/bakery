@@ -24,13 +24,25 @@ def send_teams_notification(assignee, aqua_data):
     cve_ids = [v.get("name") for v in vulnerabilities]
     severities = [v.get("severity") for v in vulnerabilities]
 
-    message = {
-        "title": f"New vulnerability task assigned to {assignee}",
-        "text": f"Found {len(cve_ids)} vulnerabilities. CVE IDs: {', '.join(cve_ids)}. Severities: {', '.join(severities)}"
+    adaptive_card_content = {
+        "type": "AdaptiveCard",
+        "version": "1.0",
+        "body": [
+            {
+                "type": "TextBlock",
+                "size": "Medium",
+                "weight": "Bolder",
+                "text": f"New vulnerability task assigned to {assignee}"
+            },
+            {
+                "type": "TextBlock",
+                "text": f"Found {len(cve_ids)} vulnerabilities. CVE IDs: {', '.join(cve_ids)}. Severities: {', '.join(severities)}"
+            }
+        ]
     }
 
     headers = {"Content-Type": "application/json"}
-    payload = json.dumps({"sections": [message]})
+    payload = json.dumps({"type": "message", "attachments": [{"contentType": "application/vnd.microsoft.card.adaptive", "content": adaptive_card_content}]})
 
     try:
         response = requests.post(webhook_url, headers=headers, data=payload)
