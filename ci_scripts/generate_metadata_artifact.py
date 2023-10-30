@@ -2,70 +2,55 @@ import json
 import sys
 from datetime import datetime
 
-def generate_metadata_artifact(signature_file, timestamp_file, acceptance_criteria_file, actual_signature_file, artifact_file):
-    with open(signature_file, 'r') as f:
-        signature = f.read().strip()
+def read_file_content(file_path):
+    try:
+        with open(file_path, 'r') as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return ''
 
-    with open(timestamp_file, 'r') as f:
-        timestamp = f.read().strip()
+def generate_metadata_artifact(signature_file_path, timestamp_file_path, acceptance_criteria_path, actual_signature_path, artifact_file_prefix):
+    signature = read_file_content(signature_file_path)
+    timestamp = read_file_content(timestamp_file_path)
+    acceptance_criteria = read_file_content(acceptance_criteria_path)
+    actual_signature = read_file_content(actual_signature_path)
 
-    with open(acceptance_criteria_file, 'r') as f:
-        acceptance_criteria = f.read().strip()
-
-    # Convert UNIX timestamp to human-readable date-time
-    human_readable_date = datetime.utcfromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S UTC')
-
-    artifact = {
-        'signature': signature,
-        'timestamp': timestamp,
-        'human_readable_date': human_readable_date,
-        'acceptance_criteria': acceptance_criteria
+    metadata = {
+        'Signature': signature,
+        'Timestamp': timestamp,
+        'Acceptance Criteria': acceptance_criteria,
+        'Actual Signature': actual_signature
     }
 
-    with open(f"{artifact_file}.json", 'w') as f:
-        json.dump(artifact, f)
+    # Generate JSON artifact
+    with open(f"{artifact_file_prefix}.json", 'w') as json_file:
+        json.dump(metadata, json_file, indent=4)
 
-    # Generate HTML content
-    html_content = f'''
-    <html>
-    <head><title>Metadata Artifact</title></head>
-    <body>
-    <h1>Metadata Artifact</h1>
-    <table border="1">
-        <tr>
-            <th>Attribute</th>
-            <th>Value</th>
-        </tr>
-        <tr>
-            <td>Signature</td>
-            <td>{signature}</td>
-        </tr>
-        <tr>
-            <td>Timestamp</td>
-            <td>{timestamp} ({human_readable_date})</td>
-        </tr>
-        <tr>
-            <td>Acceptance Criteria</td>
-            <td>{acceptance_criteria}</td>
-        </tr>
-    </table>
-    </body>
-    </html>
-    '''
+    # Generate HTML artifact
+    with open(f"{artifact_file_prefix}.html", 'w') as html_file:
+        html_file.write('<html>\n')
+        html_file.write('<head><title>Metadata Artifact</title></head>\n')
+        html_file.write('<body>\n')
+        html_file.write('<h1>Metadata Artifact</h1>\n')
+        html_file.write('<table border="1">\n')
+        html_file.write('<tr><th>Attribute</th><th>Value</th></tr>\n')
 
-    # Save as HTML
-    with open(f"{artifact_file}.html", 'w') as f:
-        f.write(html_content)
+        for key, value in metadata.items():
+            html_file.write(f'<tr><td>{key}</td><td>{value}</td></tr>\n')
 
-if __name__ == "__main__":
+        html_file.write('</table>\n')
+        html_file.write('</body>\n')
+        html_file.write('</html>\n')
+
+if __name__ == '__main__':
+    if len(sys.argv) != 6:
+        print("Usage: python3 generate_metadata_artifact.py <signature_file> <timestamp_file> <acceptance_criteria_file> <actual_signature_file> <artifact_file_prefix>")
+        sys.exit(1)
+
     signature_file = sys.argv[1]
     timestamp_file = sys.argv[2]
     acceptance_criteria_file = sys.argv[3]
     actual_signature_file = sys.argv[4]
     artifact_file = sys.argv[5]
 
-    # Ensure '.txt' is not in the artifact_file name
-    artifact_file = artifact_file.replace('.txt', '')
-
     generate_metadata_artifact(signature_file, timestamp_file, acceptance_criteria_file, actual_signature_file, artifact_file)
-

@@ -102,6 +102,14 @@ jobs:
       run: |
         IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }})
         cosign sign --key cosign.key $IMAGE_DIGEST
+    - name: Extract Signature
+      run: cosign verify --key cosign.key $IMAGE_DIGEST > signature_output.txt
+    - name: Upload Signature
+      uses: actions/upload-artifact@v2
+      with:
+        name: image-signature
+        path: signature_output.txt
+
 
   verify_image:
     runs-on: ubuntu-latest
@@ -138,32 +146,29 @@ jobs:
 
   record_metadata:
     runs-on: ubuntu-latest
-    needs: verify_image # Assuming this job runs after image verification
-    container:
-      image: python:3.9
+    needs: [verify_image, sign_image]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Download Signature
+      uses: actions/download-artifact@v2
+      with:
+        name: image-signature
+        path: ./signature
+    - name: Generate Timestamp and Placeholder Acceptance Criteria
+      run: |
+        date +%s > timestamp_file.txt
+        echo "Your Acceptance Criteria Here" > acceptance_criteria.txt
+    - name: Run Python Script to Generate Metadata
+      run: python3 ci_scripts/generate_metadata_artifact.py signature_file.txt timestamp_file.txt acceptance_criteria.txt ./signature/signature_output.txt metadata_artifact
+    - name: Upload Metadata Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: metadata-artifact
+        path: |
+          metadata_artifact.json
+          metadata_artifact.html
 
-      - name: Generate Timestamp and Signature Placeholder
-        run: |
-          date +%s > timestamp_file.txt
-          echo "Your Acceptance Criteria Here" > acceptance_criteria.txt
-
-      - name: Run Python Script to Generate Metadata
-        run: python3 ci_scripts/generate_metadata_artifact.py signature_file.txt timestamp_file.txt acceptance_criteria.txt actual_signature.txt metadata_artifact
-
-      # Debugging: List all files in the current directory and sub-directories
-      - name: List files in all directories
-        run: find . -type f
-
-      - name: Upload Metadata Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: metadata-artifact
-          path: |
-            metadata_artifact.json
-            metadata_artifact.html
 
 
 
