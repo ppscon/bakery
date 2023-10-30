@@ -43,10 +43,16 @@ jobs:
       - run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
       - id: docker-pull-scanner
         run: docker pull registry.aquasec.com/scanner:2022.4
-      - name: Run Aqua Security Scan
+      - name: Run Aqua Security Scan and Save Logs
         run: |
           IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
-          docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html >/dev/null
+          docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html > aqua_scan.log
+      - name: Upload Aqua scan log
+        uses: actions/upload-artifact@v2
+        with:
+          name: aqua-scan-log
+          path: aqua_scan.log
+
 
 
   assign_task:
