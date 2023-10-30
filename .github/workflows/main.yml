@@ -47,6 +47,39 @@ jobs:
       run: |
         IMAGE_TAG=ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
         docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html >/dev/null
+  assign_task:
+      runs-on: ubuntu-latest
+      needs: aqua_scan # Assuming this job runs after the Aqua scan
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install requests
+        run: pip install requests
+      - name: Run assign task script
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+        run: python ci_scripts/assign_task.py
+
+    notify_teams:
+      runs-on: ubuntu-latest
+      needs: assign_task
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install requests
+        run: pip install requests
+      - name: Notify Teams
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+        run: python ci_scripts/assign_task.py
 
   generate_sbom:
     runs-on: ubuntu-latest
