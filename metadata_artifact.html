@@ -1,22 +1,27 @@
 
-    <html>
-    <head><title>Metadata Artifact</title></head>
-    <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Metadata Artifact</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1, h2 { color: #333366; }
+        ul { list-style: none; padding-left: 0; }
+        ul li::before { content: "✔ "; color: #009966; }
+    </style>
+</head>
+<body>
     <h1>Metadata Artifact</h1>
-    <table border="1">
-        <tr>
-            <th>Attribute</th>
-            <th>Value</th>
-        </tr>
-        <tr>
-            <td>Signature</td>
-            <td>PlaceholderSignature</td>
-        </tr>
-        <tr>
-            <td>Timestamp</td>
-            <td>1698672924 (2023-10-30 13:35:24 UTC)</td>
-        </tr>
-    </table>
-    </body>
-    </html>
-    
+    <h2>Timestamp</h2>
+    <p>2023-10-30 14:09:19 UTC</p>
+    <h2>Acceptance Criteria</h2>
+    <ul>
+        <li>Code Quality: Ensure that code quality has been assessed and meets the team's quality metrics.</li>
+        <li>Unit Tests: Verify that all unit tests have passed.</li>
+        <li>Integration Tests: Check all integration tests have been completed successfully.</li>
+        <li>Vulnerability Threshold: No critical or high vulnerabilities as reported by Aqua Trivy or Scanner.</li>
+        <li>Manual Review: Confirm that the manual code review has been done by the team.</li>
+    </ul>
+</body>
+</html>
