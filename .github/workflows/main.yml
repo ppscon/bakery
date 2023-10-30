@@ -151,7 +151,7 @@ jobs:
             echo "PlaceholderSignature" > signature_file.txt
 
         - name: Run Python Script to Generate Metadata
-          run: python3 ci_scripts/updated_generate_metadata_artifact.py timestamp_file.txt metadata_artifact
+          run: python3 ci_scripts/generate_metadata_artifact.py timestamp_file.txt metadata_artifact
 
         - name: Upload Metadata Artifact
           uses: actions/upload-artifact@v2
