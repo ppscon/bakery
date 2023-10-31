@@ -173,7 +173,7 @@ jobs:
 
       # Pull the Docker Image
       - name: Pull Docker Image
-        run: docker pull ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
+        run: docker pull ghcr.io/${{ github.repository }}/nginx-image:${{ github.sha }}
 
       # Save the Cosign Public Key
       - name: Save Cosign Public Key
@@ -182,7 +182,7 @@ jobs:
       # Verify the Docker Image
       - name: Verify the Docker Image
         run: |
-          IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }})
+          IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}/nginx-image:${{ github.sha }})
           cosign verify --key cosign.pub $IMAGE_DIGEST
 
 
