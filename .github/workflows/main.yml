@@ -1,4 +1,4 @@
-name: NGINX CI/CD Pipeline with Aqua Security Scan and SBOM
+name: CI/CD Pipeline with Aqua Security Scan and SBOM
 
 on:
   push:
@@ -6,19 +6,19 @@ on:
       - main
 
 jobs:
-#  run_unit_tests:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#      - name: Setup Node.js environment
-#        uses: actions/setup-node@v2
-#        with:
-#          node-version: '16'
-#      - run: npm install
-#        working-directory: ./app
-#      - run: npm test
-#        working-directory: ./app
+  run_unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - run: npm install
+        working-directory: ./app
+      - run: npm test
+        working-directory: ./app
 
   build_image:
     runs-on: ubuntu-latest
@@ -26,10 +26,10 @@ jobs:
       - uses: actions/checkout@v2
       - id: docker-login
         run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      - name: Build and Push NGINX Docker Image
+      - name: Build and Push Docker Image
         run: |
-          IMAGE_NAME="nginx-image"
-          docker build -f Dockerfile.NGINX --label "com.aqua.security.policy=immutable" -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
+          IMAGE_NAME="bakery-app"
+          docker build --label "com.aqua.security.policy=immutable" -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
           docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
 
   aqua_scan:
@@ -37,7 +37,7 @@ jobs:
       needs: build_image
       env:
         DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}
-        IMAGE_NAME: "nginx-image"
+        IMAGE_NAME: "bakery-app"
       steps:
         - uses: actions/checkout@v2
         - run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
@@ -145,12 +145,12 @@ jobs:
     - name: Docker Login
       run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Pull Docker Image
-      run: docker pull ghcr.io/${{ github.repository }}/nginx-image:${{ github.sha }}
+      run: docker pull ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
     - name: Save Cosign Private Key
       run: echo "${{ secrets.COSIGN_PRIVATE_KEY }}" > cosign.key
     - name: Sign the Docker Image
       run: |
-        IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}/nginx-image:${{ github.sha }})
+        IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }})
         cosign sign --key cosign.key $IMAGE_DIGEST
 
   verify_image:
@@ -173,7 +173,7 @@ jobs:
 
       # Pull the Docker Image
       - name: Pull Docker Image
-        run: docker pull ghcr.io/${{ github.repository }}/nginx-image:${{ github.sha }}
+        run: docker pull ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }}
 
       # Save the Cosign Public Key
       - name: Save Cosign Public Key
@@ -182,7 +182,7 @@ jobs:
       # Verify the Docker Image
       - name: Verify the Docker Image
         run: |
-          IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}/nginx-image:${{ github.sha }})
+          IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}/bakery-app:${{ github.sha }})
           cosign verify --key cosign.pub $IMAGE_DIGEST
 
 
@@ -252,7 +252,7 @@ jobs:
 
     # Pull the image from GitHub Container Registry
     - name: Pull Docker Image from GHCR
-      run: docker pull ghcr.io/ppscon/bakery/nginix-image:${{ github.sha }}
+      run: docker pull ghcr.io/ppscon/bakery/bakery-app:${{ github.sha }}
 
     # Tag and Push the image to AWS ECR
     - name: Tag and Push to AWS ECR
