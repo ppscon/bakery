@@ -237,7 +237,7 @@ jobs:
 
   promote_to_aws_ecr:
         runs-on: ubuntu-latest
-        needs: [verify_image publish_to_gh_pages ]  # Add other dependencies as needed
+        needs: publish_to_gh_pages  # Add other dependencies as needed
         steps:
         - name: Checkout code
           uses: actions/checkout@v2
