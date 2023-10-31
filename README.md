@@ -1,37 +1,111 @@
-# Container Bakery/Golden Image Demo Project
+# Container Bakery Demo Project - for Zero Trust Workloads
 
-This project demonstrates the workings of a "Container Bakery" following a basic framework. It involves an end-to-end CI/CD pipeline that not only builds Docker images from source code but also tests and scans them before deploying. Our goal is to produce a "Golden Image", our high-quality standard, much like a bakery aims to recreate their signature bread consistently.
+### CI/CD Pipeline with Aqua acting as the validation 
 
-## Testing:
+This repository contains a CI/CD pipeline configured with GitHub Actions. It covers the following stages:
 
-The project uses the Jest library for tests (see the "test" script in `package.json`). We perform both unit and integration tests to ensure the integrity and functionality of our code.
+- Running Unit Tests
+- Building and Pushing Docker Images
+- Security Scanning with Aqua Enterprise Scanner (Trivy)
+    - Scan Results are uploaded as artifacts
+    - Image is scanned against Aqua's Golden Image Policy
+    - Failed scans will fail the build
+    - Passed scans will continue the build
+    - notification is sent to Teams, see next steps:
+- Assigning Tasks
+    - Assigning tasks to product teams based on scan results
+- Notifying Teams
+   - Notify Teams with scan results
+- Generating SBOM with Aqua Supply Chain Security
+    - SBOM is uploaded as an artifact
+    - SBOM is uploaded to GitHub Pages
+    - SBOM is uploaded to Aqua Supply Chain Security
+- Signing and Verifying Docker Images
+- Recording Metadata
+    - Publishing Metadata to GitHub Pages
+  - Deploying to GitHub Pages
+    - Publishing Metadata to GitHub Pages 
+  - Promoting Docker Images to AWS ECR
+    - image-bakery is immutable 
 
-### Unit Tests:
+## Workflow File
 
-Our unit tests check if essential files (like `index.html`, `Dockerfile`, and `.gitignore`) exist in our project.
+The main workflow is defined in `.github/workflows/main.yml`.
 
-### Integration Tests:
+## Jobs
 
-Integration tests simulate real-world interactions with our server and endpoints, verifying the correct responses and behaviors.
-To run the tests
+### Run Unit Tests
 
-```bash
-npm install
-npm run test
-```
+- Checkout code
+- Setup Node.js environment
+- Install dependencies and run tests
 
-## CI/CD Pipeline and Container Bakery
+### Build Image
 
-Our CI/CD pipeline simulates a bakery's process.
+- Checkout code
+- Docker login to GitHub Container Registry
+- Build and push Docker image
 
-1. Developer Pushes Code: The developer merges code to a branch triggering the CI/CD pipeline.
-2. Code Scanning: CI/CD pipeline triggers an Aqua Security scan to ensure there are no vulnerabilities in the code.
-3. Unit Testing: Unit tests are executed to verify code functionality.
-4. Test Environment Deployment: Code is deployed to a test environment for further testing.
-5. Approval Gates: After every significant step, there's an approval gate to review the process's output.
-6. Integration and Functional Testing: Additional integration and functional tests are performed in the test environment.
-7. Staging Environment Deployment: Post-approval, the code is deployed to the staging environment for a final round of testing.
-8. Production Environment Deployment: Finally, the code is deployed to the production environment.
+### Aqua Scan
+
+- Pull Aqua Scanner
+- Run Aqua Security scan against the Docker image
+- Upload Aqua scan reports as artifacts
+
+### Assign Task
+
+- Setup Python environment
+- Run script to assign tasks
+
+### Notify Teams
+
+- Download Aqua scan reports
+- Notify Teams with scan results
+
+### Generate SBOM
+
+- Generate Software Bill of Materials (SBOM) using Aqua
+
+### Sign Image
+
+- Sign the Docker image using Cosign
+
+### Verify Image
+
+- Verify the signed Docker image using Cosign
+
+### Record Metadata
+
+- Generate and upload metadata artifacts
+
+### Publish to GitHub Pages
+
+- Deploy metadata to GitHub Pages
+
+### Promote to AWS ECR
+
+- Pull the image from GitHub Container Registry
+- Tag and push the image to AWS ECR
+
+## Secrets
+
+The following secrets need to be configured in GitHub:
+
+- `CI_TOKEN`: GitHub Container Registry token
+- `AWS_ACCESS_KEY_ID`: AWS Access Key ID
+- `AWS_SECRET_ACCESS_KEY`: AWS Secret Access Key
+- `AWS_SESSION_TOKEN`: AWS Session Token
+- `TEAMS_WEBHOOK_URL`: Microsoft Teams Webhook URL
+- `AQUA_SERVER`: Aqua Server URL
+- `AQUA_TOKEN`: Aqua Token
+- `COSIGN_PRIVATE_KEY`: Cosign Private Key
+- `COSIGN_PUBLIC_KEY`: Cosign Public Key
+
+## Usage
+
+To run this pipeline, make a push to the `main` branch.
+
+
 
 ## Golden Image
 
