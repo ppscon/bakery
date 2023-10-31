@@ -252,7 +252,7 @@ jobs:
 
     # Pull the image from GitHub Container Registry
     - name: Pull Docker Image from GHCR
-      run: docker pull ghcr.io/ppscon/bakery/bakery-app:${{ github.sha }}
+      run: docker pull ghcr.io/ppscon/bakery/nginix-image:${{ github.sha }}
 
     # Tag and Push the image to AWS ECR
     - name: Tag and Push to AWS ECR
