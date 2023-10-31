@@ -49,7 +49,7 @@ metadata_html = f'''
         <li>Code Quality: Ensure that code quality has been assessed and meets the team's quality metrics.</li>
         <li>Unit Tests: Verify that all unit tests have passed.</li>
         <li>Integration Tests: Check all integration tests have been completed successfully.</li>
-        <li>Vulnerability Threshold: No critical or high vulnerabilities as reported by Aqua Trivy or Scanner.</li>
+        <li>Vulnerability Threshold: No critical or high vulnerabilities as reported by Aqua.</li>
         <li>Manual Review: Confirm that the manual code review has been done by the team.</li>
     </ul>
 </body>

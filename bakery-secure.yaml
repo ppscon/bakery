@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bakery-app
+  namespace: bakery-prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bakery-app
+  template:
+    metadata:
+      labels:
+        app: bakery-app
+    spec:
+      containers:
+      - name: bakery-app
+        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/image-bakery@sha256:f0971f7f439f6e1cf872a66084190fe28185a1afd11e0e0e4b824d0d414a5741
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bakery-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: bakery-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bakery-app-ingress
+  namespace: bakery-prod
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bakery-app-service
+            port:
+              number: 80
+
