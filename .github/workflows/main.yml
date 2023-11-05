@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '16'
       - run: npm install
@@ -23,7 +23,7 @@ jobs:
   build_image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
       - id: docker-login
@@ -41,7 +41,7 @@ jobs:
         DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG }}
         IMAGE_NAME: "bakery-app"
       steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v4
           with:
             persist-credentials: false
         - run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
@@ -53,7 +53,7 @@ jobs:
             docker run --rm -v $(pwd)/artifacts:/artifacts --entrypoint="" registry.aquasec.com/scanner:2022.4 /opt/aquasec/scannercli scan -H ${{ secrets.AQUA_SERVER }} --token ${{ secrets.AQUA_TOKEN }} --registry "Github" $IMAGE_TAG --show-negligible --register-compliant --htmlfile /artifacts/aqua-scan.html --jsonfile /artifacts/aqua-scan.json
         - name: Upload Aqua Reports as Artifacts
           if: always()  # Ensures this step runs even if previous steps fail
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v4
           with:
             name: aqua-reports
             path: artifacts/
