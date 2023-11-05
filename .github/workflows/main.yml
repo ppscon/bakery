@@ -69,7 +69,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: '3.9'
       - name: Install requests
@@ -85,13 +85,13 @@ jobs:
     if: always()  # This ensures the job runs even if assign_task fails
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: '3.9'
       - name: Download Aqua Reports
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: aqua-reports
           path: artifacts/
@@ -145,7 +145,7 @@ jobs:
     needs: generate_sbom
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3.1.2
     - name: Docker Login
@@ -164,7 +164,7 @@ jobs:
     needs: sign_image # Ensure this job runs after the image has been signed
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Install Cosign
       - name: Install Cosign
@@ -201,7 +201,7 @@ jobs:
         image: python:3.9
       steps:
         - name: Checkout code
-          uses: actions/checkout@v2
+          uses: actions/checkout@v3
 
         - name: Generate Timestamp and Signature Placeholder
           run: |
@@ -212,7 +212,7 @@ jobs:
           run: python3 ci_scripts/generate_metadata_artifact.py signature_file.txt timestamp_file.txt metadata_artifact  # Added signature_file.txt as a placeholder
 
         - name: Upload Metadata Artifact
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v3
           with:
             name: metadata-artifact
             path: |
@@ -225,10 +225,10 @@ jobs:
         needs: record_metadata # Assuming this job runs after metadata recording
         steps:
           - name: Checkout code
-            uses: actions/checkout@v2
+            uses: actions/checkout@v3
 
           - name: Download Metadata Artifact
-            uses: actions/download-artifact@v2
+            uses: actions/download-artifact@v3
             with:
               name: metadata-artifact
               path: ./metadata
@@ -250,7 +250,7 @@ jobs:
       AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Docker login to GHCR
     - name: Docker Login to GHCR
