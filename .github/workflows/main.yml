@@ -131,7 +131,7 @@ jobs:
 
         # Generate SBOM
         ./billy generate \
-          --access-token "${{ secrets.GITHUB_TOKEN }}" \
+          --access-token "${{ secrets.CI_TOKEN }}" \
           --aqua-key "${{ secrets.AQUA_KEY }}" \
           --aqua-secret "${{ secrets.AQUA_SECRET }}" \
           --cspm-url https://stage.api.cloudsploit.com \
