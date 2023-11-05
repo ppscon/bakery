@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: bakery-app
-        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/image-bakery@sha256:f0971f7f439f6e1cf872a66084190fe28185a1afd11e0e0e4b824d0d414a5741
+        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/image-bakery@sha256:4e0b428da72e8ccaa7dbe4f2e52bb529c6baa9e3eb25d0478b687ddd13b20235
         ports:
         - containerPort: 3000
 ---

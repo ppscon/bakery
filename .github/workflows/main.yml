@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - id: docker-login
         run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Build and Push Docker Image
@@ -40,6 +42,8 @@ jobs:
         IMAGE_NAME: "bakery-app"
       steps:
         - uses: actions/checkout@v2
+          with:
+            persist-credentials: false
         - run: echo $DOCKER_AUTH_CONFIG > /home/runner/.docker/config.json
         - id: docker-pull-scanner
           run: docker pull registry.aquasec.com/scanner:2022.4
@@ -106,6 +110,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        persist-credentials: false
     - name: Generate SBOM using Aqua
       run: |
         # Set Billy server URL
