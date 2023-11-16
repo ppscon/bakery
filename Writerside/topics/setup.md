@@ -4,29 +4,29 @@
 
 This repository contains a CI/CD pipeline configured with GitHub Actions. It covers the following stages:
 
-- Running Unit Tests
-- Building and Pushing Docker Images
-- Security Scanning with Aqua Enterprise Scanner (Trivy)
-    - Scan Results are uploaded as artifacts
-    - Image is scanned against Aqua's Golden Image Policy
-    - Failed scans will fail the build
-    - Passed scans will continue the build
+- Running Unit Tests.
+- Building and Pushing Docker Images.
+- Security Scanning with Aqua Enterprise Scanner. (Trivy)
+    - Scan Results are uploaded as artifacts.
+    - Image is scanned against Aqua's Golden Image Policy.
+    - Failed scans will fail the build.
+    - Passed scans will continue the build.
     - notification is sent to Teams, see next steps:
-- Assigning Tasks
-    - Assigning tasks to product teams based on scan results
-- Notifying Teams
-    - Notify Teams with scan results
-- Generating SBOM with Aqua Supply Chain Security
-    - SBOM is uploaded as an artifact
-    - SBOM is uploaded to GitHub Pages
-    - SBOM is uploaded to Aqua Supply Chain Security
-- Signing and Verifying Docker Images
-- Recording Metadata
-    - Publishing Metadata to GitHub Pages
-    - Deploying to GitHub Pages
-        - Publishing Metadata to GitHub Pages
-    - Promoting Docker Images to AWS ECR
-        - image-bakery is immutable
+- Assigning Tasks:
+    - Assigning tasks to product teams based on scan results.
+- Notifying Teams:
+    - Notify Teams with scan results.
+- Generating SBOM with Aqua Supply Chain Security:
+    - SBOM is uploaded as an artifact.
+    - SBOM is uploaded to GitHub Pages.
+    - SBOM is uploaded to Aqua Supply Chain Security.
+- Signing and Verifying Docker Images.
+- Recording Metadata:
+    - Publishing Metadata to GitHub Pages.
+    - Deploying to GitHub Pages:
+        - Publishing Metadata to GitHub Pages.
+    - Promoting Docker Images to AWS ECR:
+        - image-bakery is immutable.
 
 ## Workflow File
 
