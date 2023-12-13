@@ -4,7 +4,7 @@
 
 This repository contains a CI/CD pipeline configured with GitHub Actions. It covers the following stages:
 
-- Running Unit Tests
+- Running Unit Tests.
 - Building and Pushing Docker Images
 - Security Scanning with Aqua Enterprise Scanner (Trivy)
     - Scan Results are uploaded as artifacts
