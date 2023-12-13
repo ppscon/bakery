@@ -38,10 +38,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Build and Push Docker Image
-        run: >
-          IMAGE_NAME="bakery-app" &&
-          docker buildx create --use &&
-          docker buildx build --push --tag ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache
+        run: |
+          IMAGE_NAME="bakery-app"
+          docker buildx create --use
+          docker buildx build --push --tag ghcr.io/ppscon/bakery/$IMAGE_NAME:31d2973d0589677aee9f9b359915febd43b8dd28 --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache .
+
 
   aqua_scan:
     runs-on: ubuntu-latest
