@@ -30,7 +30,7 @@ This repository contains a CI/CD pipeline configured with GitHub Actions. It cov
 
 ## Workflow File
 
-The main workflow is defined in `.github/workflows/main.yml`.
+The main workflow is defined in: `.github/workflows/main.yml`.
 
 ## Jobs
 
