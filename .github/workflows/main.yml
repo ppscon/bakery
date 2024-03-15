@@ -225,7 +225,7 @@ jobs:
         needs: record_metadata # Assuming this job runs after metadata recording
         steps:
           - name: Checkout code
-            uses: actions/checkout@v3
+            uses: actions/checkout@v4
 
           - name: Download Metadata Artifact
             uses: actions/download-artifact@v4
