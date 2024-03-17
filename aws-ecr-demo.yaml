@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bakery-app
+  namespace: prod
+  labels:
+    pod-security.kubernetes.io/enforce: "restricted"
+    environment: "production"
+    app: "skills-app"
+    component: "frontend"
+    confidentiality: "high"
+    owner: "your-team"
+    version: "1.0.0"
+    compliance: "DORA"
+    cost-center: "1001"
+  annotations:
+    environment: "production"
+    app: "skills-app"
+    component: "frontend"
+    confidentiality: "high"
+    owner: "your-team"
+    version: "1.0.0"
+    compliance: "DORA"
+    cost-center: "1001"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bakery-app
+  template:
+    metadata:
+      labels:
+        app: bakery-app
+    spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: bakery-app
+        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/image-bakery@sha256:1f9ddbe88a625e353c7110fc4242129e3bf5593ae72e93afaef3a70600807f6e
+        ports:
+        - containerPort: 3000
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "64Mi"
+          limits:
+            cpu: "500m"
+            memory: "128Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bakery-app-service
+  namespace: prod
+  annotations:
+    environment: "production"
+    app: "skills-app"
+    component: "frontend"
+    confidentiality: "high"
+    owner: "your-team"
+    version: "1.0.0"
+    compliance: "DORA"
+    cost-center: "1001"
+spec:
+  type: LoadBalancer
+  selector:
+    app: bakery-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bakery-app-ingress
+  namespace: prod
+  annotations:
+    environment: "production"
+    app: "skills-app"
+    component: "frontend"
+    confidentiality: "high"
+    owner: "your-team"
+    version: "1.0.0"
+    compliance: "DORA"
+    cost-center: "1001"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bakery-app-service
+            port:
+              number: 80
