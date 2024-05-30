@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: aqua-security-scan
+        name: Aqua Security Scan
+        entry: ./pre_commit_aqua_scan.sh
+        language: script
+        # Optional: only run this hook when Dockerfiles or specific source files change
+        files: (Dockerfile|\.py|\.go|\.js)$
