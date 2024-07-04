@@ -35,18 +35,15 @@ jobs:
       - name: Check Docker version
         run: docker --version
 
-      - name: Verify CI_TOKEN
-        run: echo "${{ secrets.CI_TOKEN }}" | head -c 5
-
       - id: docker-login
-        run: |
-          echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build and Push Docker Image
         run: |
           IMAGE_NAME="bakery-app"
           docker build --label "com.aqua.security.policy=immutable" -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
           docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
+
 
 
 
