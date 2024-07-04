@@ -4,7 +4,7 @@
 
 This document outlines the best practices for integrating security early into the software development life cycle (
 SDLC). By 'shifting left', we address security issues early, reduce risks and minimize the impact on the deployment
-pipeline.
+pipeline..
 
 ## Custom Vulnerability Severity via Aqua Security API
 

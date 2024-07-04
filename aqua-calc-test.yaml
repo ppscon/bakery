@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aqua-ccalc-test
+  namespace: calc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aqua-calc-test
+  template:
+    metadata:
+      labels:
+        app: aqua-calc-test
+    spec:
+      containers:
+      - name: aqua-calc
+        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/aqua-calc@sha256:261b45601cbf4932e0b3c51365fadcb19c816e007bc846baffd48f29f07046c0
+        command: ["gunicorn"]
+        args: ["--bind", "0.0.0.0:5000", "app:app"]
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aqua-calc-test-service
+  namespace: calc
+spec:
+  type: LoadBalancer
+  selector:
+    app: aqua-calc-test
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000

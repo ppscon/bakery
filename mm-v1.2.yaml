@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aqua-maturity-calculator
+  namespace: prod2
+  labels:
+    environment: "production"
+    app: "aqua-maturity"
+    component: "webapp"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "1.0.0"
+    compliance: "PCI-DSS"
+    cost-center: "2001"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aqua-maturity
+  template:
+    metadata:
+      labels:
+        environment: "production"
+        app: "aqua-maturity"
+        component: "webapp"
+        confidentiality: "high"
+        owner: "security-team"
+        version: "1.0.0"
+        compliance: "PCI-DSS"
+        cost-center: "2001"
+    spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: aqua-maturity
+        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/aqua-calc:v1.6
+        command: ["gunicorn"]
+        args: ["--bind", "0.0.0.0:5000", "app:app"]
+        ports:
+        - containerPort: 5000
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "64Mi"
+          limits:
+            cpu: "500m"
+            memory: "128Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aqua-maturity-service
+  namespace: prod2
+  labels:
+    environment: "production"
+    app: "aqua-maturity"
+    component: "webapp"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "1.0.0"
+    compliance: "PCI-DSS"
+    cost-center: "2001"
+spec:
+  type: LoadBalancer
+  selector:
+    app: aqua-maturity
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-aqua-maturity-ingress
+  namespace: prod2
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+  - host: test.ppsecapp.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: aqua-maturity-service
+            port:
+              number: 80
+
