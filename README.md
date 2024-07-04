@@ -14,7 +14,7 @@ This repository contains a CI/CD pipeline configured with GitHub Actions. It cov
     - notification is sent to Teams, see next steps:
 - Assigning Tasks
     - Assigning tasks to product teams based on scan results
-- Notifying Teams
+- Notifying Teams.
    - Notify Teams with scan results
 - Generating SBOM with Aqua Supply Chain Security
     - SBOM is uploaded as an artifact
