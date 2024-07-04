@@ -8,7 +8,7 @@ pipeline..
 
 ## Custom Vulnerability Severity via Aqua Security API
 
-### When to Set Custom Severities.
+### When to Set Custom Severities
 
 Custom severities should be set when:
 
