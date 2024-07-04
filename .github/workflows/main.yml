@@ -22,6 +22,9 @@ jobs:
 
   build_image:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,6 +46,7 @@ jobs:
           IMAGE_NAME="bakery-app"
           docker build --label "com.aqua.security.policy=immutable" -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
           docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
+
 
 
 
