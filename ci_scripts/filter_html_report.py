@@ -10,6 +10,7 @@ import subprocess
 from bs4 import BeautifulSoup
 
 # Updated 2025-05-13: Added variable substitution for shell-style variables in HTML
+# Updated 2025-05-13: Added more detailed debugging information
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Example CVEs for testing - this should not be used in production
@@ -34,10 +35,12 @@ def replace_variables(text):
     # Replace ${GITHUB_SHA} with the actual commit SHA
     github_sha = os.environ.get('GITHUB_SHA', 'Unknown commit')
     text = re.sub(r'\${GITHUB_SHA}', github_sha, text)
+    logging.info(f"[DEBUG] Replaced GITHUB_SHA with: {github_sha}")
     
     # Replace $(date) with the actual date
     current_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     text = re.sub(r'\$\(date\)', current_date, text)
+    logging.info(f"[DEBUG] Replaced date with: {current_date}")
     
     return text
 
@@ -54,11 +57,11 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         with open(input_file, 'r', encoding='utf-8') as f:
             html_content = f.read()
         
-        logging.info(f"Loaded HTML report from {input_file}")
+        logging.info(f"[DEBUG] Loaded HTML report from {input_file}")
         
         # First, replace all variables in the raw HTML content
         html_content = replace_variables(html_content)
-        logging.info("Replaced all shell-style variables in HTML content")
+        logging.info("[DEBUG] Replaced all shell-style variables in HTML content")
         
         # If ignored_cves not provided, try to get them from environment or JSON report
         if ignored_cves is None or len(ignored_cves) == 0:
@@ -66,7 +69,7 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
             env_ignored = os.environ.get('AQUA_IGNORED_CVES', '')
             if env_ignored:
                 ignored_cves = [cve.strip() for cve in env_ignored.split(',')]
-                logging.info(f"Using {len(ignored_cves)} ignored CVEs from environment variable")
+                logging.info(f"[DEBUG] Using {len(ignored_cves)} ignored CVEs from environment variable")
             else:
                 # Try to find corresponding JSON report to extract ignored CVEs
                 json_report_path = os.path.join(os.path.dirname(input_file), 
@@ -82,9 +85,9 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                             scan_data = json.load(f)
                         
                         ignored_cves = find_ignored_vulnerabilities_in_report(scan_data)
-                        logging.info(f"Extracted {len(ignored_cves)} ignored CVEs from JSON report")
+                        logging.info(f"[DEBUG] Extracted {len(ignored_cves)} ignored CVEs from JSON report")
                     except Exception as e:
-                        logging.warning(f"Could not extract ignored CVEs from JSON report: {str(e)}")
+                        logging.warning(f"[DEBUG] Could not extract ignored CVEs from JSON report: {str(e)}")
         
         # Fallback to config file if we still have none
         if ignored_cves is None or len(ignored_cves) == 0:
@@ -95,17 +98,26 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                         config = json.load(f)
                         if 'ignored_cves' in config:
                             ignored_cves = config['ignored_cves']
-                            logging.info(f"Loaded {len(ignored_cves)} ignored CVEs from config file")
+                            logging.info(f"[DEBUG] Loaded {len(ignored_cves)} ignored CVEs from config file: {', '.join(ignored_cves)}")
                 except Exception as e:
-                    logging.warning(f"Error reading config file: {str(e)}")
+                    logging.warning(f"[DEBUG] Error reading config file: {str(e)}")
         
         # Make sure ignored_cves list is properly formatted and all are lowercase for case-insensitive matching
         if ignored_cves:
             ignored_cves = [cve.strip() for cve in ignored_cves]
-            logging.info(f"Will filter out these CVEs: {', '.join(ignored_cves)}")
+            logging.info(f"[DEBUG] Will filter out these CVEs: {', '.join(ignored_cves)}")
         else:
             ignored_cves = []
-            logging.warning("No ignored CVEs found from any source. Report will remain unchanged.")
+            logging.warning("[DEBUG] No ignored CVEs found from any source. Report will remain unchanged.")
+         
+        # Create a debug file to confirm which CVEs we're filtering   
+        debug_file = os.path.join(os.path.dirname(output_file), "debug_html_filter_list.txt")
+        with open(debug_file, 'w') as f:
+            f.write(f"HTML Filter - CVEs to filter out:\n")
+            for cve in ignored_cves:
+                f.write(f"{cve}\n")
+            f.write("\n\nThis file was created by filter_html_report.py for debugging purposes.\n")
+            f.write(f"Version: 2025-05-13 - Fixed filtering to REMOVE ignored CVEs\n")
             
         # Parse HTML
         soup = BeautifulSoup(html_content, 'html.parser')
@@ -125,7 +137,7 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                 # Navigate up to find the table row or container
                 row = link.find_parent('tr')
                 if row:
-                    logging.info(f"Found and removing row containing CVE link for {cve_id}")
+                    logging.info(f"[DEBUG] Found and removing row containing CVE link for {cve_id}")
                     row.decompose()
                     removed_count += 1
                     found_for_this_cve = True
@@ -134,7 +146,7 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                 # If no row, look for other container elements
                 container = link.find_parent(['div', 'section', 'li'])
                 if container:
-                    logging.info(f"Found and removing container with CVE link for {cve_id}")
+                    logging.info(f"[DEBUG] Found and removing container with CVE link for {cve_id}")
                     container.decompose()
                     removed_count += 1
                     found_for_this_cve = True
@@ -150,7 +162,7 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                     # First try to find a table row
                     row = parent.find_parent('tr')
                     if row:
-                        logging.info(f"Found and removing row with CVE text for {cve_id}")
+                        logging.info(f"[DEBUG] Found and removing row with CVE text for {cve_id}")
                         row.decompose()
                         removed_count += 1
                         found_for_this_cve = True
@@ -161,7 +173,7 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                     if cell:
                         row = cell.find_parent('tr')
                         if row:
-                            logging.info(f"Found and removing row with cell containing {cve_id}")
+                            logging.info(f"[DEBUG] Found and removing row with cell containing {cve_id}")
                             row.decompose()
                             removed_count += 1
                             found_for_this_cve = True
@@ -170,14 +182,28 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                     # If no row or cell, try other containers
                     container = parent.find_parent(['div', 'section', 'li'])
                     if container and ('vulnerability' in str(container).lower() or 'cve' in str(container).lower()):
-                        logging.info(f"Found and removing container with CVE text for {cve_id}")
+                        logging.info(f"[DEBUG] Found and removing container with CVE text for {cve_id}")
                         container.decompose()
                         removed_count += 1
                         found_for_this_cve = True
             
             if found_for_this_cve:
                 removed_cves.append(cve_id)
-                logging.info(f"Successfully removed entries for {cve_id}")
+                logging.info(f"[DEBUG] Successfully removed entries for {cve_id}")
+        
+        # Create a summary file for debugging
+        debug_summary_file = os.path.join(os.path.dirname(output_file), "debug_html_filter_summary.txt")
+        with open(debug_summary_file, 'w') as f:
+            f.write(f"HTML FILTERING SUMMARY:\n")
+            f.write(f"---------------------\n")
+            f.write(f"Removed entries: {removed_count}\n\n")
+            
+            f.write(f"CVEs successfully filtered ({len(removed_cves)}):\n")
+            for cve in sorted(set(removed_cves)):
+                f.write(f"  - {cve}\n")
+                
+            f.write("\n\nThis file was created by filter_html_report.py for debugging purposes.\n")
+            f.write(f"Version: 2025-05-13 - Fixed filtering to REMOVE ignored CVEs\n")
         
         # Add custom styling
         if soup.head:
@@ -236,11 +262,11 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                 dst.write(src.read())
         
         if removed_count == 0:
-            logging.warning("No entries were removed from the HTML report. Filtering may not be working correctly.")
+            logging.warning("[DEBUG] No entries were removed from the HTML report. Filtering may not be working correctly.")
         else:
-            logging.info(f"Filtered out {removed_count} entries related to ignored vulnerabilities")
+            logging.info(f"[DEBUG] Filtered out {removed_count} entries related to ignored vulnerabilities")
         
-        logging.info(f"Filtered HTML report saved to {output_file}")
+        logging.info(f"[DEBUG] Filtered HTML report saved to {output_file}")
         
         return True
     
@@ -269,14 +295,14 @@ def main():
                 config = json.load(f)
                 if 'ignored_cves' in config:
                     ignored_cves = config['ignored_cves']
-                    logging.info(f"Loaded {len(ignored_cves)} ignored CVEs from config file")
+                    logging.info(f"[DEBUG] Loaded {len(ignored_cves)} ignored CVEs from config file")
         except Exception as e:
             logging.error(f"Error loading config file: {str(e)}")
     
     # Command-line arguments take precedence
     if args.ignored_cves:
         ignored_cves = args.ignored_cves
-        logging.info(f"Using {len(ignored_cves)} ignored CVEs from command line arguments")
+        logging.info(f"[DEBUG] Using {len(ignored_cves)} ignored CVEs from command line arguments")
     
     success = filter_html_report(args.input_file, args.output_file, ignored_cves)
     

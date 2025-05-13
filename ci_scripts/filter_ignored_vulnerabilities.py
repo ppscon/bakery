@@ -7,6 +7,7 @@ import logging
 import re
 
 # Updated 2025-05-13: Fixed filtering logic to ensure we REMOVE ignored vulnerabilities instead of only keeping them
+# Updated 2025-05-13: Added more explicit debug logging for troubleshooting
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Example CVEs for testing - this should not be used in production
@@ -36,7 +37,7 @@ def find_ignored_vulnerabilities_in_report(scan_data):
                 config = json.load(f)
                 if 'ignored_cves' in config:
                     ignored_cves.extend(config['ignored_cves'])
-                    logging.info(f"Loaded {len(config['ignored_cves'])} ignored CVEs from config file")
+                    logging.info(f"[DEBUG] Loaded {len(config['ignored_cves'])} ignored CVEs from config file: {', '.join(config['ignored_cves'])}")
         except Exception as e:
             logging.error(f"Error reading config file: {str(e)}")
     
@@ -99,9 +100,9 @@ def find_ignored_vulnerabilities_in_report(scan_data):
     for cve in known_ignored:
         if cve not in ignored_cves:
             ignored_cves.append(cve)
-            logging.info(f"Added known ignored CVE: {cve}")
+            logging.info(f"[DEBUG] Added known ignored CVE: {cve}")
     
-    logging.info(f"Found {len(ignored_cves)} CVEs marked as ignored in the report: {', '.join(ignored_cves) if ignored_cves else 'None'}")
+    logging.info(f"[DEBUG] Found {len(ignored_cves)} CVEs marked as ignored in the report: {', '.join(ignored_cves) if ignored_cves else 'None'}")
     return ignored_cves
 
 def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
@@ -117,7 +118,7 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
         with open(input_file, 'r') as f:
             scan_data = json.load(f)
         
-        logging.info(f"Loaded scan report from {input_file}")
+        logging.info(f"[DEBUG] Loaded scan report from {input_file}")
         
         # If ignored_cves not provided, extract them from the report
         if ignored_cves is None or len(ignored_cves) == 0:
@@ -128,15 +129,27 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
                 env_ignored = os.environ.get('AQUA_IGNORED_CVES', '')
                 if env_ignored:
                     ignored_cves = [cve.strip() for cve in env_ignored.split(',')]
-                    logging.info(f"Using {len(ignored_cves)} ignored CVEs from environment variable")
+                    logging.info(f"[DEBUG] Using {len(ignored_cves)} ignored CVEs from environment variable")
         
         # Make sure ignored_cves list is properly formatted
         ignored_cves = [cve.strip() for cve in ignored_cves]
-        logging.info(f"Will filter out these CVEs: {', '.join(ignored_cves)}")
+        logging.info(f"[DEBUG] Will filter out these CVEs: {', '.join(ignored_cves)}")
+        
+        # Create a file with the list of CVEs to filter for debugging
+        debug_file = os.path.join(os.path.dirname(output_file), "debug_filter_list.txt")
+        with open(debug_file, 'w') as f:
+            f.write(f"CVEs to filter out:\n")
+            for cve in ignored_cves:
+                f.write(f"{cve}\n")
+            f.write("\n\nThis file was created by filter_ignored_vulnerabilities.py for debugging purposes.\n")
+            f.write(f"Version: 2025-05-13 - Fixed filtering to REMOVE ignored CVEs\n")
         
         # Track removed vulnerabilities
         removed_count = 0
+        kept_count = 0
         total_vulnerabilities = 0
+        all_kept_cves = []
+        all_removed_cves = []
         
         # Process resources with vulnerabilities
         if 'resources' in scan_data:
@@ -150,9 +163,14 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
                     for vuln in resource['vulnerabilities']:
                         if 'name' in vuln and any(re.match(f"{cve}", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
                             removed_count += 1
-                            logging.info(f"Filtering out {vuln['name']}")
+                            all_removed_cves.append(vuln['name'])
+                            logging.info(f"[DEBUG] Filtering out {vuln['name']} - REMOVED from output")
                         else:
                             filtered_vulns.append(vuln)
+                            kept_count += 1
+                            if 'name' in vuln:
+                                all_kept_cves.append(vuln['name'])
+                                logging.info(f"[DEBUG] Keeping {vuln['name']} - INCLUDED in output")
                     
                     # IMPORTANT: Replace the original list with the filtered list
                     # This ensures we keep all vulnerabilities EXCEPT the ignored ones
@@ -167,9 +185,14 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
             for vuln in scan_data['vulnerabilities']:
                 if 'name' in vuln and any(re.match(f"{cve}", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
                     removed_count += 1
-                    logging.info(f"Filtering out {vuln['name']}")
+                    all_removed_cves.append(vuln['name'])
+                    logging.info(f"[DEBUG] Filtering out {vuln['name']} - REMOVED from output")
                 else:
                     filtered_vulns.append(vuln)
+                    kept_count += 1
+                    if 'name' in vuln:
+                        all_kept_cves.append(vuln['name'])
+                        logging.info(f"[DEBUG] Keeping {vuln['name']} - INCLUDED in output")
             
             # IMPORTANT: Replace the original list with the filtered list
             # This ensures we keep all vulnerabilities EXCEPT the ignored ones
@@ -180,17 +203,41 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
             # This would need to be adjusted based on actual structure
             pass
         
+        # Create a summary file for debugging
+        debug_summary_file = os.path.join(os.path.dirname(output_file), "debug_filter_summary.txt")
+        with open(debug_summary_file, 'w') as f:
+            f.write(f"FILTERING SUMMARY:\n")
+            f.write(f"----------------\n")
+            f.write(f"Total vulnerabilities: {total_vulnerabilities}\n")
+            f.write(f"Kept vulnerabilities: {kept_count}\n")
+            f.write(f"Removed vulnerabilities: {removed_count}\n\n")
+            
+            f.write(f"CVEs removed ({len(all_removed_cves)}):\n")
+            for cve in sorted(set(all_removed_cves)):
+                f.write(f"  - {cve}\n")
+            
+            f.write(f"\nCVEs kept ({len(set(all_kept_cves))}):\n")
+            for cve in sorted(set(all_kept_cves)):
+                f.write(f"  - {cve}\n")
+                
+            f.write("\n\nThis file was created by filter_ignored_vulnerabilities.py for debugging purposes.\n")
+            f.write(f"Version: 2025-05-13 - Fixed filtering to REMOVE ignored CVEs\n")
+        
         # Write the filtered report
         with open(output_file, 'w') as f:
             json.dump(scan_data, f, indent=2)
         
-        logging.info(f"Filtered out {removed_count} ignored vulnerabilities from a total of {total_vulnerabilities}")
-        logging.info(f"Filtered report saved to {output_file}")
+        logging.info(f"[DEBUG] Filtered out {removed_count} ignored vulnerabilities from a total of {total_vulnerabilities}")
+        logging.info(f"[DEBUG] Kept {kept_count} non-ignored vulnerabilities")
+        logging.info(f"[DEBUG] Filtered report saved to {output_file}")
         
         return True
     
     except Exception as e:
         logging.error(f"Error processing report: {str(e)}")
+        logging.error(f"Exception details: {str(e.__class__.__name__)}: {str(e)}")
+        import traceback
+        logging.error(traceback.format_exc())
         return False
 
 def main():
@@ -211,14 +258,14 @@ def main():
                 config = json.load(f)
                 if 'ignored_cves' in config:
                     ignored_cves = config['ignored_cves']
-                    logging.info(f"Loaded {len(ignored_cves)} ignored CVEs from config file")
+                    logging.info(f"[DEBUG] Loaded {len(ignored_cves)} ignored CVEs from config file")
         except Exception as e:
             logging.error(f"Error loading config file: {str(e)}")
     
     # Command-line arguments take precedence
     if args.ignored_cves:
         ignored_cves = args.ignored_cves
-        logging.info(f"Using {len(ignored_cves)} ignored CVEs from command line arguments")
+        logging.info(f"[DEBUG] Using {len(ignored_cves)} ignored CVEs from command line arguments")
     
     success = filter_ignored_vulnerabilities(args.input_file, args.output_file, ignored_cves)
     
