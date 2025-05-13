@@ -314,4 +314,87 @@ If the automatic detection is not finding all ignored vulnerabilities, you can:
 
 ## Support
 
-For issues or enhancements, please contact the DevOps team or submit a GitHub issue. 
+For issues or enhancements, please contact the DevOps team or submit a GitHub issue.
+
+## Handling Ignored Vulnerabilities
+
+The solution now offers multiple approaches to identify and filter ignored vulnerabilities:
+
+### 1. Configuration File
+
+A JSON configuration file (`ci_scripts/ignored_cves_config.json`) is now used to maintain a list of ignored CVEs:
+
+```json
+{
+  "ignored_cves": [
+    "CVE-2025-27789",
+    "CVE-2024-45590"
+  ],
+  "comment": "These CVEs have been marked as ignored in the Aqua UI"
+}
+```
+
+This is the most reliable approach, as it explicitly lists CVEs that should be filtered out.
+
+### 2. Auto-Detection from Reports
+
+The solution attempts to automatically detect ignored vulnerabilities from Aqua reports by checking for various indicators:
+
+```python
+# Check for standard and custom fields that might indicate an ignored status
+if (vuln.get('status') == 'ignored' or 
+    vuln.get('compliance_status') == 'ignored' or
+    vuln.get('is_ignored', False) == True or
+    vuln.get('is_compliant', False) == True or
+    vuln.get('compliant', False) == True or
+    'ignored' in vuln.get('status_label', '').lower() or
+    'ignored' in vuln.get('audit_status', '').lower() or
+    # Some Aqua reports use different fields
+    'ignored' in str(vuln.get('labels', '')).lower() or
+    'ignore' in str(vuln.get('labels', '')).lower() or
+    # Sometimes the ignore status is in a nested field
+    ('assurance' in vuln and 'ignored' in str(vuln['assurance']).lower()) or
+    # Custom field added by Aqua UI when marking as ignored
+    (vuln.get('custom_fields') and 'ignored' in str(vuln.get('custom_fields')).lower())):
+    
+    if 'name' in vuln and vuln['name'].startswith('CVE-'):
+        ignored_cves.append(vuln['name'])
+```
+
+This approach is more dynamic but may not work with all Aqua report formats.
+
+### 3. GitHub Actions Parameter
+
+The GitHub Actions workflow has been updated to explicitly specify CVEs to filter out:
+
+```yaml
+- name: Filter ignored vulnerabilities
+  run: python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts --ignored-cves CVE-2025-27789 CVE-2024-45590
+```
+
+This ensures consistent filtering even if the auto-detection fails.
+
+### 4. Fallback Mechanism
+
+As a last resort, the script includes a hardcoded list of known ignored CVEs:
+
+```python
+# Add our explicitly known ignored CVEs (this is a fallback if all else fails)
+known_ignored = ["CVE-2025-27789", "CVE-2024-45590"]
+for cve in known_ignored:
+    if cve not in ignored_cves:
+        ignored_cves.append(cve)
+        logging.info(f"Added known ignored CVE: {cve}")
+```
+
+This ensures that even if all other detection methods fail, critical ignored CVEs will still be filtered out.
+
+## Maintaining Ignored CVEs
+
+When a new CVE is marked as ignored in the Aqua UI, you should:
+
+1. Add it to the `ignored_cves_config.json` file
+2. Update the hardcoded fallback list in `filter_ignored_vulnerabilities.py`
+3. Update the GitHub Actions workflow command if needed
+
+Alternatively, you could set up a script to periodically query the Aqua API for ignored vulnerabilities and update the configuration file automatically. 

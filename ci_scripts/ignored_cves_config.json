@@ -1,0 +1,7 @@
+{
+  "ignored_cves": [
+    "CVE-2025-27789",
+    "CVE-2024-45590"
+  ],
+  "comment": "These CVEs have been marked as ignored in the Aqua UI"
+} 
