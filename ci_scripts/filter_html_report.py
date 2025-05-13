@@ -17,6 +17,29 @@ EXAMPLE_IGNORED_CVES = [
     "CVE-2025-27789"
 ]
 
+def replace_variables(text):
+    """
+    Replace shell-style variables in text with their actual values.
+    
+    Args:
+        text (str): Text containing variables to replace
+        
+    Returns:
+        str: Text with variables replaced
+    """
+    if not text:
+        return text
+    
+    # Replace ${GITHUB_SHA} with the actual commit SHA
+    github_sha = os.environ.get('GITHUB_SHA', 'Unknown commit')
+    text = re.sub(r'\${GITHUB_SHA}', github_sha, text)
+    
+    # Replace $(date) with the actual date
+    current_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    text = re.sub(r'\$\(date\)', current_date, text)
+    
+    return text
+
 def filter_html_report(input_file, output_file, ignored_cves=None):
     """
     Filter out ignored vulnerabilities from Aqua security HTML report.
@@ -31,6 +54,10 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
             html_content = f.read()
         
         logging.info(f"Loaded HTML report from {input_file}")
+        
+        # First, replace all variables in the raw HTML content
+        html_content = replace_variables(html_content)
+        logging.info("Replaced all shell-style variables in HTML content")
         
         # If ignored_cves not provided, try to get them from environment or JSON report
         if ignored_cves is None or len(ignored_cves) == 0:
@@ -150,29 +177,6 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
             if found_for_this_cve:
                 removed_cves.append(cve_id)
                 logging.info(f"Successfully removed entries for {cve_id}")
-        
-        # Process variable substitutions in the HTML content
-        def replace_variables(text):
-            if not text:
-                return text
-                
-            # Replace ${GITHUB_SHA} with the actual commit SHA
-            if '${GITHUB_SHA}' in text:
-                github_sha = os.environ.get('GITHUB_SHA', 'Unknown commit')
-                text = text.replace('${GITHUB_SHA}', github_sha)
-            
-            # Replace $(date) with the actual date
-            if '$(date)' in text:
-                current_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                text = text.replace('$(date)', current_date)
-                
-            return text
-        
-        # Process all text nodes to replace variables
-        for text_node in soup.find_all(string=True):
-            if '${' in text_node or '$(' in text_node:
-                new_text = replace_variables(text_node)
-                text_node.replace_with(new_text)
         
         # Add custom styling
         if soup.head:
