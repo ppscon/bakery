@@ -5,6 +5,8 @@ import os
 import re
 import sys
 import json
+import datetime
+import subprocess
 from bs4 import BeautifulSoup
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -84,56 +86,96 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         removed_count = 0
         removed_cves = []
         
+        # Most effective approach: find links with CVE IDs directly
         for cve_id in ignored_cves:
             cve_pattern = re.compile(re.escape(cve_id), re.IGNORECASE)
             found_for_this_cve = False
             
-            # Look for table rows containing the CVE ID (case insensitive)
-            vuln_rows = soup.find_all('tr', string=lambda text: text and cve_pattern.search(text))
-            for row in vuln_rows:
-                row.decompose()
-                removed_count += 1
-                found_for_this_cve = True
+            # Find all direct links to the CVE
+            cve_links = soup.find_all('a', href=lambda href: href and cve_pattern.search(href))
+            for link in cve_links:
+                # Navigate up to find the table row or container
+                row = link.find_parent('tr')
+                if row:
+                    logging.info(f"Found and removing row containing CVE link for {cve_id}")
+                    row.decompose()
+                    removed_count += 1
+                    found_for_this_cve = True
+                    continue
+                
+                # If no row, look for other container elements
+                container = link.find_parent(['div', 'section', 'li'])
+                if container:
+                    logging.info(f"Found and removing container with CVE link for {cve_id}")
+                    container.decompose()
+                    removed_count += 1
+                    found_for_this_cve = True
             
-            # If no rows found, look for any elements containing the CVE ID
-            if not vuln_rows or not found_for_this_cve:
-                # First try to find td elements containing the CVE
-                vuln_cells = soup.find_all('td', string=lambda text: text and cve_pattern.search(text))
-                for cell in vuln_cells:
-                    row = cell.find_parent('tr')
+            # Secondary approach: find any text nodes with the CVE ID
+            if not found_for_this_cve:
+                # Look for text nodes with the CVE
+                text_nodes = soup.find_all(string=cve_pattern)
+                for node in text_nodes:
+                    # Get the parent element and navigate up to find the row or container
+                    parent = node.parent
+                    
+                    # First try to find a table row
+                    row = parent.find_parent('tr')
                     if row:
+                        logging.info(f"Found and removing row with CVE text for {cve_id}")
                         row.decompose()
                         removed_count += 1
                         found_for_this_cve = True
-                
-                # Then look for any text containing the CVE
-                vuln_elements = soup.find_all(string=lambda text: text and cve_pattern.search(text))
-                for element in vuln_elements:
-                    # Try to find the closest parent element that would represent a whole vulnerability entry
-                    container = element.find_parent(['div', 'tr', 'section', 'table', 'li', 'ul'])
-                    if container and container.name in ['tr', 'div', 'section']:
+                        continue
+                    
+                    # If no row, try to find a cell
+                    cell = parent.find_parent('td')
+                    if cell:
+                        row = cell.find_parent('tr')
+                        if row:
+                            logging.info(f"Found and removing row with cell containing {cve_id}")
+                            row.decompose()
+                            removed_count += 1
+                            found_for_this_cve = True
+                            continue
+                    
+                    # If no row or cell, try other containers
+                    container = parent.find_parent(['div', 'section', 'li'])
+                    if container and ('vulnerability' in str(container).lower() or 'cve' in str(container).lower()):
+                        logging.info(f"Found and removing container with CVE text for {cve_id}")
                         container.decompose()
                         removed_count += 1
                         found_for_this_cve = True
             
             if found_for_this_cve:
                 removed_cves.append(cve_id)
-                logging.info(f"Removed entries for {cve_id}")
+                logging.info(f"Successfully removed entries for {cve_id}")
         
-        # Update summary statistics if they exist
-        # Look for elements with numeric content that might be counts
-        count_elements = soup.find_all(string=re.compile(r'\b\d+\b'))
-        for element in count_elements:
-            # Only modify elements that look like they contain just a number
-            if re.match(r'^\s*\d+\s*$', element.strip()):
-                parent = element.parent
-                if parent and ('total' in str(parent).lower() or 'count' in str(parent).lower() or 'summary' in str(parent).lower()):
-                    # This is likely a count element - we could update it, but we'll leave it for now
-                    pass
+        # Process variable substitutions in the HTML content
+        def replace_variables(text):
+            if not text:
+                return text
                 
-        # Add a "Filtered Report" notice to the report
+            # Replace ${GITHUB_SHA} with the actual commit SHA
+            if '${GITHUB_SHA}' in text:
+                github_sha = os.environ.get('GITHUB_SHA', 'Unknown commit')
+                text = text.replace('${GITHUB_SHA}', github_sha)
+            
+            # Replace $(date) with the actual date
+            if '$(date)' in text:
+                current_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                text = text.replace('$(date)', current_date)
+                
+            return text
+        
+        # Process all text nodes to replace variables
+        for text_node in soup.find_all(string=True):
+            if '${' in text_node or '$(' in text_node:
+                new_text = replace_variables(text_node)
+                text_node.replace_with(new_text)
+        
+        # Add custom styling
         if soup.head:
-            # Add custom styling
             style_tag = soup.new_tag('style')
             style_tag.string = """
             .filtered-notice {
@@ -163,7 +205,7 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
             
             badge_span = soup.new_tag('span')
             badge_span['class'] = 'filtered-badge'
-            badge_span.string = 'FILTERED'
+            badge_span.string = 'Aqua Vulnerability Report'
             
             notice_div.append(badge_span)
             notice_div.append(' This report has been filtered to exclude ignored vulnerabilities')
@@ -188,13 +230,20 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
             with open(css_file, 'r', encoding='utf-8') as src, open(output_css, 'w', encoding='utf-8') as dst:
                 dst.write(src.read())
         
-        logging.info(f"Filtered out {removed_count} entries related to ignored vulnerabilities")
+        if removed_count == 0:
+            logging.warning("No entries were removed from the HTML report. Filtering may not be working correctly.")
+        else:
+            logging.info(f"Filtered out {removed_count} entries related to ignored vulnerabilities")
+        
         logging.info(f"Filtered HTML report saved to {output_file}")
         
         return True
     
     except Exception as e:
         logging.error(f"Error processing HTML report: {str(e)}")
+        logging.error(f"Exception details: {str(e.__class__.__name__)}: {str(e)}")
+        import traceback
+        logging.error(traceback.format_exc())
         return False
 
 def main():
