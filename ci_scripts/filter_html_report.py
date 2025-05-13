@@ -4,13 +4,15 @@ import logging
 import os
 import re
 import sys
+import json
 from bs4 import BeautifulSoup
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# List of CVEs that are marked as ignored in Aqua UI
-IGNORED_CVES = [
-    "CVE-2025-27789"  # This CVE has been marked as ignored in Aqua UI
+# Example CVEs for testing - this should not be used in production
+# Instead, we'll use the same dynamic approach as in filter_ignored_vulnerabilities.py
+EXAMPLE_IGNORED_CVES = [
+    "CVE-2025-27789"
 ]
 
 def filter_html_report(input_file, output_file, ignored_cves=None):
@@ -22,15 +24,43 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         output_file (str): Path where the filtered report will be saved
         ignored_cves (list): List of CVE IDs that should be filtered out
     """
-    if ignored_cves is None:
-        ignored_cves = IGNORED_CVES
-    
     try:
         with open(input_file, 'r', encoding='utf-8') as f:
             html_content = f.read()
         
         logging.info(f"Loaded HTML report from {input_file}")
         
+        # If ignored_cves not provided, try to get them from environment or JSON report
+        if ignored_cves is None or len(ignored_cves) == 0:
+            # First try environment variables
+            env_ignored = os.environ.get('AQUA_IGNORED_CVES', '')
+            if env_ignored:
+                ignored_cves = [cve.strip() for cve in env_ignored.split(',')]
+                logging.info(f"Using {len(ignored_cves)} ignored CVEs from environment variable")
+            else:
+                # Try to find corresponding JSON report to extract ignored CVEs
+                json_report_path = os.path.join(os.path.dirname(input_file), 
+                                               os.path.basename(input_file).replace('.html', '.json'))
+                
+                if os.path.exists(json_report_path):
+                    try:
+                        # Import the function to avoid code duplication
+                        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+                        from filter_ignored_vulnerabilities import find_ignored_vulnerabilities_in_report
+                        
+                        with open(json_report_path, 'r') as f:
+                            scan_data = json.load(f)
+                        
+                        ignored_cves = find_ignored_vulnerabilities_in_report(scan_data)
+                        logging.info(f"Extracted {len(ignored_cves)} ignored CVEs from JSON report")
+                    except Exception as e:
+                        logging.warning(f"Could not extract ignored CVEs from JSON report: {str(e)}")
+        
+        # Fallback to example CVEs if we still have none
+        if ignored_cves is None or len(ignored_cves) == 0:
+            ignored_cves = []
+            logging.warning("No ignored CVEs found from any source. Report will remain unchanged.")
+            
         # Parse HTML
         soup = BeautifulSoup(html_content, 'html.parser')
         
@@ -141,10 +171,28 @@ def main():
     parser.add_argument('input_file', help='Path to the original Aqua scan HTML report')
     parser.add_argument('output_file', help='Path where the filtered report will be saved')
     parser.add_argument('--ignored-cves', nargs='+', help='List of CVE IDs to filter out')
+    parser.add_argument('--config-file', help='Path to a configuration file containing ignored CVEs')
     
     args = parser.parse_args()
     
-    ignored_cves = args.ignored_cves or IGNORED_CVES
+    ignored_cves = []
+    
+    # If config file is provided, read ignored CVEs from it
+    if args.config_file and os.path.exists(args.config_file):
+        try:
+            with open(args.config_file, 'r') as f:
+                config = json.load(f)
+                if 'ignored_cves' in config:
+                    ignored_cves = config['ignored_cves']
+                    logging.info(f"Loaded {len(ignored_cves)} ignored CVEs from config file")
+        except Exception as e:
+            logging.error(f"Error loading config file: {str(e)}")
+    
+    # Command-line arguments take precedence
+    if args.ignored_cves:
+        ignored_cves = args.ignored_cves
+        logging.info(f"Using {len(ignored_cves)} ignored CVEs from command line arguments")
+    
     success = filter_html_report(args.input_file, args.output_file, ignored_cves)
     
     sys.exit(0 if success else 1)
