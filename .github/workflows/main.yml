@@ -437,6 +437,9 @@ jobs:
               </html>
               EOL
               
+              # Install required dependencies
+              pip install beautifulsoup4 
+              
               # Process the index.html file to replace variables
               python3 ci_scripts/process_index_page.py ./security-reports/index.html
               
