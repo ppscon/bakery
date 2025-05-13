@@ -6,6 +6,7 @@ import argparse
 import logging
 import re
 
+# Updated 2025-05-13: Fixed filtering logic to ensure we REMOVE ignored vulnerabilities instead of only keeping them
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Example CVEs for testing - this should not be used in production

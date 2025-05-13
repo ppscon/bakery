@@ -9,6 +9,7 @@ import datetime
 import subprocess
 from bs4 import BeautifulSoup
 
+# Updated 2025-05-13: Added variable substitution for shell-style variables in HTML
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Example CVEs for testing - this should not be used in production

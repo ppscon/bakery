@@ -1,5 +1,6 @@
 name: CI/CD Pipeline with Aqua Security Scan and SBOM
 
+# Updated 2025-05-13: Added process_index_page.py to handle variables in the index page
 on:
   push:
     branches:
@@ -421,7 +422,7 @@ jobs:
               EOL
               
               # Process the index.html file to replace variables
-              python3 ci_scripts/process_index_page.py ./security-reports/index.html
+              python3 ci_scripts/process_index_page_new.py ./security-reports/index.html
 
           - name: Deploy to GitHub Pages
             uses: peaceiris/actions-gh-pages@v4
