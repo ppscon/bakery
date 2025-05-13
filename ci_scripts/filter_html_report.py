@@ -128,7 +128,8 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         
         # Most effective approach: find links with CVE IDs directly
         for cve_id in ignored_cves:
-            cve_pattern = re.compile(re.escape(cve_id), re.IGNORECASE)
+            # Use more precise pattern matching with word boundaries
+            cve_pattern = re.compile(r'\b' + re.escape(cve_id) + r'\b', re.IGNORECASE)
             found_for_this_cve = False
             
             # Find all direct links to the CVE
@@ -181,7 +182,7 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                     
                     # If no row or cell, try other containers
                     container = parent.find_parent(['div', 'section', 'li'])
-                    if container and ('vulnerability' in str(container).lower() or 'cve' in str(container).lower()):
+                    if container and ('vulnerability' in str(container).lower() or 'cve' in str(container).lower()) and cve_id.lower() in str(container).lower():
                         logging.info(f"[DEBUG] Found and removing container with CVE text for {cve_id}")
                         container.decompose()
                         removed_count += 1
@@ -253,6 +254,46 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         # Write the filtered report
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(str(soup))
+        
+        # Add debugging output of filtered HTML for analysis
+        debug_html_file = os.path.join(os.path.dirname(output_file), "debug_filtered_html_structure.txt")
+        try:
+            with open(debug_html_file, 'w', encoding='utf-8') as f:
+                # Write a summary of the HTML structure for debugging
+                f.write("HTML STRUCTURE AFTER FILTERING:\n")
+                f.write("============================\n\n")
+                
+                # Count the main elements 
+                tables = soup.find_all('table')
+                f.write(f"Number of tables: {len(tables)}\n")
+                
+                # Count vulnerability-related elements
+                vuln_elements = soup.find_all(['div', 'tr', 'section'], string=lambda s: s and ('vulnerability' in s.lower() or 'cve' in s.lower()))
+                f.write(f"Number of vulnerability-related elements: {len(vuln_elements)}\n")
+                
+                # Check if any ignored CVEs still exist in the document
+                remaining_ignored = []
+                for cve_id in ignored_cves:
+                    pattern = re.compile(r'\b' + re.escape(cve_id) + r'\b', re.IGNORECASE)
+                    if soup.find_all(string=pattern):
+                        remaining_ignored.append(cve_id)
+                
+                if remaining_ignored:
+                    f.write(f"\nWARNING: Found {len(remaining_ignored)} ignored CVEs still present in filtered HTML:\n")
+                    for cve in remaining_ignored:
+                        f.write(f"  - {cve}\n")
+                else:
+                    f.write("\nNo ignored CVEs found in filtered HTML. Filtering appears successful.\n")
+                
+                # List the first 20 table rows to see what's in the report
+                f.write("\nSample of table rows in the filtered report:\n")
+                rows = soup.find_all('tr')
+                for i, row in enumerate(rows[:20]):  # Just show the first 20 for brevity
+                    f.write(f"\nRow {i+1}:\n{row.get_text()[:200]}...\n")
+                
+                f.write("\nThis file was created by filter_html_report.py for debugging purposes.\n")
+        except Exception as e:
+            logging.error(f"Error creating HTML structure debug file: {str(e)}")
         
         # Copy CSS file if it exists
         css_file = os.path.join(os.path.dirname(input_file), 'styles.css')

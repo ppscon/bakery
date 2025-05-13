@@ -107,7 +107,13 @@ jobs:
             "comment": "These CVEs have been marked as ignored in the Aqua UI"
           }
           EOL
+          # List all filter scripts for debugging
+          echo "=== Available Filter Scripts ==="
+          ls -la ci_scripts/filter*.py
+          echo "=============================="
+          
           # Use explicit CVE list to avoid any configuration issues
+          echo "=== Running filter_aqua_reports.py ==="
           python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts --ignored-cves CVE-2025-27789 CVE-2024-45590
           
           # Add debugging info about the filtered output
@@ -115,6 +121,8 @@ jobs:
           ls -la filtered-artifacts/
           echo "Checking if ignored CVEs are still present in the JSON:"
           grep -c "CVE-2025-27789\|CVE-2024-45590" filtered-artifacts/aqua-scan-filtered.json || echo "No matches found (this is good)"
+          echo "Checking if ignored CVEs are still present in the HTML:"
+          grep -c "CVE-2025-27789\|CVE-2024-45590" filtered-artifacts/aqua-scan-filtered.html || echo "No matches found (this is good)"
           echo "==================================="
       - name: Create elegant report
         run: python ci_scripts/create_elegant_report.py filtered-artifacts/aqua-scan-filtered.json filtered-artifacts/elegant-report.html
