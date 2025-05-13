@@ -169,6 +169,8 @@ jobs:
     - name: Save Cosign Private Key
       run: echo "${{ secrets.COSIGN_PRIVATE_KEY }}" > cosign.key
     - name: Sign the Docker Image
+      env:
+        COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
       run: |
         IMAGE_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ppscon/bakery/bakery-app:${{ github.sha }})
         cosign sign --key cosign.key $IMAGE_DIGEST
