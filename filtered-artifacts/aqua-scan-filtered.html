@@ -1,0 +1,3455 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="styles.css" rel="stylesheet"/>
+<style>
+		.align-base{align-self:baseline}.wrapper,textarea{overflow:auto}.grey{background:#D5D5D7}.flex{display:flex;align-items:center}.flex .space-between{justify-content:space-between}.flex-wrap{flex-wrap:wrap}.flex1{flex:1}.pl30{padding-left:30px!important}.pl10{padding-left:10px!important}.px10{padding-left:10px;padding-right:10px}.vuln-align{border-right: 1px solid #8D97A1; padding-right:9px;}.pitch-black{color:#000000}.ack-icon:hover .ack-info-tooltip {display: block;}.ack-info-tooltip{display: none;position: absolute;border: 1px solid #C4C4C4;border-radius: 2px;background: #FAFCFE;z-index: 999;padding:18px 16px;transform:translateX(-50%);max-width: 40rem;margin-top: 12px;}.ack-info-tooltip:before{content: "";position: absolute;left: 50%;bottom: 100%;border: 10px solid transparent;border-bottom-color: #ddd;background-color: transparent;}.ack-info-tooltip:after {content: "";position: absolute;left: 50%;bottom: 100%;border: 9px solid transparent;border-bottom-color: white;}.severity{color:#fff;border-radius:3px;padding:3px 6px}.severity.unknown{background:#e0e0e0;color:#2e3e50}.severity.negligible{background:#D5D5D7}.severity.high{background:#e0443d}.severity.critical{background:#8b0000}.severity.medium{background:#f79421}.severity.low{background:#e1c930}.red-highlight{color:#DC4A4C}progress,sub,sup{vertical-align:baseline}button,hr,input{overflow:visible}[type=checkbox],[type=radio],legend{box-sizing:border-box;padding:0}html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background-color:transparent;-webkit-text-decoration-skip:objects}a:active,a:hover{outline-width:0}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}dfn{font-style:italic}h1{font-size:2em;margin:.67em 0}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}svg:not(:root){overflow:hidden}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}figure{margin:1em 40px}hr{box-sizing:content-box;height:0}button,input,select,textarea{font:inherit;margin:0}h1,optgroup{font-weight:700}button,select{text-transform:none}[type=reset],[type=submit],button,html [type=button]{-webkit-appearance:button}[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,[type=button]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,[type=button]:-moz-focusring,button:-moz-focusring{outline:ButtonText dotted 1px}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{color:inherit;display:table;max-width:100%;white-space:normal}.resources,.resources .more-info{display:none}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-input-placeholder{color:inherit;opacity:.54}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}h2{font-size:1.2em}.success{margin:2em auto;max-width:400px;padding:1em;font-size:1.6em;background-color:#91b94f;color:#fff}table{width:100%;margin:1em auto;border-collapse:collapse}#summary tr:first-child td{padding:.75em;font-size:1.5em;border:1px solid #000;color:#fff;text-shadow:1px 1px 1px #000}#summary tr:first-child td:nth-child(1){background-color:#e0443d}#summary tr:first-child td:nth-child(2){background-color:#f79421}#summary tr:first-child td:nth-child(3){background-color:#e1c930}#summary tr:first-child td:nth-child(4){background-color:#5cef97}#summary tr:first-child td:nth-child(5){background-color:#1280c4}#summary tr:last-child td{padding-top:4px;font-size:.9em;text-transform:uppercase}#disallow{text-align:left;max-width:500px;margin:2em auto 0;background-color:#e0adad;padding:10px;border:1px solid #e0443d}#disallow li{line-height:24px}#disallow p{margin-bottom:10px}.wrapper{height:calc(100vh - 315px)}.resources .headers span{font-weight:500}.vulns,input[type=checkbox].group-by:checked~.wrapper .resources{display:block}.more-info,input[type=checkbox].group-by:checked~.wrapper .vulns{display:none}.table-data{margin-top:0;width:calc(100% - 5px);text-align:left;background:#f9f9f9;border:1px solid #1f9fba;border-bottom:none;border-right: 2px solid #1f9fba;}#cves.table-data{border:none}.table-data:last-child{border-bottom:1px solid #1f9fba}.table-data caption{margin-bottom:.6em}.table-data .data-item,.table-data td,.table-data th{padding:7px 10px;border:1px solid #1f9fba;position:relative}.table-data .data-item{border:none;}.table-data .data-item:last-child{border-right:none}.table-data th{border:none;background:#fff}.more-info td,.more-info th{border:1px solid #ccc!important}.table-data th:first-child{padding-left:32px}.table-data .chevron-down,.table-data .chevron-right,.table-data a{text-decoration:none;color:#08b1d5}.table-data a:hover{text-decoration:underline}.table-data tr:hover{background:#d5d2d0}.table-data tbody tr:nth-child(even) td{background-color:#daf1f6}.more-info td{background:#fff!important;font-size:14px}.more-info>td{background:#ececec!important}.more-info tr:hover td{background:#f9f9f9!important}.more-info ul{list-style:none;text-align:left}.more-info{width:100%;background:0 0!important;border-top:1px solid #1f9fba}input[type=checkbox].expand:checked~.more-info{display:block}input[type=checkbox].expand:checked~.data-item .chevron-down{display:inline-block}.aqua-logo span,.chevron-down,input[type=checkbox].expand:checked~.data-item .chevron-right{display:none}body>p{margin-top:2em}.bold{font-weight:700}label.data-item{color:#08b1d5;cursor:pointer}.chevron-down,.chevron-right{font-size:10px;position:relative;top:-2px}.aqua-logo{display:block;margin:0 auto;width:144px;height:52px;background-repeat:no-repeat;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJAAAAA0CAYAAABly7FAAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AcMDhEFC0soHwAACLJJREFUeNrtm3uMVFcdxz8zu9MlW9juYIXahWJBZXgIxXQRTMFaenJLS4lLDGqqVavNqiWQaBr6iI9GjCaSSBWN2KTEEmPaEGuHWD386NqkVGhXuqIwXdFFERAqhW23LCywu+Mfc8ZcLnfu3NmZyczsnm9ys7l3z+t3zvf8XucMWFhYWFhYWFhYWFiMDZzbPN1OQhUgUu4Oeo+0rgV+mLevKMT29UeiRwfSeUpGgIONaw7PtctXeUTLRJrs33XA46afSIiHAspYjEYC9R5pJT6tk94jrQ8Bm+wUj27Ul4k83wMestNrNdBIyPMtSx6rgUZKno3A1+20Wg00EvJsHevkUcoJfLdhfG7ybALWFUvl2L5+okcHwowq1bjm8JwwCyqi3e+TgQTwXuA9rqKDwAngkIju9Kubr32lnMVAKzDV/Pss0A3sFNG9SjkRz3ynRXTa1VbEZz2Gg8bgV0dEDwfIP83IfwNwLZDt/zzwH+CAiH49rPxFmzBDnp8B7dW4O0Q0Sjn1wBbgHqAhpBb5KvCEIVYgeZRy5gM7XMTxK7sNWO3p/4vAk673DcAjrvchYFzQGIDPAVtzKQUzvmnAj4CVIbXo28AqEd0RhkQjMmFNyVRWA+nSkicN6VBPIZrzauC+MORx4afAG0o59X5myEWeJ4A/B5HH4LM+/V/yvF/wvJ8NMc5LIcosDkseg2uAF5Ry9hgZS6uBmpIp+lbOJp48uGX3Oxs/f8uEA+dLQZ2L1128dHV68s8jLaw2uy/I7F6Cf5ZbgU0EOkX0Au9ONBP7feBLo9i9WaSUs1lErwnSRAUTqG/lbJqSqV8MwSfuOfzg2r6Vsy+UasSXnr1tmCj1IcZVjOm9CBwHThvbD9BofKLrPWVvUsq5U0Q/79FAy4H1Pm2fAXqAd4AYEAemm/arBWeNv3fGzEUEGA9MM+N14wGlnAdF9PmiTVhTMkVTMhVpSqZ2Avfm0RLViH8BK4wpmQG0iuilInopcLOIbgG+4VNvs09Utdmn3PPAJGChiF5m2v2gMaFfcTmslcJu4CZgAjATWGTGuARYALwL+L1PvQ1F+0BZswV0AKrGiNMHTBLRN4ro3xoTlPYxSYjoDcBeT/1JSjnjXOWWG63ixg4RfZeIHvK2a7DV7PZK4FkgLqKXiOj9XvlFdHacaRG93GecTlEEypKnKZnaDtxaa4bcTNYpn0W9zEF0fd/uM0dXud5/7NPN/bmcTdNuXQXlvyCi3ypA/pc8TTQq5USL8SXqmpKpXbVInoCcTZ0xZVGlnJnAPJMfmQLc4uO015l6zaaMGx0i+o0akz9mNkVUKWeBMbU3mvzQQu/6B+UL6/OE6hHgL8Ds0UAepZxrjQZZCjSPwLm9xjjHbvyqhuS/GfgBMMvIMq7YtqN5fJ5dtUwepZysmp6olPM0cAr4lIm2Ggtty9TxzllXtR5ZuMY1Xynnj0CnsSSTS0GeIB8o1pRMvQTcVsuax6js8SYCWx2yWjqgrWaffw2GSflXSn6lnHlkkp2Ly9FHvY/2aQD+Tv7saiVRH3IH1gMpE7r64SSZY4i9xlR3A2uB7+Yo31xL2pfMederAcVeN+mHPwEHgEPmfVkxCzGpismTNmFmW8jyC3LI8iiwVUSf8Jn4gYD2jvkFGWEPHiugfb7MlUcoaTJHK78R0f0+8g8Wu5PT5qnGe8f9wEeMVgmDR3y+rRTRO0bY/wWfuZkmol+r0g33qM/aXi+iT5aqgyi1hVnAX2NtHWHL3+mzM3cUSeBhz7cVZZK1oZhNrJTT6OMod5aSPLVCoDQwAEyJtXUcK4A8cHkCEDLnPyNyog3e4srrFfeF8EWGQ/R72vM+DhjOFeGZ70HHSeN9vu0vUv6aJNApYG6sreN4CdqaqJQTzXVzUCmngYDUvfEZ/uGzmOs8YbM3envAh8x+cnpxt9e3cvXRBNwf0J6fL3drULivlNMCzBlNBBokk4fqGWF9P8/20z4Ob0QpZ4ZZxHxJHb9F26SU0+r2KZVyGpRyZinlHAU2hjBHf/P59nT2HM6dYlHKuQN4OyjNIqL7fDTfDKWcOTkCAccECQUFUPVVTJ6LQEusreN0EW2s9yHENqWch4FnyFzrWAjcBbSECY1F9B6lnG4yRx9uvAqcVMrpNxtzggmjw0ZN+5Vyhrj83Owq4IRSzj4z1hnGD5wYstkNwDc9CuM1pZxXgCSZ6ywfNZrp3WXLp1QAR4EPxdo63iwyD3IQ+K9JTfxf2xg1/dgIQ2OALwB7fIpcV6TcK4Df+eSelo1Q/sc9BMqScol5RqUT3Qt8AHizmEbMNYVBE/aHdQyHyXPV0bS7F/hMgRtiKMSC7yQ48RfG7LnHeYbM3euwOJvDFyuAQJFIqCcdiVDK24gZ1ZA+B0yPtXUMFBhtBZmcHuD9BF9Oz+Z4ZgE/yTdHpt1fGjOW757P14wfNxiCmMMi+sPAc3naHDJadEMI+Z8E7g4xXd1GU3ddsSyBa+bB5G/vbgF6InkqNtRHWb8qEauLRkrDHTh8bELzvO+0RPrLodbMFY424JPAfDIHoyfJHDA+I6L/YMpNBd7n0UovG23mXZzsccnHyFwDmWryN8eAl4EXRXSfycmc4fKs8L0ieluORc/+TGiVMTU3mPpdwK+B50T0sPmZ0hyXhq0T0btyyB8ncx64ymj4OqMZXwS2i+guU26+x8caAPa6f4IUSKBJj+2eAvybEAR6+OMJ6upKQqBD7Yn4zC3dvbQn4pSJQDmPG4o9ishXvxAClQvlkr8aCHSGzPWCwXKRp9KoBgKVC5WOwo4AifZEfBALS6AC8Up7Ir7ILkFto1Jh/KH2RHzRlu5euwKWQAWjB5gLMFp9HmvCyocX2hPx28fgPEe48mJXzGqgwrC7PRG/fYyarX4yv1Ad73qeGs0aqNS3EbvaE/ElY9VsmRzLubFiwo6TuWsSiAIy0JH2RLzPegsWFhYWFhYWFhYWFhbA/wBfcjd15gj72AAAAABJRU5ErkJggg==)}*{box-sizing:border-box;margin:0;padding:0}body,html{max-height:100%;overflow:auto;font-family:"Lucida Grande","Lucida Sans",Arial,sans-serif;color:#464547}.mt20{margin-top:20px}.mb10{margin-bottom:10px}.aqua-container{background:#ccc;height:100%}.clearfix::after{display:block;content:"";clear:both}.header{height:50px;line-height:50px;background:#000}.header .logo{width:100px;margin-top:7px;margin-left:10px}.content{margin:30px;background:#fff;height:calc(100vh - 110px)}.tabs{display:flex;flex-wrap:wrap;padding-left:20px}.label{width:auto}input[type=checkbox].expand,input[type=radio].tab{display:none}input[type=radio].tab+.label{padding:10px;color:#999;cursor:pointer}input[type=radio].tab:checked+.label{color:#2b2b2b;border:1px solid #ddd;border-bottom:0;border-radius:3px 3px 0 0}input[type=radio].tab:checked+.label:after{content:"";position:absolute;height:1px;width:calc(100% - 2px);background:#fff;left:1px;bottom:-1px;z-index:1000}input[type=radio].tab:checked+.label+.panel{display:block}.panel{display:none;clear:both;height:calc(100% - 20px);overflow:auto;border-top:1px solid #ddd;padding:20px;order:99;width:100%}.content>.title{padding:15px 20px;margin-bottom:10px;border-bottom:0}.assurance-checks li,.title{border-bottom:1px solid #ddd}.content>.title h1{margin-bottom:5px;font-size:24px}.content>.title span{font-size:16px}.box{padding:25px 20px;border:1px solid #ddd}.assurance{border:1px solid #ddd; padding: 4px 12px;font-size:13px;}.assurance .assurance-content-header{font-weight:bold;margin:2px 0px;}.assurance .assurance-desc{margin:5px 0;}.image-status{display:flex;flex-direction:row;align-content:space-around;background:#f7f7f7;}.image-status .image-status-list{border-right:1px solid #ddd;padding-right:20px;}.image-status .image-status-list:last-child{border:none}.image-status-list .image-status-title{padding:0px 20px !important;}.image-status .icon-check,.image-status .icon-warning-triangle{width:60px;height:60px;float:left}.image-status h2,.image-status h5{padding-left:70px;margin-top:5px}.image-status h5{font-size:14px;font-weight:400}.title{padding:0 0 10px;margin:0;font-weight:400;font-size:16px}.vuln-nums{padding:10px}.vuln-nums li{list-style:none;float:left;padding:5px 10px;font-size:12px}.vuln-nums li:last-child{border-right:none}.square{border-radius:3px;width:15px;height:15px;display:inline-block;position:relative;top:3px}.red{background:#D93639}.darkred{background:#7E000A}.orange{background:#F4862B}.yellow{background:#DDC037}.green{background:#a5cf4f}.text-alert{color:#e0443d;fill:#e0443d}.text-success{color:#a5cf4f;fill:#a5cf4f}.assurance-checks li{list-style:none;padding:10px 5px;font-size:14px}.assurance-checks .icon-warning-triangle{width:20px;position:relative;top:3px;margin-right:5px} .ellipsis{display:inline-block;overflow:hidden;text-overflow:ellipsis; width:700px; white-space-nowrap;}
+        .overflow-hidden{overflow:hidden}.mt10{margin-top:10px}.flex6{flex:6}.flex2{flex:2}.flex4{flex:4}.side{background:#07242d}.upper-case{text-transform:uppercase}.ub-height{height:100%;align-items:flex-start}.ub-critical{background:#b50505}.ub-critical-color{color:#b50505}.ub-critical-fill{fill:#b50505}.ub-high{background:#ff5057}.ub-high-color{color:#ff5057}.ub-high-fill{fill:#ff5057}.ub-medium{background:#ff8e50}.ub-medium-color{color:#ff8e50}.ub-medium-fill{fill:#ff8e50}.ub-low{background:#ffbf50}.ub-low-color{color:#ffbf50}.ub-low-fill{fill:#ffbf50}.ub-info{background:#dadadb}.ub-info-color{color:#dadadb}.ub-info-fill{fill:#dadadb}.ub-positive{background:#18eaa7}.ub-positive-color{color:#18eaa7}.ub-positive-fill{fill:#18eaa7}.border-critical{border-color:#b50505}.border-high{border-color:#ff5057}.border-medium{border-color:#ff8e50}.border-low{border-color:#ffbf50}.border-info{border-color:#dadadb}.border-positive{border-color:#18eaa7}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.light-grey{background:#f3f5f9}.grey-color{color:#99a1aa}.black-color{color:#07242d}.pd20{padding:20px}.behaviors{height:25%}.behavior-item{background:#fff;box-shadow:0 4px 12px rgba(255,142,41,.1);border-radius:2px;width:19%;height:100%;align-items:flex-start;justify-content:space-around;flex-direction:column}.behavior-item-title{font-weight:500;font-size:15px;line-height:15px;margin-left:15px}.behavior-item-score{justify-content:space-around;width:100%}.behavior-icon{width:55px;height:55px}.behavior-score{font-size:60px}.behavior-score-delta{font-size:10px}.border-left{border-left-width:6px;border-left-style:solid}.finding-item{height:55px;background:#fff}.finding-icon{height:25px;width:25px;margin:0 10px}input[type=checkbox].group-by{display:inline-block}input[type=checkbox]:checked~.more-info{display:block}.more-info{display:none}input[type=checkbox]{display:none}input[type=checkbox]:checked~.finding-info{display:block}.findings{height:calc(100vh - 530px);overflow:auto}.finding-info{display:none}.finding-info{background:#fff;font-weight:500;font-size:14px;margin-top:5px}.finding-info-data{font-weight:400;line-height:1.5}.finding-info-header{border-bottom:1px solid;height:55px;font-size:15px}.risk-btn{width:78px;height:28px;text-align:center;line-height:2;color:#fff;margin-left:10px}
+	</style>
+<title>ppscon/bakery/bakery-app:b4b145babc303b7ab31b80674c337af1cef9243d | Scan Results</title>
+</head>
+<body>
+<div class="aqua-container" style="height:100%">
+<header class="header" style="background-color:#ffffff">
+<svg fill="none" height="50" viewbox="0 0 196 57" width="135" xmlns="http://www.w3.org/2000/svg">
+<path d="M29.4984 0.143616H16.3188C15.7526 0.143616 15.2097 0.367222 14.8088 0.764333L9.22118 6.31275C9.00533 6.52708 8.78949 6.7414 8.78949 7.25542C8.78949 7.25542 8.78949 8.54139 9.99766 8.54139H29.4984V0.143616Z" fill="#FFC900"></path>
+<path d="M21.0486 8.54139H29.4983V0.143616L21.0486 8.54139Z" fill="url(#paint0_linear_2567_377)" opacity="0.89"></path>
+<path d="M29.4983 0.143616L21.0486 8.54139H29.4983V0.143616Z" fill="url(#paint1_linear_2567_377)"></path>
+<path d="M37.7388 0.848751C37.4986 0.438651 36.981 0.13525 36.4764 0.143601H29.4984C29.4984 0.143601 29.4984 22.2139 29.4984 27.9043C29.4984 29.1039 30.7289 29.1039 30.7944 29.1039C31.312 29.1039 31.5279 28.8896 31.7437 28.6753L37.3304 23.1278C37.7313 22.7297 37.9518 22.1907 37.9518 21.6284V1.51029C37.9527 1.28483 37.8677 1.05937 37.7388 0.848751Z" fill="#FF445F"></path>
+<path d="M8.61731 29.3173V9.90712C8.61731 8.70465 7.31945 8.70465 7.31945 8.70465C6.80086 8.70465 6.58408 8.91898 6.36824 9.13424L0.766572 14.6956C0.364784 15.0946 0.145203 15.6346 0.145203 16.1987V29.3182H8.61731V29.3173Z" fill="#08B1D5"></path>
+<path d="M0.144592 29.3173L8.6167 20.9066V29.3173H0.144592Z" fill="url(#paint2_linear_2567_377)" opacity="0.82"></path>
+<path d="M0.144592 29.3173L8.6167 20.9066V29.3173H0.144592Z" fill="url(#paint3_linear_2567_377)"></path>
+<path d="M0.861252 37.433C0.447318 37.1945 0.136166 36.6796 0.144576 36.1767V29.3173C0.144576 29.3173 22.4662 29.3173 28.165 29.3173C29.376 29.3173 29.3769 30.4269 29.3769 30.491C29.3779 31.0068 29.1611 31.2212 28.9453 31.4364L23.3445 36.9969C22.9437 37.3959 22.4055 37.6223 21.8374 37.6232H1.52934C1.30135 37.6241 1.07429 37.5601 0.861252 37.433Z" fill="#1904DA"></path>
+<path d="M113.481 56.7875H119.466V19.8683C119.486 19.5435 119.466 19.216 119.466 18.8857C119.466 9.86165 112.118 2.54572 103.03 2.54572C93.9423 2.54572 86.5756 9.86165 86.5756 18.8866C86.5756 27.9116 93.9432 35.2266 103.031 35.2266H103.864L109.918 29.2421H103.49H103.032C97.2725 29.2421 92.6033 24.6058 92.6033 18.8866C92.6033 13.1675 97.2715 8.53114 103.031 8.53114C108.791 8.53114 113.482 13.1675 113.482 18.8866V56.7875H113.481Z" fill="#07242D"></path>
+<path d="M151.332 2.54663V19.0889C151.332 24.8646 146.616 29.5706 140.8 29.5706C134.983 29.5706 130.263 24.8646 130.263 19.0889V2.54663H124.431V19.0889C124.431 19.0889 124.431 19.0898 124.431 19.1019C124.431 28.0842 131.754 35.3769 140.8 35.3769C149.846 35.3769 157.176 28.1065 157.176 19.1241C157.176 19.1121 157.176 19.0889 157.176 19.0889V2.54663H151.332Z" fill="#07242D"></path>
+<path d="M80.6319 13.3541C74.1173 -3.73005 48.872 0.418275 48.4908 18.9368C48.5011 22.9153 49.8765 26.4828 52.276 29.3879C55.0913 32.7819 59.2512 35.0346 63.9475 35.3418C64.3081 35.365 64.6725 35.3779 65.0369 35.3779H81.613C81.613 35.3779 81.613 18.935 81.613 18.9359C81.6121 17.0403 81.2813 15.1374 80.6319 13.3541ZM75.4862 29.3758C75.4862 29.3758 67.9541 29.3758 65.05 29.3758C59.2578 29.3758 54.5624 24.6875 54.5624 18.9368C54.5624 16.054 55.7416 13.471 57.6478 11.5856L57.6497 11.5875C64.1269 5.07041 75.5273 9.64275 75.4862 18.9368C75.4862 21.8186 75.4862 29.3758 75.4862 29.3758Z" fill="#07242D"></path>
+<path d="M194.281 13.3531C187.766 -3.73102 162.521 0.417299 162.14 18.9358C162.15 22.9144 163.525 26.4819 165.925 29.3869C168.74 32.7809 172.9 35.0337 177.596 35.3408C177.957 35.364 178.321 35.377 178.686 35.377H195.262C195.262 35.377 195.262 18.934 195.262 18.9349C195.261 17.0394 194.93 15.1364 194.281 13.3531ZM189.135 29.3748C189.135 29.3748 181.603 29.3748 178.699 29.3748C172.907 29.3748 168.211 24.6865 168.211 18.9358C168.211 16.0531 169.39 13.47 171.297 11.5846L171.298 11.5865C177.776 5.06943 189.176 9.64177 189.135 18.9358C189.135 21.8177 189.135 29.3748 189.135 29.3748Z" fill="#07242D"></path>
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="paint0_linear_2567_377" x1="23.5894" x2="31.6427" y1="10.2101" y2="2.09979">
+<stop stop-color="#FF445F" stop-opacity="0"></stop>
+<stop offset="1" stop-color="#FF445F" stop-opacity="0.3"></stop>
+</lineargradient>
+<lineargradient gradientunits="userSpaceOnUse" id="paint1_linear_2567_377" x1="29.4981" x2="21.0486" y1="4.34307" y2="4.34306">
+<stop stop-color="#FF445F" stop-opacity="0.4"></stop>
+<stop offset="0.00761682" stop-color="#FF445F" stop-opacity="0.3873"></stop>
+<stop offset="0.2406" stop-color="#FF445F" stop-opacity="0"></stop>
+</lineargradient>
+<lineargradient gradientunits="userSpaceOnUse" id="paint2_linear_2567_377" x1="1.81734" x2="10.4298" y1="31.8327" y2="23.1992">
+<stop stop-color="#1904DA" stop-opacity="0.2"></stop>
+<stop offset="1" stop-color="#1904DA" stop-opacity="0"></stop>
+</lineargradient>
+<lineargradient gradientunits="userSpaceOnUse" id="paint3_linear_2567_377" x1="4.3806" x2="4.3806" y1="29.3177" y2="20.9067">
+<stop stop-color="#1904DA" stop-opacity="0.3"></stop>
+<stop offset="0.00761682" stop-color="#1904DA" stop-opacity="0.2905"></stop>
+<stop offset="0.2406" stop-color="#1904DA" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</header>
+<main class="content">
+<div class="title">
+<h1>Scan Report: ppscon/bakery/bakery-app:b4b145babc303b7ab31b80674c337af1cef9243d</h1>
+<span>From Registry: Github</span>
+</div>
+<div class="tabs">
+<input checked="" class="tab" id="48580-tab1" name="tabs-48580" type="radio"/>
+<label class="label" for="48580-tab1">Risk</label>
+<div class="panel">
+<div class="image-status box">
+<div class="image-status-list">
+<svg class="icon-check text-success" version="1.1" viewbox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<title>check-circle</title>
+<path d="M31.644 2.209l-15.989 18.656c-0.241 0.281-0.59 0.448-0.961 0.463-0.017 0.001-0.033 0.001-0.051 0.001-0.352 0-0.692-0.141-0.942-0.391l-6.662-6.662c-0.521-0.519-0.521-1.364 0-1.885 0.521-0.519 1.364-0.519 1.883 0l5.646 5.645 15.054-17.562c0.479-0.558 1.321-0.624 1.878-0.145 0.56 0.479 0.624 1.32 0.145 1.879zM19.428 6.207c-1.341-0.601-2.818-0.869-4.785-0.869-6.613 0-11.992 5.381-11.992 11.992 0 6.614 5.38 11.994 11.992 11.994s11.992-5.38 11.992-11.994c0-1.229-0.181-2.298-0.605-3.577-0.233-0.697 0.146-1.452 0.843-1.685 0.696-0.23 1.452 0.147 1.684 0.845 0.514 1.545 0.743 2.907 0.743 4.417 0 8.082-6.575 14.659-14.657 14.659s-14.657-6.576-14.657-14.659c0-8.082 6.575-14.657 14.657-14.657 2.329 0 4.195 0.349 5.874 1.1 0.672 0.3 0.973 1.088 0.673 1.76-0.301 0.672-1.087 0.973-1.762 0.673z"></path>
+</svg>
+<h2 class="text-success">Image Is Compliant</h2>
+<h5 class="black-clr text-bold">Image scanned on May 13, 2025 10:5</h5>
+</div>
+<div class="image-status-list font-small-px">
+<h5 class="image-status-title">Vulnerabilities</h5>
+<ul class="vuln-nums clearfix black-clr text-bold">
+<li class="vuln">
+<span class="square darkred"></span>
+<span>4 Critical</span>
+</li>
+<li class="vuln">
+<span class="square red"></span>
+<span>32 High</span>
+</li>
+<li class="vuln">
+<span class="square orange"></span>
+<span>41 Medium</span>
+</li>
+<li class="vuln">
+<span class="square yellow"></span>
+<span>1 Low</span>
+</li>
+<li class="vuln">
+<span class="square grey"></span>
+<span>5 Negligible</span>
+</li>
+</ul>
+</div>
+<div class="image-status-list font-small-px">
+<h5 class="image-status-title">Sensitive Data</h5>
+<ul class="vuln-nums clearfix">
+<li class="vuln">
+<span> <svg fill="none" height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M7.20599 13.8577C5.04869 13.8577 3.16105 13.3933 1.99251 12.6891V10.2472C3.2809 10.8914 5.09363 11.2809 7.1161 11.2809C7.38577 11.2809 7.64045 11.2809 7.91011 11.2659V9.16854C7.68539 9.18352 7.44569 9.18352 7.20599 9.18352C5.04869 9.18352 3.16105 8.7191 1.99251 8.01498V5.73783C3.2809 6.38202 5.09363 6.77154 7.1161 6.77154C9.13858 6.77154 10.9663 6.36704 12.2697 5.72285V7.97004H14.2622V3.61049C14.2622 3.59551 14.2622 3.58052 14.2472 3.56554C14.2472 3.50562 14.2622 3.44569 14.2622 3.40075C14.2472 1.51311 11.0412 0 7.1161 0C3.17603 0 0 1.51311 0 3.38577C0 3.44569 0 3.50562 0.0149813 3.55056C0 3.58052 0 3.59551 0 3.61049V12.7041C0 12.7191 0 12.7341 0.0149813 12.7491C0.179775 14.5618 3.29588 16 7.1161 16C8.34457 16 9.49813 15.8502 10.5019 15.5955L8.70412 13.7978C8.22472 13.8277 7.71536 13.8577 7.20599 13.8577ZM7.1161 1.70786C9.75281 1.70786 11.8951 2.38202 11.8951 3.22097C11.8951 4.05993 9.97753 4.46442 7.1161 4.46442C4.25468 4.46442 2.33708 4.05993 2.33708 3.22097C2.3221 2.38202 4.46442 1.70786 7.1161 1.70786ZM15.7603 9.42322V9.40824C15.7453 9.06367 15.4757 8.79401 15.1311 8.79401H15.1161V8.77903H9.21348V8.79401C8.86891 8.79401 8.59925 9.07865 8.59925 9.42322H8.58427V12.4045L8.68914 12.5243L9.03371 12.8689L9.8427 13.6929V13.6779L12.1498 15.985L12.1648 15.97L12.1798 15.985L15.6554 12.5094L15.6404 12.4944L15.7603 12.3745V9.42322ZM14.4869 11.8801L12.1798 14.2022L9.85768 11.8801V10.0524H14.4869V11.8801Z" fill="black" fill-rule="evenodd"></path>
+</svg>
+</span>
+<span class="black-clr">0</span>
+</li>
+</ul>
+</div>
+<div class="image-status-list font-small-px">
+<h5 class="image-status-title">Malware</h5>
+<ul class="vuln-nums clearfix">
+<li class="vuln">
+<span><svg fill="none" height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M7.97742 2.1524C8.77516 2.1524 9.5428 2.31797 10.2352 2.619C10.2502 2.49859 10.2653 2.37818 10.2653 2.25776C10.2803 1.00847 9.25682 0 8.00753 0C6.75823 0 5.73471 1.00847 5.73471 2.27281C5.73471 2.39323 5.74976 2.49859 5.76482 2.60395C6.4572 2.31797 7.19473 2.1524 7.97742 2.1524ZM13.1552 11.063V9.09125H16V6.72813H13.0047C12.8692 6.20132 12.6585 5.70461 12.3876 5.25306L15.9699 1.67074L14.2841 0L10.7168 3.58231C9.93415 3.08561 9.00094 2.81468 8.00753 2.81468C6.99906 2.81468 6.06585 3.10066 5.26811 3.59737L1.67074 0L0 1.67074L3.61242 5.28316C3.34149 5.71966 3.13076 6.21637 3.01035 6.72813H0V9.09125H2.84478V11.063H2.85983C2.85983 11.1834 2.87488 11.3039 2.88993 11.4243L0 14.3142L1.67074 15.9849L3.82314 13.8476C4.75635 15.1571 6.27658 16 8.00753 16C9.72342 16 11.2437 15.1571 12.1769 13.8627L14.2992 15.9849L15.9699 14.3142L13.1101 11.4544C13.1251 11.334 13.1402 11.1985 13.1552 11.063ZM10.2653 11.063C10.2051 12.2672 9.22672 13.2455 8.00753 13.2455C6.78833 13.2455 5.79492 12.2822 5.76482 11.063H5.74976V7.85701H5.76482C5.80997 6.66792 6.80339 5.70461 8.00753 5.70461C9.21167 5.70461 10.2051 6.65287 10.2502 7.85701H10.2653V11.063Z" fill="black" fill-rule="evenodd"></path>
+</svg>
+</span>
+<span class="black-clr">0</span>
+</li>
+</ul>
+</div><div class="image-status-list font-small-px">
+<h5 class="image-status-title">DTA</h5>
+<ul class="vuln-nums clearfix">
+<li class="vuln">
+<span><svg fill="none" height="16" viewbox="0 0 15 16" width="15" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M8.60788 0.851837L7.11994 0L5.62894 0.846302L6.31276 2.05104L7.117 1.59455L7.91963 2.05405L8.60788 0.851837ZM5.06982 1.16367L5.75363 2.3684L2.77163 4.06101L2.08782 2.85627L5.06982 1.16367ZM1.52869 3.17363L2.21251 4.37837L1.42152 4.82734L1.41991 6.51243L0.034632 5.84798L0.0376907 4.01993L1.52869 3.17363ZM14.1846 5.74409L12.8009 6.51243V4.84856L12.0115 4.3966L12.6997 3.19439L14.1877 4.04623L14.1846 5.74409ZM12.1417 2.87495L11.4535 4.07716L8.4776 2.37348L9.16586 1.17128L12.1417 2.87495ZM11.1031 6.38805L11.5602 6.12611L12.0173 5.86417L11.556 5.60959L11.0948 5.35502L10.1028 4.80752L9.88524 5.20169L9.66769 5.59586L10.1805 5.87889L9.67112 6.17078L9.89496 6.56141L10.1188 6.95205L11.1031 6.38805ZM8.97968 7.60477L8.75584 7.21414L8.53201 6.82351L7.0899 7.64985L5.65751 6.79684L5.42715 7.18366L5.1968 7.57049L7.08116 8.69264L8.97968 7.60477ZM4.06618 6.89719L4.29654 6.51037L4.52689 6.12355L3.99717 5.8081L4.48241 5.54258L4.26629 5.14762L4.05017 4.75267L3.09894 5.27319L2.64038 5.52411L2.18182 5.77504L2.63094 6.04249L3.08005 6.30995L4.06618 6.89719ZM5.17118 4.13925L5.3873 4.5342L5.60342 4.92915L7.03767 4.14433L8.51897 4.96187L8.73652 4.5677L8.95406 4.17353L7.03953 3.11688L5.17118 4.13925ZM14.1516 6.58282V6.75259C14.1539 6.75259 14.156 6.69218 14.158 6.63175C14.1601 6.57155 14.1622 6.51134 14.1645 6.51082L14.1516 12.615L7.06871 16L0 12.5944L0.0117753 6.73681L1.89818 7.64709L1.88876 11.5329L6.21382 13.6302L6.17919 9.62326C6.17919 9.52557 6.16872 9.52557 6.16872 9.52557C6.16872 9.52557 6.17254 9.52557 6.17702 9.51988L7.06753 10.1372L8.05901 9.52557V13.5561L12.2334 11.5484L12.2428 7.66458L14.1516 6.58282Z" fill="black" fill-rule="evenodd"></path>
+</svg>
+</span>
+<span class="black-clr">0</span>
+</li>
+</ul>
+</div></div>
+<br/>
+<br/>
+<div class="assurance-checker black-clr">
+<div class="assurance-header">
+<h3>Actions Needed</h3>
+</div>
+<div>
+</div>
+</div>
+</div>
+<input class="tab" id="48580-tab2" name="tabs-48580" type="radio"/>
+<label class="label" for="48580-tab2">Vulnerabilities</label>
+<div class="panel">
+<input checked="false" class="group-by" id="48580-group" type="checkbox"/>
+<label class="label" for="48580-group">Group by resource</label>
+<div class="wrapper">
+<div class="image-status p10">
+<div>
+<ul class="vuln-nums clearfix black-clr text-bold">
+<li class="vuln">
+<span class="square darkred"></span>
+<span class="vuln-align">4 Critical</span>
+</li>
+<li class="vuln">
+<span class="square red"></span>
+<span class="vuln-align">32 High</span>
+</li>
+<li class="vuln">
+<span class="square orange"></span>
+<span class="vuln-align">41 Medium</span>
+</li>
+<li class="vuln">
+<span class="square yellow"></span>
+<span class="vuln-align">1 Low</span>
+</li>
+<li class="vuln">
+<span class="square grey"></span>
+<span>5 Negligible</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="resources mt20">
+<div class="headers flex mb10">
+<span class="flex1">Resource</span>
+<span class="flex1">Resource Path</span>
+<span class="flex1">Type</span>
+<span class="flex1">Version</span>
+<span class="flex1">Format</span>
+<span class="flex1">Arch</span>
+<span class="flex1">License</span>
+</div>
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand17-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand17-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									@babel/helpers
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/@babel/helpers</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">7.14.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.2</span></td>
+<td>7.26.10, 8.0.0-alpha.17</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+</div>
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand33-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand33-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									@babel/traverse
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/@babel/traverse</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">7.14.2</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-45133" target="_blank">CVE-2023-45133</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.8</span></td>
+<td>7.23.2, 8.0.0-alpha.4</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+</div>
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand137-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand137-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									body-parser
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/body-parser</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.19.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-45590" target="_blank">CVE-2024-45590</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>1.20.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+</div>
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand143-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand143-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									braces
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/braces</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">3.0.2</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4068" target="_blank">CVE-2024-4068</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.0.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+</div>
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand144-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand144-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									braces
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/sane/node_modules/braces</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">2.3.2</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4068" target="_blank">CVE-2024-4068</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.0.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+</main></div>
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand150-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand150-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									busybox
+								
+							</label><span class="flex1 data-item"></span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.36.1-r2</span>
+<span class="flex1 data-item">apk</span>
+<span class="flex1 data-item">x86_64</span>
+<span class="flex1 data-item">GPL-2.0</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42363" target="_blank">CVE-2023-42363</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42364" target="_blank">CVE-2023-42364</a>
+</td>
+<td>
+<span> </span></td></tr></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42366" target="_blank">CVE-2023-42366</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42365" target="_blank">CVE-2023-42365</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr>
+
+
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand151-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand151-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									busybox-binsh
+								
+							</label><span class="flex1 data-item"></span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.36.1-r2</span>
+<span class="flex1 data-item">apk</span>
+<span class="flex1 data-item">x86_64</span>
+<span class="flex1 data-item">GPL-2.0</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42366" target="_blank">CVE-2023-42366</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42364" target="_blank">CVE-2023-42364</a>
+</td>
+<td>
+<span> </span></td></tr></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42363" target="_blank">CVE-2023-42363</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42365" target="_blank">CVE-2023-42365</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr>
+
+
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand155-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand155-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									cache-base
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/cache-base</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.0.1</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+											CVE-2020-28275</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>None</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand198-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand198-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									cookie
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/cookie</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">0.4.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+											CVE-2024-47764</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>0.7.0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand203-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand203-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									cross-spawn
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/cross-spawn</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">7.0.3</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21538" target="_blank">CVE-2024-21538</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>6.0.6, 7.0.5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand204-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand204-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									cross-spawn
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/sane/node_modules/cross-spawn</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">6.0.5</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21538" target="_blank">CVE-2024-21538</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>6.0.6, 7.0.5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand222-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand222-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									decode-uri-component
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/decode-uri-component</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">0.2.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-38900" target="_blank">CVE-2022-38900</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>0.2.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-38778" target="_blank">CVE-2022-38778</a>
+</td>
+<td>
+<span> </span></td></tr></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>0.2.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand272-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand272-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									express
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/express</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">4.17.1</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-24999" target="_blank">CVE-2022-24999</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>4.17.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-29041" target="_blank">CVE-2024-29041</a>
+</td>
+<td>
+<span> </span></td></tr></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.1</span></td>
+<td>4.19.2, 5.0.0-beta.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-43796" target="_blank">CVE-2024-43796</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.7</span></td>
+<td>4.20.0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr>
+
+
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand293-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand293-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									formidable
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/formidable</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">2.1.2</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2025-46653" target="_blank">CVE-2025-46653</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity low">low</span>
+</td>
+<td><span>3.1</span></td>
+<td>3.5.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand357-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand357-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									ip
+								
+							</label><span class="flex1 data-item">/usr/local/lib/node_modules/npm/node_modules/ip</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">2.0.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-29415" target="_blank">CVE-2024-29415</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.1</span></td>
+<td>None</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand452-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand452-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									json5
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/json5</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">2.2.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-46175" target="_blank">CVE-2022-46175</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.8</span></td>
+<td>1.0.2, 2.2.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand480-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand480-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									libcrypto3
+								
+							</label><span class="flex1 data-item"></span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">3.1.2-r0</span>
+<span class="flex1 data-item">apk</span>
+<span class="flex1 data-item">x86_64</span>
+<span class="flex1 data-item">Apache-2.0</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-5535" target="_blank">CVE-2024-5535</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity critical">critical</span>
+</td>
+<td><span>9.1</span></td>
+<td>3.1.6-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-5363" target="_blank">CVE-2023-5363</a>
+</td>
+<td>
+<span> </span></td></tr></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.4-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4741" target="_blank">CVE-2024-4741</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.6-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-6119" target="_blank">CVE-2024-6119</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.7-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-5678" target="_blank">CVE-2023-5678</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>3.1.4-r1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-13176" target="_blank">CVE-2024-13176</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.1</span></td>
+<td>3.1.8-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-6129" target="_blank">CVE-2023-6129</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>3.1.4-r3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-6237" target="_blank">CVE-2023-6237</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.9</span></td>
+<td>3.1.4-r4</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-9143" target="_blank">CVE-2024-9143</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.3</span></td>
+<td>3.1.7-r1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4603" target="_blank">CVE-2024-4603</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>3.1.5-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-0727" target="_blank">CVE-2024-0727</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>3.1.4-r5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-2511" target="_blank">CVE-2024-2511</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.9</span></td>
+<td>3.1.4-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr>
+
+
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand481-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand481-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									libgcc
+								
+							</label><span class="flex1 data-item"></span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">12.2.1_git20220924-r10</span>
+<span class="flex1 data-item">apk</span>
+<span class="flex1 data-item">x86_64</span>
+<span class="flex1 data-item">GPL-2.0,LGPL-2.1-or-later</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-4039" target="_blank">CVE-2023-4039</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.8</span></td>
+<td>13.2.1_git20231014-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand493-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand493-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									libssl3
+								
+							</label><span class="flex1 data-item"></span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">3.1.2-r0</span>
+<span class="flex1 data-item">apk</span>
+<span class="flex1 data-item">x86_64</span>
+<span class="flex1 data-item">Apache-2.0</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-5535" target="_blank">CVE-2024-5535</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity critical">critical</span>
+</td>
+<td><span>9.1</span></td>
+<td>3.1.6-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-5363" target="_blank">CVE-2023-5363</a>
+</td>
+<td>
+<span> </span></td></tr></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.4-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4741" target="_blank">CVE-2024-4741</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.6-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-6119" target="_blank">CVE-2024-6119</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.7-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-5678" target="_blank">CVE-2023-5678</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>3.1.4-r1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4603" target="_blank">CVE-2024-4603</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>3.1.5-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-6237" target="_blank">CVE-2023-6237</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.9</span></td>
+<td>3.1.4-r4</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-6129" target="_blank">CVE-2023-6129</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>3.1.4-r3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-2511" target="_blank">CVE-2024-2511</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.9</span></td>
+<td>3.1.4-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-0727" target="_blank">CVE-2024-0727</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>3.1.4-r5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-13176" target="_blank">CVE-2024-13176</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.1</span></td>
+<td>3.1.8-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-9143" target="_blank">CVE-2024-9143</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.3</span></td>
+<td>3.1.7-r1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr>
+
+
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand494-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand494-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									libstdc++
+								
+							</label><span class="flex1 data-item"></span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">12.2.1_git20220924-r10</span>
+<span class="flex1 data-item">apk</span>
+<span class="flex1 data-item">x86_64</span>
+<span class="flex1 data-item">GPL-2.0,LGPL-2.1-or-later</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-4039" target="_blank">CVE-2023-4039</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.8</span></td>
+<td>13.2.1_git20231014-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand497-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand497-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									lodash
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/lodash</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">4.17.21</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+											CVE-2021-41720</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>None</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand510-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand510-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									micromatch
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/micromatch</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">4.0.4</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4067" target="_blank">CVE-2024-4067</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>4.0.8</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand511-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand511-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									micromatch
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/sane/node_modules/micromatch</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">3.1.10</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4067" target="_blank">CVE-2024-4067</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>4.0.8</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand518-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand518-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									minimatch
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/minimatch</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">3.0.4</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-3517" target="_blank">CVE-2022-3517</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.0.5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand521-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand521-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									minimist
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/minimist</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.2.5</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44906" target="_blank">CVE-2021-44906</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity critical">critical</span>
+</td>
+<td><span>9.8</span></td>
+<td>1.2.6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand546-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand546-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									musl
+								
+							</label><span class="flex1 data-item"></span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.2.4-r1</span>
+<span class="flex1 data-item">apk</span>
+<span class="flex1 data-item">x86_64</span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2025-26519" target="_blank">CVE-2025-26519</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.1</span></td>
+<td>1.2.4-r3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand547-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand547-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									musl-utils
+								
+							</label><span class="flex1 data-item"></span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.2.4-r1</span>
+<span class="flex1 data-item">apk</span>
+<span class="flex1 data-item">x86_64</span>
+<span class="flex1 data-item">MIT,BSD-2-Clause,GPL-2.0</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2025-26519" target="_blank">CVE-2025-26519</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.1</span></td>
+<td>1.2.4-r3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand616-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand616-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									path-parse
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/path-parse</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.0.6</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2021-23343" target="_blank">CVE-2021-23343</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>1.0.7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand617-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand617-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									path-to-regexp
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/path-to-regexp</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">0.1.7</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+											CVE-2024-52798</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>0.1.12</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand638-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand638-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									qs
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/qs</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">6.7.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">BSD-3-Clause</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-24999" target="_blank">CVE-2022-24999</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>6.10.3, 6.2.4, 6.3.3, 6.4.1, 6.5.3, 6.6.1, 6.7.3, 6.8.3, 6.9.7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+											CVE-2021-44907</td>
+<td>
+<span> </span></td></tr></div>
+
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>6.8.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand675-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand675-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									semver
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/@babel/core/node_modules/semver</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">6.3.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand676-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand676-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									semver
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/make-dir/node_modules/semver</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">6.3.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand677-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand677-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									semver
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/semver</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">5.7.1</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand678-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand678-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									semver
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/node-notifier/node_modules/semver</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">7.3.5</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand679-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand679-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									semver
+								
+							</label><span class="flex1 data-item">/usr/local/lib/node_modules/npm/node_modules/semver</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">7.3.7</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand680-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand680-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									semver
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/jest-snapshot/node_modules/semver</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">7.3.5</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand681-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand681-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									semver
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/istanbul-lib-instrument/node_modules/semver</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">6.3.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand683-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand683-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									semver
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/@babel/helper-compilation-targets/node_modules/semver</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">6.3.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand684-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand684-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									send
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/send</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">0.17.1</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-43799" target="_blank">CVE-2024-43799</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.7</span></td>
+<td>0.19.0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand685-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand685-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									serve-static
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/serve-static</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.14.1</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-43800" target="_blank">CVE-2024-43800</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.7</span></td>
+<td>1.16.0, 2.1.0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand724-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand724-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									ssl_client
+								
+							</label><span class="flex1 data-item"></span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.36.1-r2</span>
+<span class="flex1 data-item">apk</span>
+<span class="flex1 data-item">x86_64</span>
+<span class="flex1 data-item">GPL-2.0</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42364" target="_blank">CVE-2023-42364</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42365" target="_blank">CVE-2023-42365</a>
+</td>
+<td>
+<span> </span></td></tr></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42363" target="_blank">CVE-2023-42363</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42366" target="_blank">CVE-2023-42366</a>
+</td>
+<td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr>
+
+
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand745-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand745-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									tar
+								
+							</label><span class="flex1 data-item">/usr/local/lib/node_modules/npm/node_modules/tar</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">6.1.11</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">ISC</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2020-8244" target="_blank">CVE-2020-8244</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>6.1.12</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-28863" target="_blank">CVE-2024-28863</a>
+</td>
+<td>
+<span> </span></td></tr></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>6.2.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand751-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand751-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									tmpl
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/tmpl</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.0.4</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">BSD-3-Clause</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2021-3777" target="_blank">CVE-2021-3777</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>1.0.5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand758-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand758-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									tough-cookie
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/tough-cookie</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">4.0.0</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">BSD-3-Clause</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-26136" target="_blank">CVE-2023-26136</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity critical">critical</span>
+</td>
+<td><span>9.8</span></td>
+<td>4.1.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand799-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand799-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									word-wrap
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/word-wrap</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">1.2.3</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2023-26115" target="_blank">CVE-2023-26115</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>1.2.4</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+</div>
+
+<div class="table-data flex flex-wrap"><input class="expand" id="48580-expand805-tab2" type="checkbox"/>
+<label class="data-item flex1" for="48580-expand805-tab2">
+<span class="chevron-right">►</span>
+<span class="chevron-down">▼</span>
+								
+									ws
+								
+							</label><span class="flex1 data-item">/usr/src/app/node_modules/ws</span>
+<span class="flex1 data-item">PACKAGE</span>
+<span class="flex1 data-item">7.4.5</span>
+<span class="flex1 data-item">npm</span>
+<span class="flex1 data-item"></span>
+<span class="flex1 data-item">MIT</span>
+<div class="more-info px10">
+<table>
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead>
+<tbody><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2024-37890" target="_blank">CVE-2024-37890</a>
+</td>
+<td>
+<span> </span></td></tr></tbody></table></div>
+
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.2.4, 6.2.3, 7.5.10, 8.17.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td><tr>
+<td>
+<a href="https://nvd.nist.gov/vuln/detail/CVE-2021-32640" target="_blank">CVE-2021-32640</a>
+</td>
+<td>
+<span> </span></td></tr></div>
+
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>5.2.3, 6.2.2, 7.4.6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td>
+
+
+
+
+<table class="table-data vulns" id="cves">
+<thead>
+<tr>
+<th scope="col">Name</th>
+<th scope="col">Resource</th>
+<th scope="col">Custom Severity</th>
+<th scope="col">Severity</th>
+<th scope="col">Score</th>
+<th scope="col">Fix Version</th><th scope="col">Acknowledged</th><th scope="col">Exploit Availability</th>
+<th scope="col">Exploit Type</th>
+<th scope="col">Exploit Reference</th></tr>
+</thead><tbody><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-45133" target="_blank">CVE-2023-45133</a></td><td>@babel/traverse</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.8</span></td>
+<td>7.23.2, 8.0.0-alpha.4</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-45590" target="_blank">CVE-2024-45590</a></td><td>body-parser</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>1.20.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4068" target="_blank">CVE-2024-4068</a></td><td>braces</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.0.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4068" target="_blank">CVE-2024-4068</a></td><td>braces</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.0.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42363" target="_blank">CVE-2023-42363</a></td><td>busybox</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42364" target="_blank">CVE-2023-42364</a></td><td>busybox</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42366" target="_blank">CVE-2023-42366</a></td><td>busybox</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42365" target="_blank">CVE-2023-42365</a></td><td>busybox</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42366" target="_blank">CVE-2023-42366</a></td><td>busybox-binsh</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42364" target="_blank">CVE-2023-42364</a></td><td>busybox-binsh</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42363" target="_blank">CVE-2023-42363</a></td><td>busybox-binsh</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42365" target="_blank">CVE-2023-42365</a></td><td>busybox-binsh</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>CVE-2020-28275</td><td>cache-base</td><td>
+<span> </span>
+</td>
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>None</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>CVE-2024-47764</td><td>cookie</td><td>
+<span> </span>
+</td>
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>0.7.0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21538" target="_blank">CVE-2024-21538</a></td><td>cross-spawn</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>6.0.6, 7.0.5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-21538" target="_blank">CVE-2024-21538</a></td><td>cross-spawn</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>6.0.6, 7.0.5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-38900" target="_blank">CVE-2022-38900</a></td><td>decode-uri-component</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>0.2.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-38778" target="_blank">CVE-2022-38778</a></td><td>decode-uri-component</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>0.2.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-24999" target="_blank">CVE-2022-24999</a></td><td>express</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>4.17.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-29041" target="_blank">CVE-2024-29041</a></td><td>express</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.1</span></td>
+<td>4.19.2, 5.0.0-beta.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-43796" target="_blank">CVE-2024-43796</a></td><td>express</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.7</span></td>
+<td>4.20.0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-46653" target="_blank">CVE-2025-46653</a></td><td>formidable</td><td>
+<span> </span>
+</td>
+<td><span class="severity low">low</span>
+</td>
+<td><span>3.1</span></td>
+<td>3.5.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-29415" target="_blank">CVE-2024-29415</a></td><td>ip</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.1</span></td>
+<td>None</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-46175" target="_blank">CVE-2022-46175</a></td><td>json5</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.8</span></td>
+<td>1.0.2, 2.2.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-5535" target="_blank">CVE-2024-5535</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity critical">critical</span>
+</td>
+<td><span>9.1</span></td>
+<td>3.1.6-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-5363" target="_blank">CVE-2023-5363</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.4-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4741" target="_blank">CVE-2024-4741</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.6-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-6119" target="_blank">CVE-2024-6119</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.7-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-5678" target="_blank">CVE-2023-5678</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>3.1.4-r1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-13176" target="_blank">CVE-2024-13176</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.1</span></td>
+<td>3.1.8-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-6129" target="_blank">CVE-2023-6129</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>3.1.4-r3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-6237" target="_blank">CVE-2023-6237</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.9</span></td>
+<td>3.1.4-r4</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-9143" target="_blank">CVE-2024-9143</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.3</span></td>
+<td>3.1.7-r1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4603" target="_blank">CVE-2024-4603</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>3.1.5-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-0727" target="_blank">CVE-2024-0727</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>3.1.4-r5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-2511" target="_blank">CVE-2024-2511</a></td><td>libcrypto3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.9</span></td>
+<td>3.1.4-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-4039" target="_blank">CVE-2023-4039</a></td><td>libgcc</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.8</span></td>
+<td>13.2.1_git20231014-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-5535" target="_blank">CVE-2024-5535</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity critical">critical</span>
+</td>
+<td><span>9.1</span></td>
+<td>3.1.6-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-5363" target="_blank">CVE-2023-5363</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.4-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4741" target="_blank">CVE-2024-4741</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.6-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-6119" target="_blank">CVE-2024-6119</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.1.7-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-5678" target="_blank">CVE-2023-5678</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>3.1.4-r1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4603" target="_blank">CVE-2024-4603</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>3.1.5-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-6237" target="_blank">CVE-2023-6237</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.9</span></td>
+<td>3.1.4-r4</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-6129" target="_blank">CVE-2023-6129</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>3.1.4-r3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-2511" target="_blank">CVE-2024-2511</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.9</span></td>
+<td>3.1.4-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-0727" target="_blank">CVE-2024-0727</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>3.1.4-r5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-13176" target="_blank">CVE-2024-13176</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.1</span></td>
+<td>3.1.8-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-9143" target="_blank">CVE-2024-9143</a></td><td>libssl3</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.3</span></td>
+<td>3.1.7-r1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-4039" target="_blank">CVE-2023-4039</a></td><td>libstdc++</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.8</span></td>
+<td>13.2.1_git20231014-r0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>CVE-2021-41720</td><td>lodash</td><td>
+<span> </span>
+</td>
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>None</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4067" target="_blank">CVE-2024-4067</a></td><td>micromatch</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>4.0.8</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-4067" target="_blank">CVE-2024-4067</a></td><td>micromatch</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>4.0.8</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-3517" target="_blank">CVE-2022-3517</a></td><td>minimatch</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>3.0.5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44906" target="_blank">CVE-2021-44906</a></td><td>minimist</td><td>
+<span> </span>
+</td>
+<td><span class="severity critical">critical</span>
+</td>
+<td><span>9.8</span></td>
+<td>1.2.6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-26519" target="_blank">CVE-2025-26519</a></td><td>musl</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.1</span></td>
+<td>1.2.4-r3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-26519" target="_blank">CVE-2025-26519</a></td><td>musl-utils</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>8.1</span></td>
+<td>1.2.4-r3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-23343" target="_blank">CVE-2021-23343</a></td><td>path-parse</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>1.0.7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>CVE-2024-52798</td><td>path-to-regexp</td><td>
+<span> </span>
+</td>
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>0.1.12</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-24999" target="_blank">CVE-2022-24999</a></td><td>qs</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>6.10.3, 6.2.4, 6.3.3, 6.4.1, 6.5.3, 6.6.1, 6.7.3, 6.8.3, 6.9.7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td>CVE-2021-44907</td><td>qs</td><td>
+<span> </span>
+</td>
+<td>
+<span class="severity unknown">unknown</span></td>
+<td><span>0</span></td>
+<td>6.8.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a></td><td>semver</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a></td><td>semver</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a></td><td>semver</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a></td><td>semver</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a></td><td>semver</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a></td><td>semver</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a></td><td>semver</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25883" target="_blank">CVE-2022-25883</a></td><td>semver</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.7.2, 6.3.1, 7.5.2</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-43799" target="_blank">CVE-2024-43799</a></td><td>send</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.7</span></td>
+<td>0.19.0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-43800" target="_blank">CVE-2024-43800</a></td><td>serve-static</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>4.7</span></td>
+<td>1.16.0, 2.1.0</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42364" target="_blank">CVE-2023-42364</a></td><td>ssl_client</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42365" target="_blank">CVE-2023-42365</a></td><td>ssl_client</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42363" target="_blank">CVE-2023-42363</a></td><td>ssl_client</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r7</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-42366" target="_blank">CVE-2023-42366</a></td><td>ssl_client</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.5</span></td>
+<td>1.36.1-r6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2020-8244" target="_blank">CVE-2020-8244</a></td><td>tar</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>6.1.12</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-28863" target="_blank">CVE-2024-28863</a></td><td>tar</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>6.5</span></td>
+<td>6.2.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-3777" target="_blank">CVE-2021-3777</a></td><td>tmpl</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>1.0.5</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-26136" target="_blank">CVE-2023-26136</a></td><td>tough-cookie</td><td>
+<span> </span>
+</td>
+<td><span class="severity critical">critical</span>
+</td>
+<td><span>9.8</span></td>
+<td>4.1.3</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-26115" target="_blank">CVE-2023-26115</a></td><td>word-wrap</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>1.2.4</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2024-37890" target="_blank">CVE-2024-37890</a></td><td>ws</td><td>
+<span> </span>
+</td>
+<td><span class="severity high">high</span>
+</td>
+<td><span>7.5</span></td>
+<td>5.2.4, 6.2.3, 7.5.10, 8.17.1</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr><tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-32640" target="_blank">CVE-2021-32640</a></td><td>ws</td><td>
+<span> </span>
+</td>
+<td><span class="severity medium">medium</span>
+</td>
+<td><span>5.3</span></td>
+<td>5.2.3, 6.2.2, 7.4.6</td><td>
+</td><td class="text-center"></td>
+<td class="text-capitalize"></td>
+<td class="text-center"></td></tr></tbody></table>
+
+
+<input class="tab" id="48580-tab4" name="tabs-48580" type="radio"/>
+<label class="label" for="48580-tab4">Sensitive Data</label>
+<div class="panel">
+<div class="wrapper">
+<table class="sensitive-data table-data">
+<thead>
+<tr>
+<th scope="col">Path</th>
+<th scope="col">Type</th>
+</tr>
+</thead>
+<tbody><tr><td colspan="2"><em>No sensitive data found during scan</em></td></tr></tbody>
+</table>
+</div>
+</div>
+<input class="tab" id="48580-tab5" name="tabs-48580" type="radio"/>
+<label class="label" for="48580-tab5">Malware</label>
+<div class="panel">
+<div class="wrapper">
+<table class="sensitive-data table-data">
+<thead>
+<tr>
+<th scope="col">Path</th>
+<th scope="col">Type</th>
+</tr>
+</thead>
+<tbody><tr><td colspan="2"><em>No malware detected during scan</em></td></tr></tbody>
+</table>
+</div>
+</div>
+
+
+
+</body>
+</html>
