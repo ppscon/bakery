@@ -4,85 +4,226 @@ import logging
 import os
 import re
 import sys
-import datetime
+from bs4 import BeautifulSoup
 
+# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def replace_variables(text):
-    """
-    Replace shell-style variables in text with their actual values.
-    
-    Args:
-        text (str): Text containing variables to replace
-        
-    Returns:
-        str: Text with variables replaced
-    """
-    if not text:
-        return text
-    
-    # Replace ${GITHUB_SHA} with the actual commit SHA
-    github_sha = os.environ.get('GITHUB_SHA', 'Unknown commit')
-    text = re.sub(r'\${GITHUB_SHA}', github_sha, text)
-    
-    # Replace $(date) with the actual date
-    current_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    text = re.sub(r'\$\(date\)', current_date, text)
-    
-    return text
+def map_severity_from_score(score_str):
+    """Map a CVE score to a severity level."""
+    try:
+        score = float(score_str)
+        if score >= 9.0:
+            return "Critical"
+        elif score >= 7.0:
+            return "High"
+        elif score >= 4.0:
+            return "Medium"
+        elif score > 0.0:
+            return "Low"
+        else:
+            return "Negligible"
+    except (ValueError, TypeError):
+        # If score can't be converted to float, return Medium as default
+        return "Medium"
 
-def process_index_page(input_file, output_file=None):
+def process_html_report(input_file, output_file):
     """
-    Process the index page, replacing shell variables with their values.
+    Process an HTML report to fix severity values and replace variables.
     
     Args:
-        input_file (str): Path to the input index.html file
-        output_file (str, optional): Path where the processed file should be saved. 
-                                     If None, overwrites the input file.
+        input_file (str): Path to the input HTML file
+        output_file (str): Path where the processed file should be saved
     """
     try:
-        # If output_file is not specified, use the input file
-        if output_file is None:
-            output_file = input_file
-            
-        # Read the input file
         with open(input_file, 'r', encoding='utf-8') as f:
-            content = f.read()
+            html_content = f.read()
+        
+        logging.info(f"[DEBUG] Processing HTML file: {input_file}")
+        
+        # 1. Replace shell-style variables
+        github_sha = os.environ.get('GITHUB_SHA', 'latest')
+        current_date = os.environ.get('BUILD_DATE', 
+                                     os.popen('date "+%Y-%m-%d %H:%M:%S"').read().strip())
+        
+        html_content = re.sub(r'\${GITHUB_SHA}', github_sha, html_content)
+        html_content = re.sub(r'\$\(date\)', current_date, html_content)
+        
+        logging.info(f"[DEBUG] Replaced variables: GITHUB_SHA={github_sha}, date={current_date}")
+        
+        # 2. Parse HTML with BeautifulSoup
+        soup = BeautifulSoup(html_content, 'html.parser')
+        
+        # 3. Fix severity values in the table
+        rows_updated = 0
+        severity_counts = {'Critical': 0, 'High': 0, 'Medium': 0, 'Low': 0, 'Negligible': 0}
+        
+        # Find all table rows
+        for row in soup.find_all('tr'):
+            cells = row.find_all('td')
             
-        logging.info(f"Read index page from {input_file}")
+            # Skip header rows or rows with insufficient cells
+            if not cells or len(cells) < 6:
+                continue
+                
+            # Assuming structure: Package, Path, Version, CVE/Vulnerability, Severity, Score, Fix Version
+            # Index mapping might differ based on your table structure
+            try:
+                score_cell = cells[5]  # Score is the 6th column (index 5)
+                severity_cell = cells[4]  # Severity is the 5th column (index 4)
+                
+                score_text = score_cell.get_text(strip=True)
+                severity_text = severity_cell.get_text(strip=True)
+                
+                # Only update if severity is "Unknown" and we have a score
+                if severity_text == "Unknown":
+                    # For score 0 or non-numeric scores, default to Medium
+                    if not score_text or score_text == "0":
+                        new_severity = "Medium"
+                    else:
+                        new_severity = map_severity_from_score(score_text)
+                    
+                    # Update the text and class in the severity cell
+                    severity_span = severity_cell.find('span', class_='severity-badge')
+                    if severity_span:
+                        # Remove old class
+                        for cls in list(severity_span.get('class', [])):
+                            if cls != 'severity-badge':
+                                severity_span['class'].remove(cls)
+                        
+                        # Add new class and text
+                        severity_span['class'].append(new_severity.lower())
+                        severity_span.string = new_severity
+                        
+                        rows_updated += 1
+                        severity_counts[new_severity] += 1
+                    else:
+                        # If span doesn't exist, create a new one
+                        new_span = soup.new_tag('span')
+                        new_span['class'] = ['severity-badge', new_severity.lower()]
+                        new_span.string = new_severity
+                        severity_cell.clear()
+                        severity_cell.append(new_span)
+                        
+                        rows_updated += 1
+                        severity_counts[new_severity] += 1
+            except Exception as e:
+                logging.warning(f"[DEBUG] Error processing row: {str(e)}")
+                continue
         
-        # Replace variables
-        processed_content = replace_variables(content)
+        logging.info(f"[DEBUG] Updated {rows_updated} severity values")
+        logging.info(f"[DEBUG] Severity counts: {severity_counts}")
         
-        # Check if any replacements were made
-        if processed_content == content:
-            logging.warning("No variables were replaced in the index page")
-        else:
-            logging.info("Successfully replaced variables in the index page")
+        # 4. Update the summary metrics in the page
+        summary_cards = soup.find_all('div', class_='summary-card')
+        for card in summary_cards:
+            if card.find('h3') and card.find('h3').get_text() == 'Severity Distribution':
+                # Update the summary card with our counts
+                paragraphs = card.find_all('p')
+                for p in paragraphs:
+                    text = p.get_text()
+                    if 'Critical:' in text:
+                        p.clear()
+                        p.append(soup.new_tag('strong'))
+                        p.strong.string = 'Critical:'
+                        p.append(f" {severity_counts['Critical']}")
+                    elif 'High:' in text:
+                        p.clear()
+                        p.append(soup.new_tag('strong'))
+                        p.strong.string = 'High:'
+                        p.append(f" {severity_counts['High']}")
+                    elif 'Medium:' in text:
+                        p.clear()
+                        p.append(soup.new_tag('strong'))
+                        p.strong.string = 'Medium:'
+                        p.append(f" {severity_counts['Medium']}")
+                    elif 'Low:' in text:
+                        p.clear()
+                        p.append(soup.new_tag('strong'))
+                        p.strong.string = 'Low:'
+                        p.append(f" {severity_counts['Low']}")
+                    elif 'Negligible:' in text:
+                        p.clear()
+                        p.append(soup.new_tag('strong'))
+                        p.strong.string = 'Negligible:'
+                        p.append(f" {severity_counts['Negligible']}")
         
-        # Write the output file
+        # 5. Update the severity chart
+        total = sum(severity_counts.values())
+        chart = soup.find('div', class_='severity-chart')
+        if chart:
+            critical_bar = chart.find('div', class_='severity-critical')
+            high_bar = chart.find('div', class_='severity-high')
+            medium_bar = chart.find('div', class_='severity-medium')
+            low_bar = chart.find('div', class_='severity-low')
+            negligible_bar = chart.find('div', class_='severity-negligible')
+            
+            if critical_bar:
+                critical_width = max(1, (severity_counts['Critical'] / max(1, total) * 100))
+                critical_bar['style'] = f'width: {critical_width}%;'
+                critical_bar.string = str(severity_counts['Critical'])
+                
+            if high_bar:
+                high_width = max(1, (severity_counts['High'] / max(1, total) * 100))
+                high_bar['style'] = f'width: {high_width}%;'
+                high_bar.string = str(severity_counts['High'])
+                
+            if medium_bar:
+                medium_width = max(1, (severity_counts['Medium'] / max(1, total) * 100))
+                medium_bar['style'] = f'width: {medium_width}%;'
+                medium_bar.string = str(severity_counts['Medium'])
+                
+            if low_bar:
+                low_width = max(1, (severity_counts['Low'] / max(1, total) * 100))
+                low_bar['style'] = f'width: {low_width}%;'
+                low_bar.string = str(severity_counts['Low'])
+                
+            if negligible_bar:
+                negligible_width = max(1, (severity_counts['Negligible'] / max(1, total) * 100))
+                negligible_bar['style'] = f'width: {negligible_width}%;'
+                negligible_bar.string = str(severity_counts['Negligible'])
+        
+        # 6. Change the title to "Curated Vulnerability Report" if needed
+        title_tag = soup.find('title')
+        if title_tag and "Elegant" in title_tag.string:
+            title_tag.string = "Curated Vulnerability Report"
+            
+        h1_tag = soup.find('h1')
+        if h1_tag and "Elegant" in h1_tag.get_text():
+            for child in list(h1_tag.children):
+                if isinstance(child, str) and "Elegant" in child:
+                    new_text = child.replace("Elegant Security Report", "Curated Vulnerability Report")
+                    h1_tag.contents[h1_tag.contents.index(child)] = new_text
+        
+        # 7. Write the processed file
         with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(processed_content)
-            
-        logging.info(f"Processed index page saved to {output_file}")
+            f.write(str(soup))
+        
+        logging.info(f"[DEBUG] Saved processed report to {output_file}")
+        
+        # Create a backup of the original for debugging
+        backup_file = f"{input_file}.bak"
+        with open(backup_file, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        
+        logging.info(f"[DEBUG] Created backup of original file at {backup_file}")
         
         return True
         
     except Exception as e:
-        logging.error(f"Error processing index page: {str(e)}")
-        logging.error(f"Exception details: {str(e.__class__.__name__)}: {str(e)}")
+        logging.error(f"Error processing HTML report: {str(e)}")
         import traceback
         logging.error(traceback.format_exc())
         return False
 
 def main():
-    parser = argparse.ArgumentParser(description='Process index.html page, replacing shell variables with their values')
-    parser.add_argument('input_file', help='Path to the input index.html file')
-    parser.add_argument('--output-file', help='Path where the processed file should be saved. If not specified, overwrites the input file')
+    parser = argparse.ArgumentParser(description='Process HTML reports to fix severity values and replace variables')
+    parser.add_argument('input_file', help='Path to the input HTML file')
+    parser.add_argument('output_file', help='Path where the processed file should be saved')
     
     args = parser.parse_args()
     
-    success = process_index_page(args.input_file, args.output_file)
+    success = process_html_report(args.input_file, args.output_file)
     
     sys.exit(0 if success else 1)
 
