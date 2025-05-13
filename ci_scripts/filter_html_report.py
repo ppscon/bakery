@@ -34,22 +34,87 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         # Parse HTML
         soup = BeautifulSoup(html_content, 'html.parser')
         
-        # Find vulnerability sections
+        # Find vulnerability sections - more targeted approach
         removed_count = 0
         for cve_id in ignored_cves:
-            # Look for elements containing the CVE ID
-            vulnerabilities = soup.find_all(string=re.compile(cve_id))
+            # Look for table rows containing the CVE ID
+            vuln_rows = soup.find_all('tr', string=lambda text: text and cve_id in text)
             
-            for vuln in vulnerabilities:
-                # Find the closest container element (likely a div or tr)
-                container = vuln.find_parent(['div', 'tr', 'section', 'table'])
-                if container:
-                    container.decompose()  # Remove the element and its contents
-                    removed_count += 1
+            # If no rows found, look for any elements containing the CVE ID
+            if not vuln_rows:
+                # First try to find td elements containing the CVE
+                vuln_cells = soup.find_all('td', string=lambda text: text and cve_id in text)
+                for cell in vuln_cells:
+                    row = cell.find_parent('tr')
+                    if row:
+                        row.decompose()
+                        removed_count += 1
+                
+                # Then look for any text containing the CVE
+                vuln_elements = soup.find_all(string=lambda text: text and cve_id in text)
+                for element in vuln_elements:
+                    # Try to find the closest parent element that would represent a whole vulnerability entry
+                    container = element.find_parent(['div', 'tr', 'section', 'table', 'li'])
+                    if container:
+                        container.decompose()
+                        removed_count += 1
         
-        # Update any summary statistics if they exist
-        summary_elements = soup.find_all(class_=re.compile("summary|total|count"))
-        # This is a placeholder - actual implementation would depend on HTML structure
+        # Update summary statistics if they exist
+        # Look for elements with numeric content that might be counts
+        count_elements = soup.find_all(string=re.compile(r'\b\d+\b'))
+        for element in count_elements:
+            # Only modify elements that look like they contain just a number
+            if re.match(r'^\s*\d+\s*$', element.strip()):
+                parent = element.parent
+                if parent and ('total' in str(parent).lower() or 'count' in str(parent).lower() or 'summary' in str(parent).lower()):
+                    # This is likely a count element - we could update it, but we'll leave it for now
+                    pass
+                
+        # Add a "Filtered Report" notice to the report
+        if soup.head:
+            # Add custom styling
+            style_tag = soup.new_tag('style')
+            style_tag.string = """
+            .filtered-notice {
+                background-color: #f8f9fa;
+                border-left: 4px solid #28a745;
+                padding: 10px 15px;
+                margin: 20px 0;
+                border-radius: 3px;
+                font-family: Arial, sans-serif;
+            }
+            .filtered-badge {
+                display: inline-block;
+                background-color: #28a745;
+                color: white;
+                padding: 3px 8px;
+                border-radius: 3px;
+                font-size: 0.8em;
+                margin-right: 8px;
+            }
+            """
+            soup.head.append(style_tag)
+        
+        # Add a notice at the top of the body that this is a filtered report
+        if soup.body:
+            notice_div = soup.new_tag('div')
+            notice_div['class'] = 'filtered-notice'
+            
+            badge_span = soup.new_tag('span')
+            badge_span['class'] = 'filtered-badge'
+            badge_span.string = 'FILTERED'
+            
+            notice_div.append(badge_span)
+            notice_div.append(' This report has been filtered to exclude ignored vulnerabilities')
+            
+            # Add details of removed CVEs
+            if removed_count > 0:
+                cve_list = soup.new_tag('p')
+                cve_list.string = f"Removed {removed_count} entries related to ignored vulnerabilities: {', '.join(ignored_cves)}"
+                notice_div.append(cve_list)
+            
+            # Insert at the beginning of the body
+            soup.body.insert(0, notice_div)
         
         # Write the filtered report
         with open(output_file, 'w', encoding='utf-8') as f:
