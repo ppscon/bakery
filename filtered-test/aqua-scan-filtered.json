@@ -1,0 +1,3095 @@
+{
+  "image": "ppscon/bakery/bakery-app:b4b145babc303b7ab31b80674c337af1cef9243d",
+  "registry": "Github",
+  "scan_started": {
+    "seconds": 1747130708,
+    "nanos": 284319701
+  },
+  "scan_duration": 1747130666,
+  "digest": "sha256:c89ccfd04a2df9d15fe5e51d448afcbfefce709995199563aa2ebd8793d2bb2c",
+  "metadata": {
+    "repo_digests": [
+      "ghcr.io/ppscon/bakery/bakery-app@sha256:7df1fdb5fa4eb723231c68f5bf946eaf6a57291add33e4f67d8f4ce308f2c3f5"
+    ]
+  },
+  "os": "alpine",
+  "version": "3.18.3",
+  "resources": [
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/@babel/helpers",
+        "name": "@babel/helpers",
+        "version": "7.14.0",
+        "cpe": "pkg:/npm:*:@babel/helpers:7.14.0",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": []
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/@babel/traverse",
+        "name": "@babel/traverse",
+        "version": "7.14.2",
+        "cpe": "pkg:/npm:*:@babel/traverse:7.14.2",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2023-45133",
+          "type": "vulnerability",
+          "description": "Babel is a compiler for writingJavaScript. In `@babel/traverse` prior to versions 7.23.2 and 8.0.0-alpha.4 and all versions of `babel-traverse`, using Babel to compile code that was specifically crafted by an attacker can lead to arbitrary code execution during compilation, when using plugins that rely on the `path.evaluate()`or `path.evaluateTruthy()` internal Babel methods. Known affected plugins are `@babel/plugin-transform-runtime`; `@babel/preset-env` when using its `useBuiltIns` option; and any \"polyfill provider\" plugin that depends on `@babel/helper-define-polyfill-provider`, such as `babel-plugin-polyfill-corejs3`, `babel-plugin-polyfill-corejs2`, `babel-plugin-polyfill-es-shims`, `babel-plugin-polyfill-regenerator`. No other plugins under the `@babel/` namespace are impacted, but third-party plugins might be. Users that only compile trusted code are not impacted. The vulnerability has been fixed in `@babel/traverse@7.23.2` and `@babel/traverse@8.0.0-alpha.4`. Those who cannot upgrade `@babel/traverse` and are using one of the affected packages mentioned above should upgrade them to their latest version to avoid triggering the vulnerable code path in affected `@babel/traverse` versions: `@babel/plugin-transform-runtime` v7.23.2, `@babel/preset-env` v7.23.2, `@babel/helper-define-polyfill-provider` v0.4.3, `babel-plugin-polyfill-corejs2` v0.4.6, `babel-plugin-polyfill-corejs3` v0.8.5, `babel-plugin-polyfill-es-shims` v0.10.0, `babel-plugin-polyfill-regenerator` v0.5.3.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-45133",
+          "publish_date": "2023-10-12",
+          "modification_date": "2024-11-21",
+          "fix_version": "7.23.2, 8.0.0-alpha.4",
+          "solution": "Upgrade package @babel/traverse to version 7.23.2,8.0.0-alpha.4 or above.",
+          "nvd_score_v3": 8.8,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 8.8,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 8.8",
+          "aqua_score_classification": "NVD CVSS V3 Score: 8.8",
+          "cwe_info": [
+            {
+              "Id": "CWE-184",
+              "name": "Incomplete List of Disallowed Inputs"
+            },
+            {
+              "Id": "CWE-697",
+              "name": "Incorrect Comparison"
+            }
+          ],
+          "epss_score": 0.00052,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/body-parser",
+        "name": "body-parser",
+        "version": "1.19.0",
+        "cpe": "pkg:/npm:*:body-parser:1.19.0",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": []
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/braces",
+        "name": "braces",
+        "version": "3.0.2",
+        "cpe": "pkg:/npm:*:braces:3.0.2",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-4068",
+          "type": "vulnerability",
+          "description": "The NPM package `braces`, versions prior to 3.0.3, fails to limit the number of characters it can handle, which could lead to Memory Exhaustion. In `lib/parse.js,` if a malicious user sends \"imbalanced braces\" as input, the parsing will enter a loop, which will cause the program to start allocating heap memory without freeing it at any moment of the loop. Eventually, the JavaScript heap limit is reached, and the program will crash.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-4068",
+          "publish_date": "2024-05-14",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.0.3",
+          "solution": "Upgrade package braces to version 3.0.3 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1050",
+              "name": "Excessive Platform Resource Consumption within a Loop"
+            },
+            {
+              "Id": "CWE-400",
+              "name": "Uncontrolled Resource Consumption"
+            }
+          ],
+          "epss_score": 0.0047,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/sane/node_modules/braces",
+        "name": "braces",
+        "version": "2.3.2",
+        "cpe": "pkg:/npm:*:braces:2.3.2",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-4068",
+          "type": "vulnerability",
+          "description": "The NPM package `braces`, versions prior to 3.0.3, fails to limit the number of characters it can handle, which could lead to Memory Exhaustion. In `lib/parse.js,` if a malicious user sends \"imbalanced braces\" as input, the parsing will enter a loop, which will cause the program to start allocating heap memory without freeing it at any moment of the loop. Eventually, the JavaScript heap limit is reached, and the program will crash.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-4068",
+          "publish_date": "2024-05-14",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.0.3",
+          "solution": "Upgrade package braces to version 3.0.3 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1050",
+              "name": "Excessive Platform Resource Consumption within a Loop"
+            },
+            {
+              "Id": "CWE-400",
+              "name": "Uncontrolled Resource Consumption"
+            }
+          ],
+          "epss_score": 0.0047,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "apk",
+        "name": "busybox",
+        "version": "1.36.1-r2",
+        "arch": "x86_64",
+        "cpe": "pkg:/alpine:3.18.3:busybox:1.36.1-r2",
+        "license": "GPL-2.0",
+        "layer": "/bin/sh -c #(nop) ADD file:32ff5e7a78b890996ee4681cc0a26185d3e9acdb4eb1e2aaccb2411f922fed6b in / ",
+        "layer_digest": "sha256:4693057ce2364720d39e57e85a5b8e0bd9ac3573716237736d6470ec5b7b7230",
+        "src_name": "busybox",
+        "src_version": "1.36.1-r2"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2023-42363",
+          "type": "vulnerability",
+          "description": "A use-after-free vulnerability was discovered in xasprintf function in xfuncs_printf.c:344 in BusyBox v.1.36.1.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42363",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.36.1-r7",
+          "solution": "Upgrade package busybox to version 1.36.1-r7 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 5375061,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-06-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.00026,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-42364",
+          "type": "vulnerability",
+          "description": "A use-after-free vulnerability in BusyBox v.1.36.1 allows attackers to cause a denial of service via a crafted awk pattern in the awk.c evaluate function.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42364",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.36.1-r7",
+          "solution": "Upgrade package busybox to version 1.36.1-r7 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 5375062,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-06-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.00032,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-42366",
+          "type": "vulnerability",
+          "description": "A heap-buffer-overflow was discovered in BusyBox v.1.36.1 in the next_token function at awk.c:1159.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42366",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-12-06",
+          "fix_version": "1.36.1-r6",
+          "solution": "Upgrade package busybox to version 1.36.1-r6 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 5288105,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-05-19",
+          "cwe_info": [
+            {
+              "Id": "CWE-787",
+              "name": "Out-of-bounds Write"
+            }
+          ],
+          "epss_score": 0.00027,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-42365",
+          "type": "vulnerability",
+          "description": "A use-after-free vulnerability was discovered in BusyBox v.1.36.1 via a crafted awk pattern in the awk.c copyvar function.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42365",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.36.1-r7",
+          "solution": "Upgrade package busybox to version 1.36.1-r7 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 5375063,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-06-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.00032,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "apk",
+        "name": "busybox-binsh",
+        "version": "1.36.1-r2",
+        "arch": "x86_64",
+        "cpe": "pkg:/alpine:3.18.3:busybox-binsh:1.36.1-r2",
+        "license": "GPL-2.0",
+        "layer": "/bin/sh -c #(nop) ADD file:32ff5e7a78b890996ee4681cc0a26185d3e9acdb4eb1e2aaccb2411f922fed6b in / ",
+        "layer_digest": "sha256:4693057ce2364720d39e57e85a5b8e0bd9ac3573716237736d6470ec5b7b7230",
+        "src_name": "busybox",
+        "src_version": "1.36.1-r2"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2023-42366",
+          "type": "vulnerability",
+          "description": "A heap-buffer-overflow was discovered in BusyBox v.1.36.1 in the next_token function at awk.c:1159.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42366",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-12-06",
+          "fix_version": "1.36.1-r6",
+          "solution": "Upgrade package busybox-binsh to version 1.36.1-r6 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "busybox",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-05-19",
+          "cwe_info": [
+            {
+              "Id": "CWE-787",
+              "name": "Out-of-bounds Write"
+            }
+          ],
+          "epss_score": 0.00027,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-42364",
+          "type": "vulnerability",
+          "description": "A use-after-free vulnerability in BusyBox v.1.36.1 allows attackers to cause a denial of service via a crafted awk pattern in the awk.c evaluate function.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42364",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.36.1-r7",
+          "solution": "Upgrade package busybox-binsh to version 1.36.1-r7 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "busybox",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-06-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.00032,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-42363",
+          "type": "vulnerability",
+          "description": "A use-after-free vulnerability was discovered in xasprintf function in xfuncs_printf.c:344 in BusyBox v.1.36.1.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42363",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.36.1-r7",
+          "solution": "Upgrade package busybox-binsh to version 1.36.1-r7 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "busybox",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-06-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.00026,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-42365",
+          "type": "vulnerability",
+          "description": "A use-after-free vulnerability was discovered in BusyBox v.1.36.1 via a crafted awk pattern in the awk.c copyvar function.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42365",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.36.1-r7",
+          "solution": "Upgrade package busybox-binsh to version 1.36.1-r7 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "busybox",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-06-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.00032,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/cache-base",
+        "name": "cache-base",
+        "version": "1.0.1",
+        "cpe": "pkg:/npm:*:cache-base:1.0.1",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2020-28275",
+          "type": "vulnerability",
+          "description": "Rejected reason: DO NOT USE THIS CANDIDATE NUMBER. ConsultIDs: none. Reason: This candidate was withdrawn by its CNA. Further investigation showed that it was not a security issue. Notes: none",
+          "publish_date": "2020-12-29",
+          "modification_date": "2023-11-07",
+          "heuristic_ref_id": 265547
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/cookie",
+        "name": "cookie",
+        "version": "0.4.0",
+        "cpe": "pkg:/npm:*:cookie:0.4.0",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-47764",
+          "type": "vulnerability",
+          "description": "cookie is a basic HTTP cookie parser and serializer for HTTP servers. The cookie name could be used to set other fields of the cookie, resulting in an unexpected cookie value. A similar escape can be used for path and domain, which could be abused to alter other fields of the cookie. Upgrade to 0.7.0, which updates the validation for name, path, and domain.",
+          "publish_date": "2024-10-04",
+          "modification_date": "2024-10-07",
+          "fix_version": "0.7.0",
+          "solution": "Upgrade package cookie to version 0.7.0 or above.",
+          "heuristic_ref_id": 265547,
+          "cwe_info": [
+            {
+              "Id": "CWE-74",
+              "name": "Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection')"
+            }
+          ],
+          "epss_score": 0.0004,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/cross-spawn",
+        "name": "cross-spawn",
+        "version": "7.0.3",
+        "cpe": "pkg:/npm:*:cross-spawn:7.0.3",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-21538",
+          "type": "vulnerability",
+          "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-21538",
+          "publish_date": "2024-11-08",
+          "modification_date": "2024-11-19",
+          "fix_version": "6.0.6, 7.0.5",
+          "solution": "Upgrade package cross-spawn to version 6.0.6,7.0.5 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00132,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/sane/node_modules/cross-spawn",
+        "name": "cross-spawn",
+        "version": "6.0.5",
+        "cpe": "pkg:/npm:*:cross-spawn:6.0.5",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-21538",
+          "type": "vulnerability",
+          "description": "Versions of the package cross-spawn before 7.0.5 are vulnerable to Regular Expression Denial of Service (ReDoS) due to improper input sanitization. An attacker can increase the CPU usage and crash the program by crafting a very large and well crafted string.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-21538",
+          "publish_date": "2024-11-08",
+          "modification_date": "2024-11-19",
+          "fix_version": "6.0.6, 7.0.5",
+          "solution": "Upgrade package cross-spawn to version 6.0.6,7.0.5 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00132,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/decode-uri-component",
+        "name": "decode-uri-component",
+        "version": "0.2.0",
+        "cpe": "pkg:/npm:*:decode-uri-component:0.2.0",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-38900",
+          "type": "vulnerability",
+          "description": "decode-uri-component 0.2.0 is vulnerable to Improper Input Validation resulting in DoS.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-38900",
+          "publish_date": "2022-11-28",
+          "modification_date": "2025-04-25",
+          "fix_version": "0.2.1",
+          "solution": "Upgrade package decode-uri-component to version 0.2.1 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-20",
+              "name": "Improper Input Validation"
+            }
+          ],
+          "epss_score": 0.00325,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2022-38778",
+          "type": "vulnerability",
+          "description": "A flaw (CVE-2022-38900) was discovered in one of Kibana\u2019s third party dependencies, that could allow an authenticated user to perform a request that crashes the Kibana server process.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-38778",
+          "publish_date": "2023-02-08",
+          "modification_date": "2025-03-25",
+          "fix_version": "0.2.1",
+          "solution": "Upgrade package decode-uri-component to version 0.2.1 or above.",
+          "nvd_score_v3": 6.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 6.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 6.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 6.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-20",
+              "name": "Improper Input Validation"
+            }
+          ],
+          "epss_score": 0.00734,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/express",
+        "name": "express",
+        "version": "4.17.1",
+        "cpe": "pkg:/npm:*:express:4.17.1",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-24999",
+          "type": "vulnerability",
+          "description": "qs before 6.10.3, as used in Express before 4.17.3 and other products, allows attackers to cause a Node process hang for an Express application because an __ proto__ key can be used. In many typical Express use cases, an unauthenticated remote attacker can place the attack payload in the query string of the URL that is used to visit the application, such as a[__proto__]=b&a[__proto__]&a[length]=100000000. The fix was backported to qs 6.9.7, 6.8.3, 6.7.3, 6.6.1, 6.5.3, 6.4.1, 6.3.3, and 6.2.4 (and therefore Express 4.17.3, which has \"deps: qs@6.9.7\" in its release description, is not vulnerable).",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-24999",
+          "publish_date": "2022-11-26",
+          "modification_date": "2025-04-29",
+          "fix_version": "4.17.3",
+          "solution": "Upgrade package express to version 4.17.3 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1321",
+              "name": "Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')"
+            }
+          ],
+          "epss_score": 0.02975,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-29041",
+          "type": "vulnerability",
+          "description": "Express.js minimalist web framework for node. Versions of Express.js prior to 4.19.0 and all pre-release alpha and beta versions of 5.0 are affected by an open redirect vulnerability using malformed URLs. When a user of Express performs a redirect using a user-provided URL Express performs an encode [using `encodeurl`](https://github.com/pillarjs/encodeurl) on the contents before passing it to the `location` header. This can cause malformed URLs to be evaluated in unexpected ways by common redirect allow list implementations in Express applications, leading to an Open Redirect via bypass of a properly implemented allow list. The main method impacted is `res.location()` but this is also called from within `res.redirect()`. The vulnerability is fixed in 4.19.2 and 5.0.0-beta.3.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-29041",
+          "publish_date": "2024-03-25",
+          "modification_date": "2024-11-21",
+          "fix_version": "4.19.2, 5.0.0-beta.3",
+          "solution": "Upgrade package express to version 4.19.2,5.0.0-beta.3 or above.",
+          "nvd_score_v3": 6.1,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 6.1,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 6.1",
+          "aqua_score_classification": "NVD CVSS V3 Score: 6.1",
+          "cwe_info": [
+            {
+              "Id": "CWE-1286",
+              "name": "Improper Validation of Syntactic Correctness of Input"
+            },
+            {
+              "Id": "CWE-601",
+              "name": "URL Redirection to Untrusted Site ('Open Redirect')"
+            }
+          ],
+          "epss_score": 0.00081,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-43796",
+          "type": "vulnerability",
+          "description": "Express.js minimalist web framework for node. In express < 4.20.0, passing untrusted user input - even after sanitizing it - to response.redirect() may execute untrusted code. This issue is patched in express 4.20.0.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-43796",
+          "publish_date": "2024-09-10",
+          "modification_date": "2024-09-20",
+          "fix_version": "4.20.0",
+          "solution": "Upgrade package express to version 4.20.0 or above.",
+          "nvd_score_v3": 4.7,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 4.7,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 4.7",
+          "aqua_score_classification": "NVD CVSS V3 Score: 4.7",
+          "cwe_info": [
+            {
+              "Id": "CWE-79",
+              "name": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            }
+          ],
+          "epss_score": 0.00024,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/formidable",
+        "name": "formidable",
+        "version": "2.1.2",
+        "cpe": "pkg:/npm:*:formidable:2.1.2",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2025-46653",
+          "type": "vulnerability",
+          "description": "Formidable (aka node-formidable) 2.1.0 through 3.x before 3.5.3 relies on hexoid to prevent guessing of filenames for untrusted executable content; however, hexoid is documented as not \"cryptographically secure.\" (Also, there is a scenario in which only the last two characters of a hexoid string need to be guessed, but this is not often relevant.) NOTE: this does not imply that, in a typical use case, attackers will be able to exploit any hexoid behavior to upload and execute their own content.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2025-46653",
+          "publish_date": "2025-04-26",
+          "modification_date": "2025-04-29",
+          "fix_version": "3.5.3",
+          "solution": "Upgrade package formidable to version 3.5.3 or above.",
+          "nvd_score_v3": 3.1,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N",
+          "nvd_severity_v3": "low",
+          "aqua_score": 3.1,
+          "aqua_severity": "low",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 3.1",
+          "aqua_score_classification": "NVD CVSS V3 Score: 3.1",
+          "cwe_info": [
+            {
+              "Id": "CWE-338",
+              "name": "Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)"
+            }
+          ],
+          "epss_score": 0.0003,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/local/lib/node_modules/npm/node_modules/ip",
+        "name": "ip",
+        "version": "2.0.0",
+        "cpe": "pkg:/npm:*:ip:2.0.0",
+        "license": "MIT",
+        "layer": "/bin/sh -c addgroup -g 1000 node     && adduser -u 1000 -G node -s /bin/sh -D node     && apk add --no-cache         libstdc++     && apk add --no-cache --virtual .build-deps         curl     && ARCH= && alpineArch=\"$(apk --print-arch)\"       && case \"${alpineArch##*-}\" in         x86_64)           ARCH='x64'           CHECKSUM=\"d2df78a192bd78b958e19a77821916a38def5e9e46c0c9a0989fdf5eb6c14a7e\"           ;;         *) ;;       esac   && if [ -n \"${CHECKSUM}\" ]; then     set -eu;     curl -fsSLO --compressed \"https://unofficial-builds.nodejs.org/download/release/v$NODE_VERSION/node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\";     echo \"$CHECKSUM  node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" | sha256sum -c -       && tar -xJf \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" -C /usr/local --strip-components=1 --no-same-owner       && ln -s /usr/local/bin/node /usr/local/bin/nodejs;   else     echo \"Building from source\"     && apk add --no-cache --virtual .build-deps-full         binutils-gold         g++         gcc         gnupg         libgcc         linux-headers         make         python3     && export GNUPGHOME=\"$(mktemp -d)\"     && for key in       4ED778F539E3634C779C87C6D7062848A1AB005C       141F07595B7B3FFE74309A937405533BE57C7D57       74F12602B6F1C4E913FAA37AD3A89613643B6201       DD792F5973C6DE52C432CBDAC77ABFA00DDBF2B7       61FC681DFB92A079F1685E77973F295594EC4689       8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600       C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8       890C08DB8579162FEE0DF9DB8BEAB4DFCF555EF4       C82FA3AE1CBEDC6BE46B9360C43CEC45C17AB93C       108F52B48DB57BB0CC439B2997B01419BD92F80A     ; do       gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$key\" ||       gpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\" ;     done     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.xz\"     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc\"     && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc     && gpgconf --kill all     && rm -rf \"$GNUPGHOME\"     && grep \" node-v$NODE_VERSION.tar.xz\\$\" SHASUMS256.txt | sha256sum -c -     && tar -xf \"node-v$NODE_VERSION.tar.xz\"     && cd \"node-v$NODE_VERSION\"     && ./configure     && make -j$(getconf _NPROCESSORS_ONLN) V=     && make install     && apk del .build-deps-full     && cd ..     && rm -Rf \"node-v$NODE_VERSION\"     && rm \"node-v$NODE_VERSION.tar.xz\" SHASUMS256.txt.asc SHASUMS256.txt;   fi   && rm -f \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\"   && apk del .build-deps   && node --version   && npm --version",
+        "layer_digest": "sha256:139c1270acf1709f1b19712cbf4bff0fa680e1aa0103cd37aaa963d512176735"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-29415",
+          "type": "vulnerability",
+          "description": "The ip package through 2.0.1 for Node.js might allow SSRF because some IP addresses (such as 127.1, 01200034567, 012.1.2.3, 000:0:0000::01, and ::fFFf:127.0.0.1) are improperly categorized as globally routable via isPublic. NOTE: this issue exists because of an incomplete fix for CVE-2023-42282.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-29415",
+          "publish_date": "2024-05-27",
+          "modification_date": "2025-01-17",
+          "nvd_score_v3": 8.1,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 8.1,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 8.1",
+          "aqua_score_classification": "NVD CVSS V3 Score: 8.1",
+          "cwe_info": [
+            {
+              "Id": "CWE-918",
+              "name": "Server-Side Request Forgery (SSRF)"
+            },
+            {
+              "Id": "CWE-941",
+              "name": "Incorrectly Specified Destination in a Communication Channel"
+            }
+          ],
+          "epss_score": 0.00438,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/json5",
+        "name": "json5",
+        "version": "2.2.0",
+        "cpe": "pkg:/npm:*:json5:2.2.0",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-46175",
+          "type": "vulnerability",
+          "description": "JSON5 is an extension to the popular JSON file format that aims to be easier to write and maintain by hand (e.g. for config files). The `parse` method of the JSON5 library before and including versions 1.0.1 and 2.2.1 does not restrict parsing of keys named `__proto__`, allowing specially crafted strings to pollute the prototype of the resulting object. This vulnerability pollutes the prototype of the object returned by `JSON5.parse` and not the global Object prototype, which is the commonly understood definition of Prototype Pollution. However, polluting the prototype of a single object can have significant security impact for an application if the object is later used in trusted operations. This vulnerability could allow an attacker to set arbitrary and unexpected keys on the object returned from `JSON5.parse`. The actual impact will depend on how applications utilize the returned object and how they filter unwanted keys, but could include denial of service, cross-site scripting, elevation of privilege, and in extreme cases, remote code execution. `JSON5.parse` should restrict parsing of `__proto__` keys when parsing JSON strings to objects. As a point of reference, the `JSON.parse` method included in JavaScript ignores `__proto__` keys. Simply changing `JSON5.parse` to `JSON.parse` in the examples above mitigates this vulnerability. This vulnerability is patched in json5 versions 1.0.2, 2.2.2, and later.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-46175",
+          "publish_date": "2022-12-24",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.0.2, 2.2.2",
+          "solution": "Upgrade package json5 to version 1.0.2,2.2.2 or above.",
+          "nvd_score_v3": 8.8,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 8.8,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 8.8",
+          "aqua_score_classification": "NVD CVSS V3 Score: 8.8",
+          "cwe_info": [
+            {
+              "Id": "CWE-1321",
+              "name": "Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')"
+            }
+          ],
+          "epss_score": 0.3997,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "apk",
+        "name": "libcrypto3",
+        "version": "3.1.2-r0",
+        "arch": "x86_64",
+        "cpe": "pkg:/alpine:3.18.3:libcrypto3:3.1.2-r0",
+        "license": "Apache-2.0",
+        "layer": "/bin/sh -c #(nop) ADD file:32ff5e7a78b890996ee4681cc0a26185d3e9acdb4eb1e2aaccb2411f922fed6b in / ",
+        "layer_digest": "sha256:4693057ce2364720d39e57e85a5b8e0bd9ac3573716237736d6470ec5b7b7230",
+        "src_name": "openssl",
+        "src_version": "3.1.2-r0"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-5535",
+          "type": "vulnerability",
+          "description": "Issue summary: Calling the OpenSSL API function SSL_select_next_proto with an\nempty supported client protocols buffer may cause a crash or memory contents to\nbe sent to the peer.\n\nImpact summary: A buffer overread can have a range of potential consequences\nsuch as unexpected application beahviour or a crash. In particular this issue\ncould result in up to 255 bytes of arbitrary private data from memory being sent\nto the peer leading to a loss of confidentiality. However, only applications\nthat directly call the SSL_select_next_proto function with a 0 length list of\nsupported client protocols are affected by this issue. This would normally never\nbe a valid scenario and is typically not under attacker control but may occur by\naccident in the case of a configuration or programming error in the calling\napplication.\n\nThe OpenSSL API function SSL_select_next_proto is typically used by TLS\napplications that support ALPN (Application Layer Protocol Negotiation) or NPN\n(Next Protocol Negotiation). NPN is older, was never standardised and\nis deprecated in favour of ALPN. We believe that ALPN is significantly more\nwidely deployed than NPN. The SSL_select_next_proto function accepts a list of\nprotocols from the server and a list of protocols from the client and returns\nthe first protocol that appears in the server list that also appears in the\nclient list. In the case of no overlap between the two lists it returns the\nfirst item in the client list. In either case it will signal whether an overlap\nbetween the two lists was found. In the case where SSL_select_next_proto is\ncalled with a zero length client list it fails to notice this condition and\nreturns the memory immediately following the client list pointer (and reports\nthat there was no overlap in the lists).\n\nThis function is typically called from a server side application callback for\nALPN or a client side application callback for NPN. In the case of ALPN the list\nof protocols supplied by the client is guaranteed by libssl to never be zero in\nlength. The list of server protocols comes from the application and should never\nnormally be expected to be of zero length. In this case if the\nSSL_select_next_proto function has been called as expected (with the list\nsupplied by the client passed in the client/client_len parameters), then the\napplication will not be vulnerable to this issue. If the application has\naccidentally been configured with a zero length server list, and has\naccidentally passed that zero length server list in the client/client_len\nparameters, and has additionally failed to correctly handle a \"no overlap\"\nresponse (which would normally result in a handshake failure in ALPN) then it\nwill be vulnerable to this problem.\n\nIn the case of NPN, the protocol permits the client to opportunistically select\na protocol when there is no overlap. OpenSSL returns the first client protocol\nin the no overlap case in support of this. The list of client protocols comes\nfrom the application and should never normally be expected to be of zero length.\nHowever if the SSL_select_next_proto function is accidentally called with a\nclient_len of 0 then an invalid memory pointer will be returned instead. If the\napplication uses this output as the opportunistic protocol then the loss of\nconfidentiality will occur.\n\nThis issue has been assessed as Low severity because applications are most\nlikely to be vulnerable if they are using NPN instead of ALPN - but NPN is not\nwidely used. It also requires an application configuration or programming error.\nFinally, this issue would not typically be under attacker control making active\nexploitation unlikely.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.\n\nDue to the low severity of this issue we are not issuing new releases of\nOpenSSL at this time. The fix will be included in the next releases when they\nbecome available.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-5535",
+          "publish_date": "2024-06-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.6-r0",
+          "solution": "Upgrade package libcrypto3 to version 3.1.6-r0 or above.",
+          "nvd_score_v3": 9.1,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+          "nvd_severity_v3": "critical",
+          "aqua_score": 9.1,
+          "aqua_severity": "critical",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 9.1",
+          "aqua_score_classification": "NVD CVSS V3 Score: 9.1",
+          "fix_publish_date": "2024-06-29",
+          "cwe_info": [
+            {
+              "Id": "CWE-200",
+              "name": "Exposure of Sensitive Information to an Unauthorized Actor"
+            }
+          ],
+          "epss_score": 0.05152,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-5363",
+          "type": "vulnerability",
+          "description": "Issue summary: A bug has been identified in the processing of key and\ninitialisation vector (IV) lengths.  This can lead to potential truncation\nor overruns during the initialisation of some symmetric ciphers.\n\nImpact summary: A truncation in the IV can result in non-uniqueness,\nwhich could result in loss of confidentiality for some cipher modes.\n\nWhen calling EVP_EncryptInit_ex2(), EVP_DecryptInit_ex2() or\nEVP_CipherInit_ex2() the provided OSSL_PARAM array is processed after\nthe key and IV have been established.  Any alterations to the key length,\nvia the \"keylen\" parameter or the IV length, via the \"ivlen\" parameter,\nwithin the OSSL_PARAM array will not take effect as intended, potentially\ncausing truncation or overreading of these values.  The following ciphers\nand cipher modes are impacted: RC2, RC4, RC5, CCM, GCM and OCB.\n\nFor the CCM, GCM and OCB cipher modes, truncation of the IV can result in\nloss of confidentiality.  For example, when following NIST's SP 800-38D\nsection 8.2.1 guidance for constructing a deterministic IV for AES in\nGCM mode, truncation of the counter portion could lead to IV reuse.\n\nBoth truncations and overruns of the key and overruns of the IV will\nproduce incorrect results and could, in some cases, trigger a memory\nexception.  However, these issues are not currently assessed as security\ncritical.\n\nChanging the key and/or IV lengths is not considered to be a common operation\nand the vulnerable API was recently introduced. Furthermore it is likely that\napplication developers will have spotted this problem during testing since\ndecryption would fail unless both peers in the communication were similarly\nvulnerable. For these reasons we expect the probability of an application being\nvulnerable to this to be quite low. However if an application is vulnerable then\nthis issue is considered very serious. For these reasons we have assessed this\nissue as Moderate severity overall.\n\nThe OpenSSL SSL/TLS implementation is not affected by this issue.\n\nThe OpenSSL 3.0 and 3.1 FIPS providers are not affected by this because\nthe issue lies outside of the FIPS provider boundary.\n\nOpenSSL 3.1 and 3.0 are vulnerable to this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-5363",
+          "publish_date": "2023-10-25",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r0",
+          "solution": "Upgrade package libcrypto3 to version 3.1.4-r0 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "fix_publish_date": "2023-10-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-684",
+              "name": "Incorrect Provision of Specified Functionality"
+            }
+          ],
+          "epss_score": 0.01998,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-4741",
+          "type": "vulnerability",
+          "description": "Issue summary: Calling the OpenSSL API function SSL_free_buffers may cause\nmemory to be accessed that was previously freed in some situations\n\nImpact summary: A use after free can have a range of potential consequences such\nas the corruption of valid data, crashes or execution of arbitrary code.\nHowever, only applications that directly call the SSL_free_buffers function are\naffected by this issue. Applications that do not call this function are not\nvulnerable. Our investigations indicate that this function is rarely used by\napplications.\n\nThe SSL_free_buffers function is used to free the internal OpenSSL buffer used\nwhen processing an incoming record from the network. The call is only expected\nto succeed if the buffer is not currently in use. However, two scenarios have\nbeen identified where the buffer is freed even when still in use.\n\nThe first scenario occurs where a record header has been received from the\nnetwork and processed by OpenSSL, but the full record body has not yet arrived.\nIn this case calling SSL_free_buffers will succeed even though a record has only\nbeen partially processed and the buffer is still in use.\n\nThe second scenario occurs where a full record containing application data has\nbeen received and processed by OpenSSL but the application has only read part of\nthis data. Again a call to SSL_free_buffers will succeed even though the buffer\nis still in use.\n\nWhile these scenarios could occur accidentally during normal operation a\nmalicious attacker could attempt to engineer a stituation where this occurs.\nWe are not aware of this issue being actively exploited.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-4741",
+          "publish_date": "2024-11-13",
+          "modification_date": "2024-11-13",
+          "fix_version": "3.1.6-r0",
+          "solution": "Upgrade package libcrypto3 to version 3.1.6-r0 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "fix_publish_date": "2024-06-30",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.0013,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-6119",
+          "type": "vulnerability",
+          "description": "Issue summary: Applications performing certificate name checks (e.g., TLS\nclients checking server certificates) may attempt to read an invalid memory\naddress resulting in abnormal termination of the application process.\n\nImpact summary: Abnormal termination of an application can a cause a denial of\nservice.\n\nApplications performing certificate name checks (e.g., TLS clients checking\nserver certificates) may attempt to read an invalid memory address when\ncomparing the expected name with an `otherName` subject alternative name of an\nX.509 certificate. This may result in an exception that terminates the\napplication program.\n\nNote that basic certificate chain validation (signatures, dates, ...) is not\naffected, the denial of service can occur only when the application also\nspecifies an expected DNS name, Email address or IP address.\n\nTLS servers rarely solicit client certificates, and even when they do, they\ngenerally don't perform a name check against a reference identifier (expected\nidentity), but rather extract the presented identity after checking the\ncertificate chain.  So TLS servers are generally not affected and the severity\nof the issue is Moderate.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-6119",
+          "publish_date": "2024-09-03",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.7-r0",
+          "solution": "Upgrade package libcrypto3 to version 3.1.7-r0 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "fix_publish_date": "2024-09-04",
+          "cwe_info": [
+            {
+              "Id": "CWE-843",
+              "name": "Access of Resource Using Incompatible Type ('Type Confusion')"
+            }
+          ],
+          "epss_score": 0.00728,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-5678",
+          "type": "vulnerability",
+          "description": "Issue summary: Generating excessively long X9.42 DH keys or checking\nexcessively long X9.42 DH keys or parameters may be very slow.\n\nImpact summary: Applications that use the functions DH_generate_key() to\ngenerate an X9.42 DH key may experience long delays.  Likewise, applications\nthat use DH_check_pub_key(), DH_check_pub_key_ex() or EVP_PKEY_public_check()\nto check an X9.42 DH key or X9.42 DH parameters may experience long delays.\nWhere the key or parameters that are being checked have been obtained from\nan untrusted source this may lead to a Denial of Service.\n\nWhile DH_check() performs all the necessary checks (as of CVE-2023-3817),\nDH_check_pub_key() doesn't make any of these checks, and is therefore\nvulnerable for excessively large P and Q parameters.\n\nLikewise, while DH_generate_key() performs a check for an excessively large\nP, it doesn't check for an excessively large Q.\n\nAn application that calls DH_generate_key() or DH_check_pub_key() and\nsupplies a key or parameters obtained from an untrusted source could be\nvulnerable to a Denial of Service attack.\n\nDH_generate_key() and DH_check_pub_key() are also called by a number of\nother OpenSSL functions.  An application calling any of those other\nfunctions may similarly be affected.  The other functions affected by this\nare DH_check_pub_key_ex(), EVP_PKEY_public_check(), and EVP_PKEY_generate().\n\nAlso vulnerable are the OpenSSL pkey command line application when using the\n\"-pubcheck\" option, as well as the OpenSSL genpkey command line application.\n\nThe OpenSSL SSL/TLS implementation is not affected by this issue.\n\nThe OpenSSL 3.0 and 3.1 FIPS providers are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-5678",
+          "publish_date": "2023-11-06",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r1",
+          "solution": "Upgrade package libcrypto3 to version 3.1.4-r1 or above.",
+          "nvd_score_v3": 5.3,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.3,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.3",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.3",
+          "fix_publish_date": "2023-11-11",
+          "cwe_info": [
+            {
+              "Id": "CWE-606",
+              "name": "Unchecked Input for Loop Condition"
+            },
+            {
+              "Id": "CWE-754",
+              "name": "Improper Check for Unusual or Exceptional Conditions"
+            }
+          ],
+          "epss_score": 0.00122,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-13176",
+          "type": "vulnerability",
+          "description": "Issue summary: A timing side-channel which could potentially allow recovering\nthe private key exists in the ECDSA signature computation.\n\nImpact summary: A timing side-channel in ECDSA signature computations\ncould allow recovering the private key by an attacker. However, measuring\nthe timing would require either local access to the signing application or\na very fast network connection with low latency.\n\nThere is a timing signal of around 300 nanoseconds when the top word of\nthe inverted ECDSA nonce value is zero. This can happen with significant\nprobability only for some of the supported elliptic curves. In particular\nthe NIST P-521 curve is affected. To be able to measure this leak, the attacker\nprocess must either be located in the same physical computer or must\nhave a very fast network connection with low latency. For that reason\nthe severity of this vulnerability is Low.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-13176",
+          "publish_date": "2025-01-20",
+          "modification_date": "2025-04-19",
+          "fix_version": "3.1.8-r0",
+          "solution": "Upgrade package libcrypto3 to version 3.1.8-r0 or above.",
+          "nvd_score_v3": 4.1,
+          "nvd_vectors_v3": "CVSS:3.1/AV:P/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 4.1,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:P/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 4.1",
+          "aqua_score_classification": "NVD CVSS V3 Score: 4.1",
+          "fix_publish_date": "2025-02-12",
+          "cwe_info": [
+            {
+              "Id": "CWE-385",
+              "name": "Covert Timing Channel"
+            }
+          ],
+          "epss_score": 0.00033,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-6129",
+          "type": "vulnerability",
+          "description": "Issue summary: The POLY1305 MAC (message authentication code) implementation\ncontains a bug that might corrupt the internal state of applications running\non PowerPC CPU based platforms if the CPU provides vector instructions.\n\nImpact summary: If an attacker can influence whether the POLY1305 MAC\nalgorithm is used, the application state might be corrupted with various\napplication dependent consequences.\n\nThe POLY1305 MAC (message authentication code) implementation in OpenSSL for\nPowerPC CPUs restores the contents of vector registers in a different order\nthan they are saved. Thus the contents of some of these vector registers\nare corrupted when returning to the caller. The vulnerable code is used only\non newer PowerPC processors supporting the PowerISA 2.07 instructions.\n\nThe consequences of this kind of internal application state corruption can\nbe various - from no consequences, if the calling application does not\ndepend on the contents of non-volatile XMM registers at all, to the worst\nconsequences, where the attacker could get complete control of the application\nprocess. However unless the compiler uses the vector registers for storing\npointers, the most likely consequence, if any, would be an incorrect result\nof some application dependent calculations or a crash leading to a denial of\nservice.\n\nThe POLY1305 MAC algorithm is most frequently used as part of the\nCHACHA20-POLY1305 AEAD (authenticated encryption with associated data)\nalgorithm. The most common usage of this AEAD cipher is with TLS protocol\nversions 1.2 and 1.3. If this cipher is enabled on the server a malicious\nclient can influence whether this AEAD cipher is used. This implies that\nTLS server applications using OpenSSL can be potentially impacted. However\nwe are currently not aware of any concrete application that would be affected\nby this issue therefore we consider this a Low severity security issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-6129",
+          "publish_date": "2024-01-09",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r3",
+          "solution": "Upgrade package libcrypto3 to version 3.1.4-r3 or above.",
+          "nvd_score_v3": 6.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 6.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 6.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 6.5",
+          "fix_publish_date": "2024-01-12",
+          "cwe_info": [
+            {
+              "Id": "CWE-440",
+              "name": "Expected Behavior Violation"
+            },
+            {
+              "Id": "CWE-787",
+              "name": "Out-of-bounds Write"
+            }
+          ],
+          "epss_score": 0.01861,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-6237",
+          "type": "vulnerability",
+          "description": "Issue summary: Checking excessively long invalid RSA public keys may take\na long time.\n\nImpact summary: Applications that use the function EVP_PKEY_public_check()\nto check RSA public keys may experience long delays. Where the key that\nis being checked has been obtained from an untrusted source this may lead\nto a Denial of Service.\n\nWhen function EVP_PKEY_public_check() is called on RSA public keys,\na computation is done to confirm that the RSA modulus, n, is composite.\nFor valid RSA keys, n is a product of two or more large primes and this\ncomputation completes quickly. However, if n is an overly large prime,\nthen this computation would take a long time.\n\nAn application that calls EVP_PKEY_public_check() and supplies an RSA key\nobtained from an untrusted source could be vulnerable to a Denial of Service\nattack.\n\nThe function EVP_PKEY_public_check() is not called from other OpenSSL\nfunctions however it is called from the OpenSSL pkey command line\napplication. For that reason that application is also vulnerable if used\nwith the '-pubin' and '-check' options on untrusted data.\n\nThe OpenSSL SSL/TLS implementation is not affected by this issue.\n\nThe OpenSSL 3.0 and 3.1 FIPS providers are affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-6237",
+          "publish_date": "2024-04-25",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r4",
+          "solution": "Upgrade package libcrypto3 to version 3.1.4-r4 or above.",
+          "nvd_score_v3": 5.9,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.9,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.9",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.9",
+          "fix_publish_date": "2024-01-16",
+          "cwe_info": [
+            {
+              "Id": "CWE-606",
+              "name": "Unchecked Input for Loop Condition"
+            }
+          ],
+          "epss_score": 0.00524,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-9143",
+          "type": "vulnerability",
+          "description": "Issue summary: Use of the low-level GF(2^m) elliptic curve APIs with untrusted\nexplicit values for the field polynomial can lead to out-of-bounds memory reads\nor writes.\n\nImpact summary: Out of bound memory writes can lead to an application crash or\neven a possibility of a remote code execution, however, in all the protocols\ninvolving Elliptic Curve Cryptography that we're aware of, either only \"named\ncurves\" are supported, or, if explicit curve parameters are supported, they\nspecify an X9.62 encoding of binary (GF(2^m)) curves that can't represent\nproblematic input values. Thus the likelihood of existence of a vulnerable\napplication is low.\n\nIn particular, the X9.62 encoding is used for ECC keys in X.509 certificates,\nso problematic inputs cannot occur in the context of processing X.509\ncertificates.  Any problematic use-cases would have to be using an \"exotic\"\ncurve encoding.\n\nThe affected APIs include: EC_GROUP_new_curve_GF2m(), EC_GROUP_new_from_params(),\nand various supporting BN_GF2m_*() functions.\n\nApplications working with \"exotic\" explicit binary (GF(2^m)) curve parameters,\nthat make it possible to represent invalid field polynomials with a zero\nconstant term, via the above or similar APIs, may terminate abruptly as a\nresult of reading or writing outside of array bounds.  Remote code execution\ncannot easily be ruled out.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-9143",
+          "publish_date": "2024-10-16",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.7-r1",
+          "solution": "Upgrade package libcrypto3 to version 3.1.7-r1 or above.",
+          "nvd_score_v3": 4.3,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 4.3,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 4.3",
+          "aqua_score_classification": "NVD CVSS V3 Score: 4.3",
+          "fix_publish_date": "2024-10-20",
+          "cwe_info": [
+            {
+              "Id": "CWE-787",
+              "name": "Out-of-bounds Write"
+            }
+          ],
+          "epss_score": 0.00372,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-4603",
+          "type": "vulnerability",
+          "description": "Issue summary: Checking excessively long DSA keys or parameters may be very\nslow.\n\nImpact summary: Applications that use the functions EVP_PKEY_param_check()\nor EVP_PKEY_public_check() to check a DSA public key or DSA parameters may\nexperience long delays. Where the key or parameters that are being checked\nhave been obtained from an untrusted source this may lead to a Denial of\nService.\n\nThe functions EVP_PKEY_param_check() or EVP_PKEY_public_check() perform\nvarious checks on DSA parameters. Some of those computations take a long time\nif the modulus (`p` parameter) is too large.\n\nTrying to use a very large modulus is slow and OpenSSL will not allow using\npublic keys with a modulus which is over 10,000 bits in length for signature\nverification. However the key and parameter check functions do not limit\nthe modulus size when performing the checks.\n\nAn application that calls EVP_PKEY_param_check() or EVP_PKEY_public_check()\nand supplies a key or parameters obtained from an untrusted source could be\nvulnerable to a Denial of Service attack.\n\nThese functions are not called by OpenSSL itself on untrusted DSA keys so\nonly applications that directly call these functions may be vulnerable.\n\nAlso vulnerable are the OpenSSL pkey and pkeyparam command line applications\nwhen using the `-check` option.\n\nThe OpenSSL SSL/TLS implementation is not affected by this issue.\n\nThe OpenSSL 3.0 and 3.1 FIPS providers are affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-4603",
+          "publish_date": "2024-05-16",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.5-r0",
+          "solution": "Upgrade package libcrypto3 to version 3.1.5-r0 or above.",
+          "nvd_score_v3": 5.3,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.3,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.3",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.3",
+          "fix_publish_date": "2024-05-21",
+          "cwe_info": [
+            {
+              "Id": "CWE-606",
+              "name": "Unchecked Input for Loop Condition"
+            },
+            {
+              "Id": "CWE-834",
+              "name": "Excessive Iteration"
+            }
+          ],
+          "epss_score": 0.00442,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-0727",
+          "type": "vulnerability",
+          "description": "Issue summary: Processing a maliciously formatted PKCS12 file may lead OpenSSL\nto crash leading to a potential Denial of Service attack\n\nImpact summary: Applications loading files in the PKCS12 format from untrusted\nsources might terminate abruptly.\n\nA file in PKCS12 format can contain certificates and keys and may come from an\nuntrusted source. The PKCS12 specification allows certain fields to be NULL, but\nOpenSSL does not correctly check for this case. This can lead to a NULL pointer\ndereference that results in OpenSSL crashing. If an application processes PKCS12\nfiles from an untrusted source using the OpenSSL APIs then that application will\nbe vulnerable to this issue.\n\nOpenSSL APIs that are vulnerable to this are: PKCS12_parse(),\nPKCS12_unpack_p7data(), PKCS12_unpack_p7encdata(), PKCS12_unpack_authsafes()\nand PKCS12_newpass().\n\nWe have also fixed a similar issue in SMIME_write_PKCS7(). However since this\nfunction is related to writing data we do not consider it security significant.\n\nThe FIPS modules in 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-0727",
+          "publish_date": "2024-01-26",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r5",
+          "solution": "Upgrade package libcrypto3 to version 3.1.4-r5 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-01-26",
+          "cwe_info": [
+            {
+              "Id": "CWE-476",
+              "name": "NULL Pointer Dereference"
+            }
+          ],
+          "epss_score": 0.0016,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-2511",
+          "type": "vulnerability",
+          "description": "Issue summary: Some non-default TLS server configurations can cause unbounded\nmemory growth when processing TLSv1.3 sessions\n\nImpact summary: An attacker may exploit certain server configurations to trigger\nunbounded memory growth that would lead to a Denial of Service\n\nThis problem can occur in TLSv1.3 if the non-default SSL_OP_NO_TICKET option is\nbeing used (but not if early_data support is also configured and the default\nanti-replay protection is in use). In this case, under certain conditions, the\nsession cache can get into an incorrect state and it will fail to flush properly\nas it fills. The session cache will continue to grow in an unbounded manner. A\nmalicious client could deliberately create the scenario for this failure to\nforce a Denial of Service. It may also happen by accident in normal operation.\n\nThis issue only affects TLS servers supporting TLSv1.3. It does not affect TLS\nclients.\n\nThe FIPS modules in 3.2, 3.1 and 3.0 are not affected by this issue. OpenSSL\n1.0.2 is also not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-2511",
+          "publish_date": "2024-04-08",
+          "modification_date": "2025-03-28",
+          "fix_version": "3.1.4-r6",
+          "solution": "Upgrade package libcrypto3 to version 3.1.4-r6 or above.",
+          "nvd_score_v3": 5.9,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.9,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.9",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.9",
+          "fix_publish_date": "2024-04-10",
+          "cwe_info": [
+            {
+              "Id": "CWE-1325",
+              "name": "Improperly Controlled Sequential Memory Allocation"
+            }
+          ],
+          "epss_score": 0.01474,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "apk",
+        "name": "libgcc",
+        "version": "12.2.1_git20220924-r10",
+        "arch": "x86_64",
+        "cpe": "pkg:/alpine:3.18.3:libgcc:12.2.1_git20220924-r10",
+        "license": "GPL-2.0,LGPL-2.1-or-later",
+        "layer": "/bin/sh -c addgroup -g 1000 node     && adduser -u 1000 -G node -s /bin/sh -D node     && apk add --no-cache         libstdc++     && apk add --no-cache --virtual .build-deps         curl     && ARCH= && alpineArch=\"$(apk --print-arch)\"       && case \"${alpineArch##*-}\" in         x86_64)           ARCH='x64'           CHECKSUM=\"d2df78a192bd78b958e19a77821916a38def5e9e46c0c9a0989fdf5eb6c14a7e\"           ;;         *) ;;       esac   && if [ -n \"${CHECKSUM}\" ]; then     set -eu;     curl -fsSLO --compressed \"https://unofficial-builds.nodejs.org/download/release/v$NODE_VERSION/node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\";     echo \"$CHECKSUM  node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" | sha256sum -c -       && tar -xJf \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" -C /usr/local --strip-components=1 --no-same-owner       && ln -s /usr/local/bin/node /usr/local/bin/nodejs;   else     echo \"Building from source\"     && apk add --no-cache --virtual .build-deps-full         binutils-gold         g++         gcc         gnupg         libgcc         linux-headers         make         python3     && export GNUPGHOME=\"$(mktemp -d)\"     && for key in       4ED778F539E3634C779C87C6D7062848A1AB005C       141F07595B7B3FFE74309A937405533BE57C7D57       74F12602B6F1C4E913FAA37AD3A89613643B6201       DD792F5973C6DE52C432CBDAC77ABFA00DDBF2B7       61FC681DFB92A079F1685E77973F295594EC4689       8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600       C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8       890C08DB8579162FEE0DF9DB8BEAB4DFCF555EF4       C82FA3AE1CBEDC6BE46B9360C43CEC45C17AB93C       108F52B48DB57BB0CC439B2997B01419BD92F80A     ; do       gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$key\" ||       gpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\" ;     done     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.xz\"     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc\"     && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc     && gpgconf --kill all     && rm -rf \"$GNUPGHOME\"     && grep \" node-v$NODE_VERSION.tar.xz\\$\" SHASUMS256.txt | sha256sum -c -     && tar -xf \"node-v$NODE_VERSION.tar.xz\"     && cd \"node-v$NODE_VERSION\"     && ./configure     && make -j$(getconf _NPROCESSORS_ONLN) V=     && make install     && apk del .build-deps-full     && cd ..     && rm -Rf \"node-v$NODE_VERSION\"     && rm \"node-v$NODE_VERSION.tar.xz\" SHASUMS256.txt.asc SHASUMS256.txt;   fi   && rm -f \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\"   && apk del .build-deps   && node --version   && npm --version",
+        "layer_digest": "sha256:139c1270acf1709f1b19712cbf4bff0fa680e1aa0103cd37aaa963d512176735",
+        "src_name": "gcc",
+        "src_version": "12.2.1_git20220924-r10"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2023-4039",
+          "type": "vulnerability",
+          "description": "**DISPUTED**A failure in the -fstack-protector feature in GCC-based toolchains \nthat target AArch64 allows an attacker to exploit an existing buffer \noverflow in dynamically-sized local variables in your application \nwithout this being detected. This stack-protector failure only applies \nto C99-style dynamically-sized local variables or those created using \nalloca(). The stack-protector operates as intended for statically-sized \nlocal variables.\n\nThe default behavior when the stack-protector \ndetects an overflow is to terminate your application, resulting in \ncontrolled loss of availability. An attacker who can exploit a buffer \noverflow without triggering the stack-protector might be able to change \nprogram flow control to cause an uncontrolled loss of availability or to\n go further and affect confidentiality or integrity. NOTE: The GCC project argues that this is a missed hardening bug and not a vulnerability by itself.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-4039",
+          "publish_date": "2023-09-13",
+          "modification_date": "2025-02-13",
+          "fix_version": "13.2.1_git20231014-r0",
+          "solution": "Upgrade operating system to alpine version 3.19 (includes fixed versions of libgcc)",
+          "nvd_score_v3": 4.8,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 4.8,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "gcc",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 4.8",
+          "aqua_score_classification": "NVD CVSS V3 Score: 4.8",
+          "cwe_info": [
+            {
+              "Id": "CWE-693",
+              "name": "Protection Mechanism Failure"
+            }
+          ],
+          "epss_score": 0.00121,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "apk",
+        "name": "libssl3",
+        "version": "3.1.2-r0",
+        "arch": "x86_64",
+        "cpe": "pkg:/alpine:3.18.3:libssl3:3.1.2-r0",
+        "license": "Apache-2.0",
+        "layer": "/bin/sh -c #(nop) ADD file:32ff5e7a78b890996ee4681cc0a26185d3e9acdb4eb1e2aaccb2411f922fed6b in / ",
+        "layer_digest": "sha256:4693057ce2364720d39e57e85a5b8e0bd9ac3573716237736d6470ec5b7b7230",
+        "src_name": "openssl",
+        "src_version": "3.1.2-r0"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-5535",
+          "type": "vulnerability",
+          "description": "Issue summary: Calling the OpenSSL API function SSL_select_next_proto with an\nempty supported client protocols buffer may cause a crash or memory contents to\nbe sent to the peer.\n\nImpact summary: A buffer overread can have a range of potential consequences\nsuch as unexpected application beahviour or a crash. In particular this issue\ncould result in up to 255 bytes of arbitrary private data from memory being sent\nto the peer leading to a loss of confidentiality. However, only applications\nthat directly call the SSL_select_next_proto function with a 0 length list of\nsupported client protocols are affected by this issue. This would normally never\nbe a valid scenario and is typically not under attacker control but may occur by\naccident in the case of a configuration or programming error in the calling\napplication.\n\nThe OpenSSL API function SSL_select_next_proto is typically used by TLS\napplications that support ALPN (Application Layer Protocol Negotiation) or NPN\n(Next Protocol Negotiation). NPN is older, was never standardised and\nis deprecated in favour of ALPN. We believe that ALPN is significantly more\nwidely deployed than NPN. The SSL_select_next_proto function accepts a list of\nprotocols from the server and a list of protocols from the client and returns\nthe first protocol that appears in the server list that also appears in the\nclient list. In the case of no overlap between the two lists it returns the\nfirst item in the client list. In either case it will signal whether an overlap\nbetween the two lists was found. In the case where SSL_select_next_proto is\ncalled with a zero length client list it fails to notice this condition and\nreturns the memory immediately following the client list pointer (and reports\nthat there was no overlap in the lists).\n\nThis function is typically called from a server side application callback for\nALPN or a client side application callback for NPN. In the case of ALPN the list\nof protocols supplied by the client is guaranteed by libssl to never be zero in\nlength. The list of server protocols comes from the application and should never\nnormally be expected to be of zero length. In this case if the\nSSL_select_next_proto function has been called as expected (with the list\nsupplied by the client passed in the client/client_len parameters), then the\napplication will not be vulnerable to this issue. If the application has\naccidentally been configured with a zero length server list, and has\naccidentally passed that zero length server list in the client/client_len\nparameters, and has additionally failed to correctly handle a \"no overlap\"\nresponse (which would normally result in a handshake failure in ALPN) then it\nwill be vulnerable to this problem.\n\nIn the case of NPN, the protocol permits the client to opportunistically select\na protocol when there is no overlap. OpenSSL returns the first client protocol\nin the no overlap case in support of this. The list of client protocols comes\nfrom the application and should never normally be expected to be of zero length.\nHowever if the SSL_select_next_proto function is accidentally called with a\nclient_len of 0 then an invalid memory pointer will be returned instead. If the\napplication uses this output as the opportunistic protocol then the loss of\nconfidentiality will occur.\n\nThis issue has been assessed as Low severity because applications are most\nlikely to be vulnerable if they are using NPN instead of ALPN - but NPN is not\nwidely used. It also requires an application configuration or programming error.\nFinally, this issue would not typically be under attacker control making active\nexploitation unlikely.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.\n\nDue to the low severity of this issue we are not issuing new releases of\nOpenSSL at this time. The fix will be included in the next releases when they\nbecome available.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-5535",
+          "publish_date": "2024-06-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.6-r0",
+          "solution": "Upgrade package libssl3 to version 3.1.6-r0 or above.",
+          "nvd_score_v3": 9.1,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+          "nvd_severity_v3": "critical",
+          "aqua_score": 9.1,
+          "aqua_severity": "critical",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 9.1",
+          "aqua_score_classification": "NVD CVSS V3 Score: 9.1",
+          "fix_publish_date": "2024-06-29",
+          "cwe_info": [
+            {
+              "Id": "CWE-200",
+              "name": "Exposure of Sensitive Information to an Unauthorized Actor"
+            }
+          ],
+          "epss_score": 0.05152,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-5363",
+          "type": "vulnerability",
+          "description": "Issue summary: A bug has been identified in the processing of key and\ninitialisation vector (IV) lengths.  This can lead to potential truncation\nor overruns during the initialisation of some symmetric ciphers.\n\nImpact summary: A truncation in the IV can result in non-uniqueness,\nwhich could result in loss of confidentiality for some cipher modes.\n\nWhen calling EVP_EncryptInit_ex2(), EVP_DecryptInit_ex2() or\nEVP_CipherInit_ex2() the provided OSSL_PARAM array is processed after\nthe key and IV have been established.  Any alterations to the key length,\nvia the \"keylen\" parameter or the IV length, via the \"ivlen\" parameter,\nwithin the OSSL_PARAM array will not take effect as intended, potentially\ncausing truncation or overreading of these values.  The following ciphers\nand cipher modes are impacted: RC2, RC4, RC5, CCM, GCM and OCB.\n\nFor the CCM, GCM and OCB cipher modes, truncation of the IV can result in\nloss of confidentiality.  For example, when following NIST's SP 800-38D\nsection 8.2.1 guidance for constructing a deterministic IV for AES in\nGCM mode, truncation of the counter portion could lead to IV reuse.\n\nBoth truncations and overruns of the key and overruns of the IV will\nproduce incorrect results and could, in some cases, trigger a memory\nexception.  However, these issues are not currently assessed as security\ncritical.\n\nChanging the key and/or IV lengths is not considered to be a common operation\nand the vulnerable API was recently introduced. Furthermore it is likely that\napplication developers will have spotted this problem during testing since\ndecryption would fail unless both peers in the communication were similarly\nvulnerable. For these reasons we expect the probability of an application being\nvulnerable to this to be quite low. However if an application is vulnerable then\nthis issue is considered very serious. For these reasons we have assessed this\nissue as Moderate severity overall.\n\nThe OpenSSL SSL/TLS implementation is not affected by this issue.\n\nThe OpenSSL 3.0 and 3.1 FIPS providers are not affected by this because\nthe issue lies outside of the FIPS provider boundary.\n\nOpenSSL 3.1 and 3.0 are vulnerable to this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-5363",
+          "publish_date": "2023-10-25",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r0",
+          "solution": "Upgrade package libssl3 to version 3.1.4-r0 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "fix_publish_date": "2023-10-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-684",
+              "name": "Incorrect Provision of Specified Functionality"
+            }
+          ],
+          "epss_score": 0.01998,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-4741",
+          "type": "vulnerability",
+          "description": "Issue summary: Calling the OpenSSL API function SSL_free_buffers may cause\nmemory to be accessed that was previously freed in some situations\n\nImpact summary: A use after free can have a range of potential consequences such\nas the corruption of valid data, crashes or execution of arbitrary code.\nHowever, only applications that directly call the SSL_free_buffers function are\naffected by this issue. Applications that do not call this function are not\nvulnerable. Our investigations indicate that this function is rarely used by\napplications.\n\nThe SSL_free_buffers function is used to free the internal OpenSSL buffer used\nwhen processing an incoming record from the network. The call is only expected\nto succeed if the buffer is not currently in use. However, two scenarios have\nbeen identified where the buffer is freed even when still in use.\n\nThe first scenario occurs where a record header has been received from the\nnetwork and processed by OpenSSL, but the full record body has not yet arrived.\nIn this case calling SSL_free_buffers will succeed even though a record has only\nbeen partially processed and the buffer is still in use.\n\nThe second scenario occurs where a full record containing application data has\nbeen received and processed by OpenSSL but the application has only read part of\nthis data. Again a call to SSL_free_buffers will succeed even though the buffer\nis still in use.\n\nWhile these scenarios could occur accidentally during normal operation a\nmalicious attacker could attempt to engineer a stituation where this occurs.\nWe are not aware of this issue being actively exploited.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-4741",
+          "publish_date": "2024-11-13",
+          "modification_date": "2024-11-13",
+          "fix_version": "3.1.6-r0",
+          "solution": "Upgrade package libssl3 to version 3.1.6-r0 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "fix_publish_date": "2024-06-30",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.0013,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-6119",
+          "type": "vulnerability",
+          "description": "Issue summary: Applications performing certificate name checks (e.g., TLS\nclients checking server certificates) may attempt to read an invalid memory\naddress resulting in abnormal termination of the application process.\n\nImpact summary: Abnormal termination of an application can a cause a denial of\nservice.\n\nApplications performing certificate name checks (e.g., TLS clients checking\nserver certificates) may attempt to read an invalid memory address when\ncomparing the expected name with an `otherName` subject alternative name of an\nX.509 certificate. This may result in an exception that terminates the\napplication program.\n\nNote that basic certificate chain validation (signatures, dates, ...) is not\naffected, the denial of service can occur only when the application also\nspecifies an expected DNS name, Email address or IP address.\n\nTLS servers rarely solicit client certificates, and even when they do, they\ngenerally don't perform a name check against a reference identifier (expected\nidentity), but rather extract the presented identity after checking the\ncertificate chain.  So TLS servers are generally not affected and the severity\nof the issue is Moderate.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-6119",
+          "publish_date": "2024-09-03",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.7-r0",
+          "solution": "Upgrade package libssl3 to version 3.1.7-r0 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "fix_publish_date": "2024-09-04",
+          "cwe_info": [
+            {
+              "Id": "CWE-843",
+              "name": "Access of Resource Using Incompatible Type ('Type Confusion')"
+            }
+          ],
+          "epss_score": 0.00728,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-5678",
+          "type": "vulnerability",
+          "description": "Issue summary: Generating excessively long X9.42 DH keys or checking\nexcessively long X9.42 DH keys or parameters may be very slow.\n\nImpact summary: Applications that use the functions DH_generate_key() to\ngenerate an X9.42 DH key may experience long delays.  Likewise, applications\nthat use DH_check_pub_key(), DH_check_pub_key_ex() or EVP_PKEY_public_check()\nto check an X9.42 DH key or X9.42 DH parameters may experience long delays.\nWhere the key or parameters that are being checked have been obtained from\nan untrusted source this may lead to a Denial of Service.\n\nWhile DH_check() performs all the necessary checks (as of CVE-2023-3817),\nDH_check_pub_key() doesn't make any of these checks, and is therefore\nvulnerable for excessively large P and Q parameters.\n\nLikewise, while DH_generate_key() performs a check for an excessively large\nP, it doesn't check for an excessively large Q.\n\nAn application that calls DH_generate_key() or DH_check_pub_key() and\nsupplies a key or parameters obtained from an untrusted source could be\nvulnerable to a Denial of Service attack.\n\nDH_generate_key() and DH_check_pub_key() are also called by a number of\nother OpenSSL functions.  An application calling any of those other\nfunctions may similarly be affected.  The other functions affected by this\nare DH_check_pub_key_ex(), EVP_PKEY_public_check(), and EVP_PKEY_generate().\n\nAlso vulnerable are the OpenSSL pkey command line application when using the\n\"-pubcheck\" option, as well as the OpenSSL genpkey command line application.\n\nThe OpenSSL SSL/TLS implementation is not affected by this issue.\n\nThe OpenSSL 3.0 and 3.1 FIPS providers are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-5678",
+          "publish_date": "2023-11-06",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r1",
+          "solution": "Upgrade package libssl3 to version 3.1.4-r1 or above.",
+          "nvd_score_v3": 5.3,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.3,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.3",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.3",
+          "fix_publish_date": "2023-11-11",
+          "cwe_info": [
+            {
+              "Id": "CWE-606",
+              "name": "Unchecked Input for Loop Condition"
+            },
+            {
+              "Id": "CWE-754",
+              "name": "Improper Check for Unusual or Exceptional Conditions"
+            }
+          ],
+          "epss_score": 0.00122,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-4603",
+          "type": "vulnerability",
+          "description": "Issue summary: Checking excessively long DSA keys or parameters may be very\nslow.\n\nImpact summary: Applications that use the functions EVP_PKEY_param_check()\nor EVP_PKEY_public_check() to check a DSA public key or DSA parameters may\nexperience long delays. Where the key or parameters that are being checked\nhave been obtained from an untrusted source this may lead to a Denial of\nService.\n\nThe functions EVP_PKEY_param_check() or EVP_PKEY_public_check() perform\nvarious checks on DSA parameters. Some of those computations take a long time\nif the modulus (`p` parameter) is too large.\n\nTrying to use a very large modulus is slow and OpenSSL will not allow using\npublic keys with a modulus which is over 10,000 bits in length for signature\nverification. However the key and parameter check functions do not limit\nthe modulus size when performing the checks.\n\nAn application that calls EVP_PKEY_param_check() or EVP_PKEY_public_check()\nand supplies a key or parameters obtained from an untrusted source could be\nvulnerable to a Denial of Service attack.\n\nThese functions are not called by OpenSSL itself on untrusted DSA keys so\nonly applications that directly call these functions may be vulnerable.\n\nAlso vulnerable are the OpenSSL pkey and pkeyparam command line applications\nwhen using the `-check` option.\n\nThe OpenSSL SSL/TLS implementation is not affected by this issue.\n\nThe OpenSSL 3.0 and 3.1 FIPS providers are affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-4603",
+          "publish_date": "2024-05-16",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.5-r0",
+          "solution": "Upgrade package libssl3 to version 3.1.5-r0 or above.",
+          "nvd_score_v3": 5.3,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.3,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.3",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.3",
+          "fix_publish_date": "2024-05-21",
+          "cwe_info": [
+            {
+              "Id": "CWE-606",
+              "name": "Unchecked Input for Loop Condition"
+            },
+            {
+              "Id": "CWE-834",
+              "name": "Excessive Iteration"
+            }
+          ],
+          "epss_score": 0.00442,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-6237",
+          "type": "vulnerability",
+          "description": "Issue summary: Checking excessively long invalid RSA public keys may take\na long time.\n\nImpact summary: Applications that use the function EVP_PKEY_public_check()\nto check RSA public keys may experience long delays. Where the key that\nis being checked has been obtained from an untrusted source this may lead\nto a Denial of Service.\n\nWhen function EVP_PKEY_public_check() is called on RSA public keys,\na computation is done to confirm that the RSA modulus, n, is composite.\nFor valid RSA keys, n is a product of two or more large primes and this\ncomputation completes quickly. However, if n is an overly large prime,\nthen this computation would take a long time.\n\nAn application that calls EVP_PKEY_public_check() and supplies an RSA key\nobtained from an untrusted source could be vulnerable to a Denial of Service\nattack.\n\nThe function EVP_PKEY_public_check() is not called from other OpenSSL\nfunctions however it is called from the OpenSSL pkey command line\napplication. For that reason that application is also vulnerable if used\nwith the '-pubin' and '-check' options on untrusted data.\n\nThe OpenSSL SSL/TLS implementation is not affected by this issue.\n\nThe OpenSSL 3.0 and 3.1 FIPS providers are affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-6237",
+          "publish_date": "2024-04-25",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r4",
+          "solution": "Upgrade package libssl3 to version 3.1.4-r4 or above.",
+          "nvd_score_v3": 5.9,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.9,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.9",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.9",
+          "fix_publish_date": "2024-01-16",
+          "cwe_info": [
+            {
+              "Id": "CWE-606",
+              "name": "Unchecked Input for Loop Condition"
+            }
+          ],
+          "epss_score": 0.00524,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-6129",
+          "type": "vulnerability",
+          "description": "Issue summary: The POLY1305 MAC (message authentication code) implementation\ncontains a bug that might corrupt the internal state of applications running\non PowerPC CPU based platforms if the CPU provides vector instructions.\n\nImpact summary: If an attacker can influence whether the POLY1305 MAC\nalgorithm is used, the application state might be corrupted with various\napplication dependent consequences.\n\nThe POLY1305 MAC (message authentication code) implementation in OpenSSL for\nPowerPC CPUs restores the contents of vector registers in a different order\nthan they are saved. Thus the contents of some of these vector registers\nare corrupted when returning to the caller. The vulnerable code is used only\non newer PowerPC processors supporting the PowerISA 2.07 instructions.\n\nThe consequences of this kind of internal application state corruption can\nbe various - from no consequences, if the calling application does not\ndepend on the contents of non-volatile XMM registers at all, to the worst\nconsequences, where the attacker could get complete control of the application\nprocess. However unless the compiler uses the vector registers for storing\npointers, the most likely consequence, if any, would be an incorrect result\nof some application dependent calculations or a crash leading to a denial of\nservice.\n\nThe POLY1305 MAC algorithm is most frequently used as part of the\nCHACHA20-POLY1305 AEAD (authenticated encryption with associated data)\nalgorithm. The most common usage of this AEAD cipher is with TLS protocol\nversions 1.2 and 1.3. If this cipher is enabled on the server a malicious\nclient can influence whether this AEAD cipher is used. This implies that\nTLS server applications using OpenSSL can be potentially impacted. However\nwe are currently not aware of any concrete application that would be affected\nby this issue therefore we consider this a Low severity security issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-6129",
+          "publish_date": "2024-01-09",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r3",
+          "solution": "Upgrade package libssl3 to version 3.1.4-r3 or above.",
+          "nvd_score_v3": 6.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 6.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 6.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 6.5",
+          "fix_publish_date": "2024-01-12",
+          "cwe_info": [
+            {
+              "Id": "CWE-440",
+              "name": "Expected Behavior Violation"
+            },
+            {
+              "Id": "CWE-787",
+              "name": "Out-of-bounds Write"
+            }
+          ],
+          "epss_score": 0.01861,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-2511",
+          "type": "vulnerability",
+          "description": "Issue summary: Some non-default TLS server configurations can cause unbounded\nmemory growth when processing TLSv1.3 sessions\n\nImpact summary: An attacker may exploit certain server configurations to trigger\nunbounded memory growth that would lead to a Denial of Service\n\nThis problem can occur in TLSv1.3 if the non-default SSL_OP_NO_TICKET option is\nbeing used (but not if early_data support is also configured and the default\nanti-replay protection is in use). In this case, under certain conditions, the\nsession cache can get into an incorrect state and it will fail to flush properly\nas it fills. The session cache will continue to grow in an unbounded manner. A\nmalicious client could deliberately create the scenario for this failure to\nforce a Denial of Service. It may also happen by accident in normal operation.\n\nThis issue only affects TLS servers supporting TLSv1.3. It does not affect TLS\nclients.\n\nThe FIPS modules in 3.2, 3.1 and 3.0 are not affected by this issue. OpenSSL\n1.0.2 is also not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-2511",
+          "publish_date": "2024-04-08",
+          "modification_date": "2025-03-28",
+          "fix_version": "3.1.4-r6",
+          "solution": "Upgrade package libssl3 to version 3.1.4-r6 or above.",
+          "nvd_score_v3": 5.9,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.9,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.9",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.9",
+          "fix_publish_date": "2024-04-10",
+          "cwe_info": [
+            {
+              "Id": "CWE-1325",
+              "name": "Improperly Controlled Sequential Memory Allocation"
+            }
+          ],
+          "epss_score": 0.01474,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-0727",
+          "type": "vulnerability",
+          "description": "Issue summary: Processing a maliciously formatted PKCS12 file may lead OpenSSL\nto crash leading to a potential Denial of Service attack\n\nImpact summary: Applications loading files in the PKCS12 format from untrusted\nsources might terminate abruptly.\n\nA file in PKCS12 format can contain certificates and keys and may come from an\nuntrusted source. The PKCS12 specification allows certain fields to be NULL, but\nOpenSSL does not correctly check for this case. This can lead to a NULL pointer\ndereference that results in OpenSSL crashing. If an application processes PKCS12\nfiles from an untrusted source using the OpenSSL APIs then that application will\nbe vulnerable to this issue.\n\nOpenSSL APIs that are vulnerable to this are: PKCS12_parse(),\nPKCS12_unpack_p7data(), PKCS12_unpack_p7encdata(), PKCS12_unpack_authsafes()\nand PKCS12_newpass().\n\nWe have also fixed a similar issue in SMIME_write_PKCS7(). However since this\nfunction is related to writing data we do not consider it security significant.\n\nThe FIPS modules in 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-0727",
+          "publish_date": "2024-01-26",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.4-r5",
+          "solution": "Upgrade package libssl3 to version 3.1.4-r5 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-01-26",
+          "cwe_info": [
+            {
+              "Id": "CWE-476",
+              "name": "NULL Pointer Dereference"
+            }
+          ],
+          "epss_score": 0.0016,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-13176",
+          "type": "vulnerability",
+          "description": "Issue summary: A timing side-channel which could potentially allow recovering\nthe private key exists in the ECDSA signature computation.\n\nImpact summary: A timing side-channel in ECDSA signature computations\ncould allow recovering the private key by an attacker. However, measuring\nthe timing would require either local access to the signing application or\na very fast network connection with low latency.\n\nThere is a timing signal of around 300 nanoseconds when the top word of\nthe inverted ECDSA nonce value is zero. This can happen with significant\nprobability only for some of the supported elliptic curves. In particular\nthe NIST P-521 curve is affected. To be able to measure this leak, the attacker\nprocess must either be located in the same physical computer or must\nhave a very fast network connection with low latency. For that reason\nthe severity of this vulnerability is Low.\n\nThe FIPS modules in 3.4, 3.3, 3.2, 3.1 and 3.0 are affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-13176",
+          "publish_date": "2025-01-20",
+          "modification_date": "2025-04-19",
+          "fix_version": "3.1.8-r0",
+          "solution": "Upgrade package libssl3 to version 3.1.8-r0 or above.",
+          "nvd_score_v3": 4.1,
+          "nvd_vectors_v3": "CVSS:3.1/AV:P/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 4.1,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:P/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 4.1",
+          "aqua_score_classification": "NVD CVSS V3 Score: 4.1",
+          "fix_publish_date": "2025-02-12",
+          "cwe_info": [
+            {
+              "Id": "CWE-385",
+              "name": "Covert Timing Channel"
+            }
+          ],
+          "epss_score": 0.00033,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-9143",
+          "type": "vulnerability",
+          "description": "Issue summary: Use of the low-level GF(2^m) elliptic curve APIs with untrusted\nexplicit values for the field polynomial can lead to out-of-bounds memory reads\nor writes.\n\nImpact summary: Out of bound memory writes can lead to an application crash or\neven a possibility of a remote code execution, however, in all the protocols\ninvolving Elliptic Curve Cryptography that we're aware of, either only \"named\ncurves\" are supported, or, if explicit curve parameters are supported, they\nspecify an X9.62 encoding of binary (GF(2^m)) curves that can't represent\nproblematic input values. Thus the likelihood of existence of a vulnerable\napplication is low.\n\nIn particular, the X9.62 encoding is used for ECC keys in X.509 certificates,\nso problematic inputs cannot occur in the context of processing X.509\ncertificates.  Any problematic use-cases would have to be using an \"exotic\"\ncurve encoding.\n\nThe affected APIs include: EC_GROUP_new_curve_GF2m(), EC_GROUP_new_from_params(),\nand various supporting BN_GF2m_*() functions.\n\nApplications working with \"exotic\" explicit binary (GF(2^m)) curve parameters,\nthat make it possible to represent invalid field polynomials with a zero\nconstant term, via the above or similar APIs, may terminate abruptly as a\nresult of reading or writing outside of array bounds.  Remote code execution\ncannot easily be ruled out.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-9143",
+          "publish_date": "2024-10-16",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.1.7-r1",
+          "solution": "Upgrade package libssl3 to version 3.1.7-r1 or above.",
+          "nvd_score_v3": 4.3,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 4.3,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "openssl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 4.3",
+          "aqua_score_classification": "NVD CVSS V3 Score: 4.3",
+          "fix_publish_date": "2024-10-20",
+          "cwe_info": [
+            {
+              "Id": "CWE-787",
+              "name": "Out-of-bounds Write"
+            }
+          ],
+          "epss_score": 0.00372,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "apk",
+        "name": "libstdc++",
+        "version": "12.2.1_git20220924-r10",
+        "arch": "x86_64",
+        "cpe": "pkg:/alpine:3.18.3:libstdc++:12.2.1_git20220924-r10",
+        "license": "GPL-2.0,LGPL-2.1-or-later",
+        "layer": "/bin/sh -c addgroup -g 1000 node     && adduser -u 1000 -G node -s /bin/sh -D node     && apk add --no-cache         libstdc++     && apk add --no-cache --virtual .build-deps         curl     && ARCH= && alpineArch=\"$(apk --print-arch)\"       && case \"${alpineArch##*-}\" in         x86_64)           ARCH='x64'           CHECKSUM=\"d2df78a192bd78b958e19a77821916a38def5e9e46c0c9a0989fdf5eb6c14a7e\"           ;;         *) ;;       esac   && if [ -n \"${CHECKSUM}\" ]; then     set -eu;     curl -fsSLO --compressed \"https://unofficial-builds.nodejs.org/download/release/v$NODE_VERSION/node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\";     echo \"$CHECKSUM  node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" | sha256sum -c -       && tar -xJf \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" -C /usr/local --strip-components=1 --no-same-owner       && ln -s /usr/local/bin/node /usr/local/bin/nodejs;   else     echo \"Building from source\"     && apk add --no-cache --virtual .build-deps-full         binutils-gold         g++         gcc         gnupg         libgcc         linux-headers         make         python3     && export GNUPGHOME=\"$(mktemp -d)\"     && for key in       4ED778F539E3634C779C87C6D7062848A1AB005C       141F07595B7B3FFE74309A937405533BE57C7D57       74F12602B6F1C4E913FAA37AD3A89613643B6201       DD792F5973C6DE52C432CBDAC77ABFA00DDBF2B7       61FC681DFB92A079F1685E77973F295594EC4689       8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600       C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8       890C08DB8579162FEE0DF9DB8BEAB4DFCF555EF4       C82FA3AE1CBEDC6BE46B9360C43CEC45C17AB93C       108F52B48DB57BB0CC439B2997B01419BD92F80A     ; do       gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$key\" ||       gpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\" ;     done     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.xz\"     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc\"     && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc     && gpgconf --kill all     && rm -rf \"$GNUPGHOME\"     && grep \" node-v$NODE_VERSION.tar.xz\\$\" SHASUMS256.txt | sha256sum -c -     && tar -xf \"node-v$NODE_VERSION.tar.xz\"     && cd \"node-v$NODE_VERSION\"     && ./configure     && make -j$(getconf _NPROCESSORS_ONLN) V=     && make install     && apk del .build-deps-full     && cd ..     && rm -Rf \"node-v$NODE_VERSION\"     && rm \"node-v$NODE_VERSION.tar.xz\" SHASUMS256.txt.asc SHASUMS256.txt;   fi   && rm -f \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\"   && apk del .build-deps   && node --version   && npm --version",
+        "layer_digest": "sha256:139c1270acf1709f1b19712cbf4bff0fa680e1aa0103cd37aaa963d512176735",
+        "src_name": "gcc",
+        "src_version": "12.2.1_git20220924-r10"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2023-4039",
+          "type": "vulnerability",
+          "description": "**DISPUTED**A failure in the -fstack-protector feature in GCC-based toolchains \nthat target AArch64 allows an attacker to exploit an existing buffer \noverflow in dynamically-sized local variables in your application \nwithout this being detected. This stack-protector failure only applies \nto C99-style dynamically-sized local variables or those created using \nalloca(). The stack-protector operates as intended for statically-sized \nlocal variables.\n\nThe default behavior when the stack-protector \ndetects an overflow is to terminate your application, resulting in \ncontrolled loss of availability. An attacker who can exploit a buffer \noverflow without triggering the stack-protector might be able to change \nprogram flow control to cause an uncontrolled loss of availability or to\n go further and affect confidentiality or integrity. NOTE: The GCC project argues that this is a missed hardening bug and not a vulnerability by itself.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-4039",
+          "publish_date": "2023-09-13",
+          "modification_date": "2025-02-13",
+          "fix_version": "13.2.1_git20231014-r0",
+          "solution": "Upgrade operating system to alpine version 3.19 (includes fixed versions of libstdc++)",
+          "nvd_score_v3": 4.8,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 4.8,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "gcc",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 4.8",
+          "aqua_score_classification": "NVD CVSS V3 Score: 4.8",
+          "cwe_info": [
+            {
+              "Id": "CWE-693",
+              "name": "Protection Mechanism Failure"
+            }
+          ],
+          "epss_score": 0.00121,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/lodash",
+        "name": "lodash",
+        "version": "4.17.21",
+        "cpe": "pkg:/npm:*:lodash:4.17.21",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2021-41720",
+          "type": "vulnerability",
+          "description": "Rejected reason: DO NOT USE THIS CANDIDATE NUMBER. ConsultIDs: none. Reason: This candidate was withdrawn by its CNA. Further investigation showed that it was not a security issue. Notes: none",
+          "publish_date": "2021-09-30",
+          "modification_date": "2023-11-07",
+          "heuristic_ref_id": 265547
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/micromatch",
+        "name": "micromatch",
+        "version": "4.0.4",
+        "cpe": "pkg:/npm:*:micromatch:4.0.4",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-4067",
+          "type": "vulnerability",
+          "description": "The NPM package `micromatch` prior to 4.0.8 is vulnerable to Regular Expression Denial of Service (ReDoS). The vulnerability occurs in `micromatch.braces()` in `index.js` because the pattern `.*` will greedily match anything. By passing a malicious payload, the pattern matching will keep backtracking to the input while it doesn't find the closing bracket. As the input size increases, the consumption time will also increase until it causes the application to hang or slow down. There was a merged fix but further testing shows the issue persists. This issue should be mitigated by using a safe pattern that won't start backtracking the regular expression due to greedy matching. This issue was fixed in version 4.0.8.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-4067",
+          "publish_date": "2024-05-14",
+          "modification_date": "2024-11-21",
+          "fix_version": "4.0.8",
+          "solution": "Upgrade package micromatch to version 4.0.8 or above.",
+          "nvd_score_v3": 5.3,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.3,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.3",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.3",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00366,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/sane/node_modules/micromatch",
+        "name": "micromatch",
+        "version": "3.1.10",
+        "cpe": "pkg:/npm:*:micromatch:3.1.10",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-4067",
+          "type": "vulnerability",
+          "description": "The NPM package `micromatch` prior to 4.0.8 is vulnerable to Regular Expression Denial of Service (ReDoS). The vulnerability occurs in `micromatch.braces()` in `index.js` because the pattern `.*` will greedily match anything. By passing a malicious payload, the pattern matching will keep backtracking to the input while it doesn't find the closing bracket. As the input size increases, the consumption time will also increase until it causes the application to hang or slow down. There was a merged fix but further testing shows the issue persists. This issue should be mitigated by using a safe pattern that won't start backtracking the regular expression due to greedy matching. This issue was fixed in version 4.0.8.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-4067",
+          "publish_date": "2024-05-14",
+          "modification_date": "2024-11-21",
+          "fix_version": "4.0.8",
+          "solution": "Upgrade package micromatch to version 4.0.8 or above.",
+          "nvd_score_v3": 5.3,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.3,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.3",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.3",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00366,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/minimatch",
+        "name": "minimatch",
+        "version": "3.0.4",
+        "cpe": "pkg:/npm:*:minimatch:3.0.4",
+        "license": "ISC",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-3517",
+          "type": "vulnerability",
+          "description": "A vulnerability was found in the minimatch package. This flaw allows a Regular Expression Denial of Service (ReDoS) when calling the braceExpand function with specific arguments, resulting in a Denial of Service.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-3517",
+          "publish_date": "2022-10-17",
+          "modification_date": "2024-11-21",
+          "fix_version": "3.0.5",
+          "solution": "Upgrade package minimatch to version 3.0.5 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            },
+            {
+              "Id": "CWE-400",
+              "name": "Uncontrolled Resource Consumption"
+            }
+          ],
+          "epss_score": 0.00457,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/minimist",
+        "name": "minimist",
+        "version": "1.2.5",
+        "cpe": "pkg:/npm:*:minimist:1.2.5",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2021-44906",
+          "type": "vulnerability",
+          "description": "Minimist <=1.2.5 is vulnerable to Prototype Pollution via file index.js, function setKey() (lines 69-95).",
+          "nvd_score": 7.5,
+          "nvd_vectors": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+          "nvd_severity": "high",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2021-44906",
+          "publish_date": "2022-03-17",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.2.6",
+          "solution": "Upgrade package minimist to version 1.2.6 or above.",
+          "nvd_score_v3": 9.8,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "nvd_severity_v3": "critical",
+          "aqua_score": 9.8,
+          "aqua_severity": "critical",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 9.8",
+          "aqua_score_classification": "NVD CVSS V3 Score: 9.8",
+          "cwe_info": [
+            {
+              "Id": "CWE-1321",
+              "name": "Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')"
+            }
+          ],
+          "epss_score": 0.00756,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "apk",
+        "name": "musl",
+        "version": "1.2.4-r1",
+        "arch": "x86_64",
+        "cpe": "pkg:/alpine:3.18.3:musl:1.2.4-r1",
+        "license": "MIT",
+        "layer": "/bin/sh -c #(nop) ADD file:32ff5e7a78b890996ee4681cc0a26185d3e9acdb4eb1e2aaccb2411f922fed6b in / ",
+        "layer_digest": "sha256:4693057ce2364720d39e57e85a5b8e0bd9ac3573716237736d6470ec5b7b7230",
+        "src_name": "musl",
+        "src_version": "1.2.4-r1"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2025-26519",
+          "type": "vulnerability",
+          "description": "musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write vulnerability when an attacker can trigger iconv conversion of untrusted EUC-KR text to UTF-8.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2025-26519",
+          "publish_date": "2025-02-14",
+          "modification_date": "2025-02-14",
+          "fix_version": "1.2.4-r3",
+          "solution": "Upgrade package musl to version 1.2.4-r3 or above.",
+          "nvd_score_v3": 8.1,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:L",
+          "nvd_severity_v3": "high",
+          "aqua_score": 8.1,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 6226713,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 8.1",
+          "aqua_score_classification": "NVD CVSS V3 Score: 8.1",
+          "fix_publish_date": "2025-02-14",
+          "cwe_info": [
+            {
+              "Id": "CWE-787",
+              "name": "Out-of-bounds Write"
+            }
+          ],
+          "epss_score": 0.0001,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "apk",
+        "name": "musl-utils",
+        "version": "1.2.4-r1",
+        "arch": "x86_64",
+        "cpe": "pkg:/alpine:3.18.3:musl-utils:1.2.4-r1",
+        "license": "MIT,BSD-2-Clause,GPL-2.0",
+        "layer": "/bin/sh -c #(nop) ADD file:32ff5e7a78b890996ee4681cc0a26185d3e9acdb4eb1e2aaccb2411f922fed6b in / ",
+        "layer_digest": "sha256:4693057ce2364720d39e57e85a5b8e0bd9ac3573716237736d6470ec5b7b7230",
+        "src_name": "musl",
+        "src_version": "1.2.4-r1"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2025-26519",
+          "type": "vulnerability",
+          "description": "musl libc 0.9.13 through 1.2.5 before 1.2.6 has an out-of-bounds write vulnerability when an attacker can trigger iconv conversion of untrusted EUC-KR text to UTF-8.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2025-26519",
+          "publish_date": "2025-02-14",
+          "modification_date": "2025-02-14",
+          "fix_version": "1.2.4-r3",
+          "solution": "Upgrade package musl-utils to version 1.2.4-r3 or above.",
+          "nvd_score_v3": 8.1,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:L",
+          "nvd_severity_v3": "high",
+          "aqua_score": 8.1,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "musl",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 8.1",
+          "aqua_score_classification": "NVD CVSS V3 Score: 8.1",
+          "fix_publish_date": "2025-02-14",
+          "cwe_info": [
+            {
+              "Id": "CWE-787",
+              "name": "Out-of-bounds Write"
+            }
+          ],
+          "epss_score": 0.0001,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/path-parse",
+        "name": "path-parse",
+        "version": "1.0.6",
+        "cpe": "pkg:/npm:*:path-parse:1.0.6",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2021-23343",
+          "type": "vulnerability",
+          "description": "All versions of package path-parse are vulnerable to Regular Expression Denial of Service (ReDoS) via splitDeviceRe, splitTailRe, and splitPathRe regular expressions. ReDoS exhibits polynomial worst-case time complexity.",
+          "nvd_score": 5,
+          "nvd_vectors": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+          "nvd_severity": "medium",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2021-23343",
+          "publish_date": "2021-05-04",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.0.7",
+          "solution": "Upgrade package path-parse to version 1.0.7 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "epss_score": 0.00243,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/path-to-regexp",
+        "name": "path-to-regexp",
+        "version": "0.1.7",
+        "cpe": "pkg:/npm:*:path-to-regexp:0.1.7",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-52798",
+          "type": "vulnerability",
+          "description": "path-to-regexp turns path strings into a regular expressions. In certain cases, path-to-regexp will output a regular expression that can be exploited to cause poor performance. The regular expression that is vulnerable to backtracking can be generated in the 0.1.x release of path-to-regexp. Upgrade to 0.1.12. This vulnerability exists because of an incomplete fix for CVE-2024-45296.",
+          "publish_date": "2024-12-05",
+          "modification_date": "2025-01-24",
+          "fix_version": "0.1.12",
+          "solution": "Upgrade package path-to-regexp to version 0.1.12 or above.",
+          "heuristic_ref_id": 265547,
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00032,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/qs",
+        "name": "qs",
+        "version": "6.7.0",
+        "cpe": "pkg:/npm:*:qs:6.7.0",
+        "license": "BSD-3-Clause",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-24999",
+          "type": "vulnerability",
+          "description": "qs before 6.10.3, as used in Express before 4.17.3 and other products, allows attackers to cause a Node process hang for an Express application because an __ proto__ key can be used. In many typical Express use cases, an unauthenticated remote attacker can place the attack payload in the query string of the URL that is used to visit the application, such as a[__proto__]=b&a[__proto__]&a[length]=100000000. The fix was backported to qs 6.9.7, 6.8.3, 6.7.3, 6.6.1, 6.5.3, 6.4.1, 6.3.3, and 6.2.4 (and therefore Express 4.17.3, which has \"deps: qs@6.9.7\" in its release description, is not vulnerable).",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-24999",
+          "publish_date": "2022-11-26",
+          "modification_date": "2025-04-29",
+          "fix_version": "6.10.3, 6.2.4, 6.3.3, 6.4.1, 6.5.3, 6.6.1, 6.7.3, 6.8.3, 6.9.7",
+          "solution": "Upgrade package qs to version 6.10.3,6.2.4,6.3.3,6.4.1,6.5.3,6.6.1,6.7.3,6.8.3,6.9.7 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1321",
+              "name": "Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')"
+            }
+          ],
+          "epss_score": 0.02975,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2021-44907",
+          "type": "vulnerability",
+          "description": "Rejected reason: DO NOT USE THIS CANDIDATE NUMBER. ConsultIDs: none. Reason: This candidate was withdrawn by its CNA. Further investigation showed that it was not a security issue. Notes: none",
+          "publish_date": "2022-03-17",
+          "modification_date": "2023-11-07",
+          "fix_version": "6.8.1",
+          "solution": "Upgrade package qs to version 6.8.1 or above.",
+          "heuristic_ref_id": 265547
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/@babel/core/node_modules/semver",
+        "name": "semver",
+        "version": "6.3.0",
+        "cpe": "pkg:/npm:*:semver:6.3.0",
+        "license": "ISC",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-25883",
+          "type": "vulnerability",
+          "description": "Versions of the package semver before 7.5.2 are vulnerable to Regular Expression Denial of Service (ReDoS) via the function new Range, when untrusted user data is provided as a range.\r\r\r",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-25883",
+          "publish_date": "2023-06-21",
+          "modification_date": "2024-12-06",
+          "fix_version": "5.7.2, 6.3.1, 7.5.2",
+          "solution": "Upgrade package semver to version 5.7.2,6.3.1,7.5.2 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00308,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/make-dir/node_modules/semver",
+        "name": "semver",
+        "version": "6.3.0",
+        "cpe": "pkg:/npm:*:semver:6.3.0",
+        "license": "ISC",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-25883",
+          "type": "vulnerability",
+          "description": "Versions of the package semver before 7.5.2 are vulnerable to Regular Expression Denial of Service (ReDoS) via the function new Range, when untrusted user data is provided as a range.\r\r\r",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-25883",
+          "publish_date": "2023-06-21",
+          "modification_date": "2024-12-06",
+          "fix_version": "5.7.2, 6.3.1, 7.5.2",
+          "solution": "Upgrade package semver to version 5.7.2,6.3.1,7.5.2 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00308,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/semver",
+        "name": "semver",
+        "version": "5.7.1",
+        "cpe": "pkg:/npm:*:semver:5.7.1",
+        "license": "ISC",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-25883",
+          "type": "vulnerability",
+          "description": "Versions of the package semver before 7.5.2 are vulnerable to Regular Expression Denial of Service (ReDoS) via the function new Range, when untrusted user data is provided as a range.\r\r\r",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-25883",
+          "publish_date": "2023-06-21",
+          "modification_date": "2024-12-06",
+          "fix_version": "5.7.2, 6.3.1, 7.5.2",
+          "solution": "Upgrade package semver to version 5.7.2,6.3.1,7.5.2 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00308,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/node-notifier/node_modules/semver",
+        "name": "semver",
+        "version": "7.3.5",
+        "cpe": "pkg:/npm:*:semver:7.3.5",
+        "license": "ISC",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-25883",
+          "type": "vulnerability",
+          "description": "Versions of the package semver before 7.5.2 are vulnerable to Regular Expression Denial of Service (ReDoS) via the function new Range, when untrusted user data is provided as a range.\r\r\r",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-25883",
+          "publish_date": "2023-06-21",
+          "modification_date": "2024-12-06",
+          "fix_version": "5.7.2, 6.3.1, 7.5.2",
+          "solution": "Upgrade package semver to version 5.7.2,6.3.1,7.5.2 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00308,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/local/lib/node_modules/npm/node_modules/semver",
+        "name": "semver",
+        "version": "7.3.7",
+        "cpe": "pkg:/npm:*:semver:7.3.7",
+        "license": "ISC",
+        "layer": "/bin/sh -c addgroup -g 1000 node     && adduser -u 1000 -G node -s /bin/sh -D node     && apk add --no-cache         libstdc++     && apk add --no-cache --virtual .build-deps         curl     && ARCH= && alpineArch=\"$(apk --print-arch)\"       && case \"${alpineArch##*-}\" in         x86_64)           ARCH='x64'           CHECKSUM=\"d2df78a192bd78b958e19a77821916a38def5e9e46c0c9a0989fdf5eb6c14a7e\"           ;;         *) ;;       esac   && if [ -n \"${CHECKSUM}\" ]; then     set -eu;     curl -fsSLO --compressed \"https://unofficial-builds.nodejs.org/download/release/v$NODE_VERSION/node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\";     echo \"$CHECKSUM  node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" | sha256sum -c -       && tar -xJf \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" -C /usr/local --strip-components=1 --no-same-owner       && ln -s /usr/local/bin/node /usr/local/bin/nodejs;   else     echo \"Building from source\"     && apk add --no-cache --virtual .build-deps-full         binutils-gold         g++         gcc         gnupg         libgcc         linux-headers         make         python3     && export GNUPGHOME=\"$(mktemp -d)\"     && for key in       4ED778F539E3634C779C87C6D7062848A1AB005C       141F07595B7B3FFE74309A937405533BE57C7D57       74F12602B6F1C4E913FAA37AD3A89613643B6201       DD792F5973C6DE52C432CBDAC77ABFA00DDBF2B7       61FC681DFB92A079F1685E77973F295594EC4689       8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600       C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8       890C08DB8579162FEE0DF9DB8BEAB4DFCF555EF4       C82FA3AE1CBEDC6BE46B9360C43CEC45C17AB93C       108F52B48DB57BB0CC439B2997B01419BD92F80A     ; do       gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$key\" ||       gpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\" ;     done     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.xz\"     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc\"     && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc     && gpgconf --kill all     && rm -rf \"$GNUPGHOME\"     && grep \" node-v$NODE_VERSION.tar.xz\\$\" SHASUMS256.txt | sha256sum -c -     && tar -xf \"node-v$NODE_VERSION.tar.xz\"     && cd \"node-v$NODE_VERSION\"     && ./configure     && make -j$(getconf _NPROCESSORS_ONLN) V=     && make install     && apk del .build-deps-full     && cd ..     && rm -Rf \"node-v$NODE_VERSION\"     && rm \"node-v$NODE_VERSION.tar.xz\" SHASUMS256.txt.asc SHASUMS256.txt;   fi   && rm -f \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\"   && apk del .build-deps   && node --version   && npm --version",
+        "layer_digest": "sha256:139c1270acf1709f1b19712cbf4bff0fa680e1aa0103cd37aaa963d512176735"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-25883",
+          "type": "vulnerability",
+          "description": "Versions of the package semver before 7.5.2 are vulnerable to Regular Expression Denial of Service (ReDoS) via the function new Range, when untrusted user data is provided as a range.\r\r\r",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-25883",
+          "publish_date": "2023-06-21",
+          "modification_date": "2024-12-06",
+          "fix_version": "5.7.2, 6.3.1, 7.5.2",
+          "solution": "Upgrade package semver to version 5.7.2,6.3.1,7.5.2 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00308,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/jest-snapshot/node_modules/semver",
+        "name": "semver",
+        "version": "7.3.5",
+        "cpe": "pkg:/npm:*:semver:7.3.5",
+        "license": "ISC",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-25883",
+          "type": "vulnerability",
+          "description": "Versions of the package semver before 7.5.2 are vulnerable to Regular Expression Denial of Service (ReDoS) via the function new Range, when untrusted user data is provided as a range.\r\r\r",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-25883",
+          "publish_date": "2023-06-21",
+          "modification_date": "2024-12-06",
+          "fix_version": "5.7.2, 6.3.1, 7.5.2",
+          "solution": "Upgrade package semver to version 5.7.2,6.3.1,7.5.2 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00308,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/istanbul-lib-instrument/node_modules/semver",
+        "name": "semver",
+        "version": "6.3.0",
+        "cpe": "pkg:/npm:*:semver:6.3.0",
+        "license": "ISC",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-25883",
+          "type": "vulnerability",
+          "description": "Versions of the package semver before 7.5.2 are vulnerable to Regular Expression Denial of Service (ReDoS) via the function new Range, when untrusted user data is provided as a range.\r\r\r",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-25883",
+          "publish_date": "2023-06-21",
+          "modification_date": "2024-12-06",
+          "fix_version": "5.7.2, 6.3.1, 7.5.2",
+          "solution": "Upgrade package semver to version 5.7.2,6.3.1,7.5.2 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00308,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/@babel/helper-compilation-targets/node_modules/semver",
+        "name": "semver",
+        "version": "6.3.0",
+        "cpe": "pkg:/npm:*:semver:6.3.0",
+        "license": "ISC",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2022-25883",
+          "type": "vulnerability",
+          "description": "Versions of the package semver before 7.5.2 are vulnerable to Regular Expression Denial of Service (ReDoS) via the function new Range, when untrusted user data is provided as a range.\r\r\r",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2022-25883",
+          "publish_date": "2023-06-21",
+          "modification_date": "2024-12-06",
+          "fix_version": "5.7.2, 6.3.1, 7.5.2",
+          "solution": "Upgrade package semver to version 5.7.2,6.3.1,7.5.2 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00308,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/send",
+        "name": "send",
+        "version": "0.17.1",
+        "cpe": "pkg:/npm:*:send:0.17.1",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-43799",
+          "type": "vulnerability",
+          "description": "Send is a library for streaming files from the file system as a http response. Send passes untrusted user input to SendStream.redirect() which executes untrusted code. This issue is patched in send 0.19.0.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-43799",
+          "publish_date": "2024-09-10",
+          "modification_date": "2024-09-20",
+          "fix_version": "0.19.0",
+          "solution": "Upgrade package send to version 0.19.0 or above.",
+          "nvd_score_v3": 4.7,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 4.7,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 4.7",
+          "aqua_score_classification": "NVD CVSS V3 Score: 4.7",
+          "cwe_info": [
+            {
+              "Id": "CWE-79",
+              "name": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            }
+          ],
+          "epss_score": 0.00025,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/serve-static",
+        "name": "serve-static",
+        "version": "1.14.1",
+        "cpe": "pkg:/npm:*:serve-static:1.14.1",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-43800",
+          "type": "vulnerability",
+          "description": "serve-static serves static files. serve-static passes untrusted user input - even after sanitizing it - to redirect() may execute untrusted code. This issue is patched in serve-static 1.16.0.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-43800",
+          "publish_date": "2024-09-10",
+          "modification_date": "2024-09-20",
+          "fix_version": "1.16.0, 2.1.0",
+          "solution": "Upgrade package serve-static to version 1.16.0,2.1.0 or above.",
+          "nvd_score_v3": 4.7,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 4.7,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 4.7",
+          "aqua_score_classification": "NVD CVSS V3 Score: 4.7",
+          "cwe_info": [
+            {
+              "Id": "CWE-79",
+              "name": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            }
+          ],
+          "epss_score": 0.00024,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "apk",
+        "name": "ssl_client",
+        "version": "1.36.1-r2",
+        "arch": "x86_64",
+        "cpe": "pkg:/alpine:3.18.3:ssl_client:1.36.1-r2",
+        "license": "GPL-2.0",
+        "layer": "/bin/sh -c #(nop) ADD file:32ff5e7a78b890996ee4681cc0a26185d3e9acdb4eb1e2aaccb2411f922fed6b in / ",
+        "layer_digest": "sha256:4693057ce2364720d39e57e85a5b8e0bd9ac3573716237736d6470ec5b7b7230",
+        "src_name": "busybox",
+        "src_version": "1.36.1-r2"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2023-42364",
+          "type": "vulnerability",
+          "description": "A use-after-free vulnerability in BusyBox v.1.36.1 allows attackers to cause a denial of service via a crafted awk pattern in the awk.c evaluate function.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42364",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.36.1-r7",
+          "solution": "Upgrade package ssl_client to version 1.36.1-r7 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "busybox",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-06-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.00032,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-42365",
+          "type": "vulnerability",
+          "description": "A use-after-free vulnerability was discovered in BusyBox v.1.36.1 via a crafted awk pattern in the awk.c copyvar function.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42365",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.36.1-r7",
+          "solution": "Upgrade package ssl_client to version 1.36.1-r7 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "busybox",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-06-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.00032,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-42363",
+          "type": "vulnerability",
+          "description": "A use-after-free vulnerability was discovered in xasprintf function in xfuncs_printf.c:344 in BusyBox v.1.36.1.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42363",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.36.1-r7",
+          "solution": "Upgrade package ssl_client to version 1.36.1-r7 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "busybox",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-06-25",
+          "cwe_info": [
+            {
+              "Id": "CWE-416",
+              "name": "Use After Free"
+            }
+          ],
+          "epss_score": 0.00026,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2023-42366",
+          "type": "vulnerability",
+          "description": "A heap-buffer-overflow was discovered in BusyBox v.1.36.1 in the next_token function at awk.c:1159.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-42366",
+          "publish_date": "2023-11-27",
+          "modification_date": "2024-12-06",
+          "fix_version": "1.36.1-r6",
+          "solution": "Upgrade package ssl_client to version 1.36.1-r6 or above.",
+          "nvd_score_v3": 5.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "ancestor_pkg": "busybox",
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.5",
+          "fix_publish_date": "2024-05-19",
+          "cwe_info": [
+            {
+              "Id": "CWE-787",
+              "name": "Out-of-bounds Write"
+            }
+          ],
+          "epss_score": 0.00027,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/local/lib/node_modules/npm/node_modules/tar",
+        "name": "tar",
+        "version": "6.1.11",
+        "cpe": "pkg:/npm:*:tar:6.1.11",
+        "license": "ISC",
+        "layer": "/bin/sh -c addgroup -g 1000 node     && adduser -u 1000 -G node -s /bin/sh -D node     && apk add --no-cache         libstdc++     && apk add --no-cache --virtual .build-deps         curl     && ARCH= && alpineArch=\"$(apk --print-arch)\"       && case \"${alpineArch##*-}\" in         x86_64)           ARCH='x64'           CHECKSUM=\"d2df78a192bd78b958e19a77821916a38def5e9e46c0c9a0989fdf5eb6c14a7e\"           ;;         *) ;;       esac   && if [ -n \"${CHECKSUM}\" ]; then     set -eu;     curl -fsSLO --compressed \"https://unofficial-builds.nodejs.org/download/release/v$NODE_VERSION/node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\";     echo \"$CHECKSUM  node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" | sha256sum -c -       && tar -xJf \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\" -C /usr/local --strip-components=1 --no-same-owner       && ln -s /usr/local/bin/node /usr/local/bin/nodejs;   else     echo \"Building from source\"     && apk add --no-cache --virtual .build-deps-full         binutils-gold         g++         gcc         gnupg         libgcc         linux-headers         make         python3     && export GNUPGHOME=\"$(mktemp -d)\"     && for key in       4ED778F539E3634C779C87C6D7062848A1AB005C       141F07595B7B3FFE74309A937405533BE57C7D57       74F12602B6F1C4E913FAA37AD3A89613643B6201       DD792F5973C6DE52C432CBDAC77ABFA00DDBF2B7       61FC681DFB92A079F1685E77973F295594EC4689       8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600       C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8       890C08DB8579162FEE0DF9DB8BEAB4DFCF555EF4       C82FA3AE1CBEDC6BE46B9360C43CEC45C17AB93C       108F52B48DB57BB0CC439B2997B01419BD92F80A     ; do       gpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$key\" ||       gpg --batch --keyserver keyserver.ubuntu.com --recv-keys \"$key\" ;     done     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.xz\"     && curl -fsSLO --compressed \"https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc\"     && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc     && gpgconf --kill all     && rm -rf \"$GNUPGHOME\"     && grep \" node-v$NODE_VERSION.tar.xz\\$\" SHASUMS256.txt | sha256sum -c -     && tar -xf \"node-v$NODE_VERSION.tar.xz\"     && cd \"node-v$NODE_VERSION\"     && ./configure     && make -j$(getconf _NPROCESSORS_ONLN) V=     && make install     && apk del .build-deps-full     && cd ..     && rm -Rf \"node-v$NODE_VERSION\"     && rm \"node-v$NODE_VERSION.tar.xz\" SHASUMS256.txt.asc SHASUMS256.txt;   fi   && rm -f \"node-v$NODE_VERSION-linux-$ARCH-musl.tar.xz\"   && apk del .build-deps   && node --version   && npm --version",
+        "layer_digest": "sha256:139c1270acf1709f1b19712cbf4bff0fa680e1aa0103cd37aaa963d512176735"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2020-8244",
+          "type": "vulnerability",
+          "description": "A buffer over-read vulnerability exists in bl <4.0.3, <3.0.1, <2.2.1, and <1.2.3 which could allow an attacker to supply user input (even typed) that if it ends up in consume() argument and can become negative, the BufferList state can be corrupted, tricking it into exposing uninitialized memory via regular .slice() calls.",
+          "nvd_score": 6.4,
+          "nvd_vectors": "AV:N/AC:L/Au:N/C:P/I:N/A:P",
+          "nvd_severity": "medium",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2020-8244",
+          "publish_date": "2020-08-30",
+          "modification_date": "2024-11-21",
+          "fix_version": "6.1.12",
+          "solution": "Upgrade package tar to version 6.1.12 or above.",
+          "nvd_score_v3": 6.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 6.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 6.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 6.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-125",
+              "name": "Out-of-bounds Read"
+            },
+            {
+              "Id": "CWE-126",
+              "name": "Buffer Over-read"
+            }
+          ],
+          "epss_score": 0.00368,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2024-28863",
+          "type": "vulnerability",
+          "description": "node-tar is a Tar for Node.js. node-tar prior to version 6.2.1 has no limit on the number of sub-folders created in the folder creation process. An attacker who generates a large number of sub-folders can consume memory on the system running node-tar and even crash the Node.js client within few seconds of running it using a path with too many sub-folders inside. Version 6.2.1 fixes this issue by preventing extraction in excessively deep sub-folders.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-28863",
+          "publish_date": "2024-03-21",
+          "modification_date": "2024-11-21",
+          "fix_version": "6.2.1",
+          "solution": "Upgrade package tar to version 6.2.1 or above.",
+          "nvd_score_v3": 6.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 6.5,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 6.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 6.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-400",
+              "name": "Uncontrolled Resource Consumption"
+            },
+            {
+              "Id": "CWE-770",
+              "name": "Allocation of Resources Without Limits or Throttling"
+            }
+          ],
+          "epss_score": 0.00205,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/tmpl",
+        "name": "tmpl",
+        "version": "1.0.4",
+        "cpe": "pkg:/npm:*:tmpl:1.0.4",
+        "license": "BSD-3-Clause",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2021-3777",
+          "type": "vulnerability",
+          "description": "nodejs-tmpl is vulnerable to Inefficient Regular Expression Complexity",
+          "nvd_score": 7.8,
+          "nvd_vectors": "AV:N/AC:L/Au:N/C:N/I:N/A:C",
+          "nvd_severity": "high",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2021-3777",
+          "publish_date": "2021-09-15",
+          "modification_date": "2024-11-21",
+          "fix_version": "1.0.5",
+          "solution": "Upgrade package tmpl to version 1.0.5 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.00415,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/tough-cookie",
+        "name": "tough-cookie",
+        "version": "4.0.0",
+        "cpe": "pkg:/npm:*:tough-cookie:4.0.0",
+        "license": "BSD-3-Clause",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2023-26136",
+          "type": "vulnerability",
+          "description": "Versions of the package tough-cookie before 4.1.3 are vulnerable to Prototype Pollution due to improper handling of Cookies when using CookieJar in rejectPublicSuffixes=false mode. This issue arises from the manner in which the objects are initialized.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-26136",
+          "publish_date": "2023-07-01",
+          "modification_date": "2024-11-21",
+          "fix_version": "4.1.3",
+          "solution": "Upgrade package tough-cookie to version 4.1.3 or above.",
+          "nvd_score_v3": 9.8,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "nvd_severity_v3": "critical",
+          "aqua_score": 9.8,
+          "aqua_severity": "critical",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 9.8",
+          "aqua_score_classification": "NVD CVSS V3 Score: 9.8",
+          "cwe_info": [
+            {
+              "Id": "CWE-1321",
+              "name": "Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')"
+            }
+          ],
+          "epss_score": 0.05191,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/word-wrap",
+        "name": "word-wrap",
+        "version": "1.2.3",
+        "cpe": "pkg:/npm:*:word-wrap:1.2.3",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2023-26115",
+          "type": "vulnerability",
+          "description": "All versions of the package word-wrap are vulnerable to Regular Expression Denial of Service (ReDoS) due to the usage of an insecure regular expression within the result variable.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2023-26115",
+          "publish_date": "2023-06-22",
+          "modification_date": "2025-02-13",
+          "fix_version": "1.2.4",
+          "solution": "Upgrade package word-wrap to version 1.2.4 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-1333",
+              "name": "Inefficient Regular Expression Complexity"
+            }
+          ],
+          "epss_score": 0.0002,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    },
+    {
+      "resource": {
+        "format": "npm",
+        "path": "/usr/src/app/node_modules/ws",
+        "name": "ws",
+        "version": "7.4.5",
+        "cpe": "pkg:/npm:*:ws:7.4.5",
+        "license": "MIT",
+        "layer": "RUN /bin/sh -c npm install # buildkit",
+        "layer_digest": "sha256:a3d96d2a12fa72ba8a421995dc3aa7704b3c7150c711f8999512e6e49f788487"
+      },
+      "scanned": true,
+      "vulnerabilities": [
+        {
+          "name": "CVE-2024-37890",
+          "type": "vulnerability",
+          "description": "ws is an open source WebSocket client and server for Node.js. A request with a number of headers exceeding theserver.maxHeadersCount threshold could be used to crash a ws server. The vulnerability was fixed in ws@8.17.1 (e55e510) and backported to ws@7.5.10 (22c2876), ws@6.2.3 (eeb76d3), and ws@5.2.4 (4abd8f6). In vulnerable versions of ws, the issue can be mitigated in the following ways: 1. Reduce the maximum allowed length of the request headers using the --max-http-header-size=size and/or the maxHeaderSize options so that no more headers than the server.maxHeadersCount limit can be sent. 2. Set server.maxHeadersCount to 0 so that no limit is applied.",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2024-37890",
+          "publish_date": "2024-06-17",
+          "modification_date": "2024-11-21",
+          "fix_version": "5.2.4, 6.2.3, 7.5.10, 8.17.1",
+          "solution": "Upgrade package ws to version 5.2.4,6.2.3,7.5.10,8.17.1 or above.",
+          "nvd_score_v3": 7.5,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "nvd_severity_v3": "high",
+          "aqua_score": 7.5,
+          "aqua_severity": "high",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 7.5",
+          "aqua_score_classification": "NVD CVSS V3 Score: 7.5",
+          "cwe_info": [
+            {
+              "Id": "CWE-476",
+              "name": "NULL Pointer Dereference"
+            }
+          ],
+          "epss_score": 0.0032,
+          "epss_date": "2025-05-12"
+        },
+        {
+          "name": "CVE-2021-32640",
+          "type": "vulnerability",
+          "description": "ws is an open source WebSocket client and server library for Node.js. A specially crafted value of the `Sec-Websocket-Protocol` header can be used to significantly slow down a ws server. The vulnerability has been fixed in ws@7.4.6 (https://github.com/websockets/ws/commit/00c425ec77993773d823f018f64a5c44e17023ff). In vulnerable versions of ws, the issue can be mitigated by reducing the maximum allowed length of the request headers using the [`--max-http-header-size=size`](https://nodejs.org/api/cli.html#cli_max_http_header_size_size) and/or the [`maxHeaderSize`](https://nodejs.org/api/http.html#http_http_createserver_options_requestlistener) options.",
+          "nvd_score": 5,
+          "nvd_vectors": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+          "nvd_severity": "medium",
+          "nvd_url": "https://nvd.nist.gov/vuln/detail/CVE-2021-32640",
+          "publish_date": "2021-05-25",
+          "modification_date": "2024-11-21",
+          "fix_version": "5.2.3, 6.2.2, 7.4.6",
+          "solution": "Upgrade package ws to version 5.2.3,6.2.2,7.4.6 or above.",
+          "nvd_score_v3": 5.3,
+          "nvd_vectors_v3": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "nvd_severity_v3": "medium",
+          "aqua_score": 5.3,
+          "aqua_severity": "medium",
+          "aqua_vectors": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "aqua_scoring_system": "CVSS V3",
+          "heuristic_ref_id": 265547,
+          "aqua_severity_classification": "NVD CVSS V3 Score: 5.3",
+          "aqua_score_classification": "NVD CVSS V3 Score: 5.3",
+          "cwe_info": [
+            {
+              "Id": "CWE-400",
+              "name": "Uncontrolled Resource Consumption"
+            }
+          ],
+          "epss_score": 0.0049,
+          "epss_date": "2025-05-12"
+        }
+      ]
+    }
+  ],
+  "image_assurance_results": {
+    "checks_performed": [
+      {
+        "policy_id": 5,
+        "policy_name": "Malware-Default-Policy",
+        "control": "malware",
+        "malware_file_scanned": 816
+      },
+      {
+        "policy_id": 6,
+        "policy_name": "Sensitive-Data-Default-Policy",
+        "control": "sensitive_data"
+      }
+    ]
+  },
+  "vulnerability_summary": {
+    "total": 83,
+    "critical": 4,
+    "high": 32,
+    "medium": 41,
+    "low": 1,
+    "negligible": 5,
+    "score_average": 6.1240964,
+    "scan_date": {
+      "seconds": 1747130667,
+      "nanos": 126532559
+    }
+  },
+  "scan_options": {
+    "scan_executables": true,
+    "scan_sensitive_data": true,
+    "scan_malware": true,
+    "strict_scan": true,
+    "scan_files": true,
+    "scan_timeout": 3600000000000,
+    "manual_pull_fallback": true,
+    "save_adhoc_scans": true,
+    "use_cvss3": true,
+    "dockerless": true,
+    "system_image_platform": "amd64:::",
+    "telemetry_enabled": true,
+    "enable_fast_scanning": true,
+    "memoryThrottling": true,
+    "suggest_os_upgrade": true,
+    "adhoc_scan_retention": 30,
+    "enable_diff_ids": true,
+    "is_trivy_enabled": true,
+    "register_image": true,
+    "adhoc_scan_options": {
+      "register_compliant_image": true,
+      "use_system_image_platform": true
+    },
+    "rego_thresholds": {}
+  },
+  "pull_name": "ghcr.io/ghcr.io/ppscon/bakery/bakery-app:b4b145babc303b7ab31b80674c337af1cef9243d",
+  "original_registry": "Github",
+  "scan_id": 543,
+  "required_image_platform": "amd64:::",
+  "scanned_image_platform": ":::",
+  "security_feeds_used": {
+    "executables": "8e93106f47cd86"
+  },
+  "image_id": 30,
+  "internal_digest_id": {
+    "id": 29
+  },
+  "isAdhocRegister": true,
+  "OriginFromHostImage": true,
+  "FileHashEncoding": "zlib",
+  "registryType": 2,
+  "last_updated": 1747130707,
+  "feature_flag_map": {
+    "SLK-57390": true,
+    "SLK-60909": true,
+    "SLK-64302": true,
+    "SLK-69130": false,
+    "SLK-78439": false,
+    "SLK-84125": false
+  }
+}

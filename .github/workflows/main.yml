@@ -93,8 +93,20 @@ jobs:
         with:
           name: aqua-reports
           path: artifacts/
+      # Copy the modified filtering scripts from this PR
       - name: Filter ignored vulnerabilities
-        run: python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts --ignored-cves CVE-2025-27789 CVE-2024-45590
+        run: |
+          # Create a copy of the config file for reference
+          cat > ci_scripts/ignored_cves_config.json << 'EOL'
+          {
+            "ignored_cves": [
+              "CVE-2025-27789",
+              "CVE-2024-45590"
+            ],
+            "comment": "These CVEs have been marked as ignored in the Aqua UI"
+          }
+          EOL
+          python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts
       - name: Create elegant report
         run: python ci_scripts/create_elegant_report.py filtered-artifacts/aqua-scan-filtered.json filtered-artifacts/elegant-report.html
       - name: Upload Filtered Aqua Reports as Artifacts

@@ -11,7 +11,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # Example CVEs for testing - this should not be used in production
 # Instead, we'll extract ignored vulnerabilities directly from the report
 EXAMPLE_IGNORED_CVES = [
-    "CVE-2025-27789"
+    "CVE-2025-27789",
+    "CVE-2024-45590"
 ]
 
 def find_ignored_vulnerabilities_in_report(scan_data):
@@ -128,6 +129,10 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
                     ignored_cves = [cve.strip() for cve in env_ignored.split(',')]
                     logging.info(f"Using {len(ignored_cves)} ignored CVEs from environment variable")
         
+        # Make sure ignored_cves list is properly formatted
+        ignored_cves = [cve.strip() for cve in ignored_cves]
+        logging.info(f"Will filter out these CVEs: {', '.join(ignored_cves)}")
+        
         # Track removed vulnerabilities
         removed_count = 0
         total_vulnerabilities = 0
@@ -140,24 +145,30 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
                     total_vulnerabilities += original_count
                     
                     # Filter out ignored vulnerabilities
-                    resource['vulnerabilities'] = [
-                        vuln for vuln in resource['vulnerabilities']
-                        if vuln.get('name') not in ignored_cves
-                    ]
+                    filtered_vulns = []
+                    for vuln in resource['vulnerabilities']:
+                        if 'name' in vuln and any(cve.lower() == vuln['name'].lower() for cve in ignored_cves):
+                            removed_count += 1
+                            logging.info(f"Filtering out {vuln['name']}")
+                        else:
+                            filtered_vulns.append(vuln)
                     
-                    removed_count += original_count - len(resource['vulnerabilities'])
+                    resource['vulnerabilities'] = filtered_vulns
         
         # Process direct vulnerabilities array if present
         if 'vulnerabilities' in scan_data:
             original_count = len(scan_data['vulnerabilities'])
             total_vulnerabilities += original_count
             
-            scan_data['vulnerabilities'] = [
-                vuln for vuln in scan_data['vulnerabilities']
-                if vuln.get('name') not in ignored_cves
-            ]
+            filtered_vulns = []
+            for vuln in scan_data['vulnerabilities']:
+                if 'name' in vuln and any(cve.lower() == vuln['name'].lower() for cve in ignored_cves):
+                    removed_count += 1
+                    logging.info(f"Filtering out {vuln['name']}")
+                else:
+                    filtered_vulns.append(vuln)
             
-            removed_count += original_count - len(scan_data['vulnerabilities'])
+            scan_data['vulnerabilities'] = filtered_vulns
         
         # Update summary counts if they exist
         if 'vulnerability_summary' in scan_data:

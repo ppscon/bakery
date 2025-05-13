@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegant Security Report - Filtered</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #f8f9fa;
+            --card-background: white;
+            --text-color: #333;
+            --border-color: #e1e4e8;
+            --critical-color: #e74c3c;
+            --high-color: #e67e22;
+            --medium-color: #f1c40f;
+            --low-color: #2ecc71;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        header h1 {
+            margin: 0;
+            color: white;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .summary-card {
+            text-align: center;
+            border-top: 4px solid var(--secondary-color);
+        }
+        
+        .summary-card.critical {
+            border-top-color: var(--critical-color);
+        }
+        
+        .summary-card.high {
+            border-top-color: var(--high-color);
+        }
+        
+        .summary-card.medium {
+            border-top-color: var(--medium-color);
+        }
+        
+        .summary-card.low {
+            border-top-color: var(--low-color);
+        }
+        
+        .summary-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .summary-card.critical .summary-number {
+            color: var(--critical-color);
+        }
+        
+        .summary-card.high .summary-number {
+            color: var(--high-color);
+        }
+        
+        .summary-card.medium .summary-number {
+            color: var(--medium-color);
+        }
+        
+        .summary-card.low .summary-number {
+            color: var(--low-color);
+        }
+        
+        .resource-section {
+            margin-bottom: 40px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+        
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .badge-critical {
+            background-color: var(--critical-color);
+        }
+        
+        .badge-high {
+            background-color: var(--high-color);
+        }
+        
+        .badge-medium {
+            background-color: var(--medium-color);
+        }
+        
+        .badge-low {
+            background-color: var(--low-color);
+        }
+        
+        .badge-filtered {
+            background-color: #27ae60;
+        }
+        
+        .timestamp {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+        }
+        
+        .filter-notice {
+            background-color: #e8f4f8;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .summary-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Aqua Security Scan Report</h1>
+            <span class="badge badge-filtered">FILTERED</span>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="timestamp">
+            Report generated on: 2025-05-13 13:31:50
+        </div>
+        
+        <div class="filter-notice">
+            <strong>Filtered Report:</strong> This security report has been filtered to exclude CVEs that are marked as ignored.
+        </div>
+        
+        <h2>Vulnerability Summary</h2>
+        <div class="summary-cards">
+            <div class="card summary-card critical">
+                <h3>Critical</h3>
+                <div class="summary-number">4</div>
+            </div>
+            <div class="card summary-card high">
+                <h3>High</h3>
+                <div class="summary-number">31</div>
+            </div>
+            <div class="card summary-card medium">
+                <h3>Medium</h3>
+                <div class="summary-number">40</div>
+            </div>
+            <div class="card summary-card low">
+                <h3>Low</h3>
+                <div class="summary-number">1</div>
+            </div>
+            <div class="card summary-card">
+                <h3>Total</h3>
+                <div class="summary-number">81</div>
+            </div>
+        </div>
+        
+        <h2>Vulnerabilities by Resource</h2>
+
+        <div class="card resource-section">
+            <h3>@babel/traverse (7.14.2)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2023-45133</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>8.8</td>
+                        <td>7.14.2</td>
+                        <td>7.23.2, 8.0.0-alpha.4</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>braces (3.0.2)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-4068</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>3.0.2</td>
+                        <td>3.0.3</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>braces (2.3.2)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-4068</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>2.3.2</td>
+                        <td>3.0.3</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>busybox (1.36.1-r2)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2023-42363</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r7</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-42364</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r7</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-42366</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r6</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-42365</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r7</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>busybox-binsh (1.36.1-r2)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2023-42366</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r6</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-42364</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r7</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-42363</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r7</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-42365</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r7</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>cache-base (1.0.1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2020-28275</td>
+                        <td><span class="badge ">N/A</span></td>
+                        <td>N/A</td>
+                        <td>1.0.1</td>
+                        <td>N/A</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>cookie (0.4.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-47764</td>
+                        <td><span class="badge ">N/A</span></td>
+                        <td>N/A</td>
+                        <td>0.4.0</td>
+                        <td>0.7.0</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>cross-spawn (7.0.3)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-21538</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>7.0.3</td>
+                        <td>6.0.6, 7.0.5</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>cross-spawn (6.0.5)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-21538</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>6.0.5</td>
+                        <td>6.0.6, 7.0.5</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>decode-uri-component (0.2.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-38900</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>0.2.0</td>
+                        <td>0.2.1</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2022-38778</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>6.5</td>
+                        <td>0.2.0</td>
+                        <td>0.2.1</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>express (4.17.1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-24999</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>4.17.1</td>
+                        <td>4.17.3</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-29041</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>6.1</td>
+                        <td>4.17.1</td>
+                        <td>4.19.2, 5.0.0-beta.3</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-43796</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>4.7</td>
+                        <td>4.17.1</td>
+                        <td>4.20.0</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>formidable (2.1.2)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2025-46653</td>
+                        <td><span class="badge badge-low">LOW</span></td>
+                        <td>3.1</td>
+                        <td>2.1.2</td>
+                        <td>3.5.3</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>ip (2.0.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-29415</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>8.1</td>
+                        <td>2.0.0</td>
+                        <td>N/A</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>json5 (2.2.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-46175</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>8.8</td>
+                        <td>2.2.0</td>
+                        <td>1.0.2, 2.2.2</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>libcrypto3 (3.1.2-r0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-5535</td>
+                        <td><span class="badge badge-critical">CRITICAL</span></td>
+                        <td>9.1</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.6-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-5363</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-4741</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.6-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-6119</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.7-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-5678</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.3</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r1</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-13176</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>4.1</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.8-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-6129</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>6.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r3</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-6237</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.9</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r4</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-9143</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>4.3</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.7-r1</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-4603</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.3</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.5-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-0727</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r5</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-2511</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.9</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r6</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>libgcc (12.2.1_git20220924-r10)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2023-4039</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>4.8</td>
+                        <td>12.2.1_git20220924-r10</td>
+                        <td>13.2.1_git20231014-r0</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>libssl3 (3.1.2-r0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-5535</td>
+                        <td><span class="badge badge-critical">CRITICAL</span></td>
+                        <td>9.1</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.6-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-5363</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-4741</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.6-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-6119</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.7-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-5678</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.3</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r1</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-4603</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.3</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.5-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-6237</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.9</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r4</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-6129</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>6.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r3</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-2511</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.9</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r6</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-0727</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.4-r5</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-13176</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>4.1</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.8-r0</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-9143</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>4.3</td>
+                        <td>3.1.2-r0</td>
+                        <td>3.1.7-r1</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>libstdc++ (12.2.1_git20220924-r10)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2023-4039</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>4.8</td>
+                        <td>12.2.1_git20220924-r10</td>
+                        <td>13.2.1_git20231014-r0</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>lodash (4.17.21)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2021-41720</td>
+                        <td><span class="badge ">N/A</span></td>
+                        <td>N/A</td>
+                        <td>4.17.21</td>
+                        <td>N/A</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>micromatch (4.0.4)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-4067</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.3</td>
+                        <td>4.0.4</td>
+                        <td>4.0.8</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>micromatch (3.1.10)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-4067</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.3</td>
+                        <td>3.1.10</td>
+                        <td>4.0.8</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>minimatch (3.0.4)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-3517</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>3.0.4</td>
+                        <td>3.0.5</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>minimist (1.2.5)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2021-44906</td>
+                        <td><span class="badge badge-critical">CRITICAL</span></td>
+                        <td>9.8</td>
+                        <td>1.2.5</td>
+                        <td>1.2.6</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>musl (1.2.4-r1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2025-26519</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>8.1</td>
+                        <td>1.2.4-r1</td>
+                        <td>1.2.4-r3</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>musl-utils (1.2.4-r1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2025-26519</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>8.1</td>
+                        <td>1.2.4-r1</td>
+                        <td>1.2.4-r3</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>path-parse (1.0.6)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2021-23343</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>1.0.6</td>
+                        <td>1.0.7</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>path-to-regexp (0.1.7)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-52798</td>
+                        <td><span class="badge ">N/A</span></td>
+                        <td>N/A</td>
+                        <td>0.1.7</td>
+                        <td>0.1.12</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>qs (6.7.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-24999</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>6.7.0</td>
+                        <td>6.10.3, 6.2.4, 6.3.3, 6.4.1, 6.5.3, 6.6.1, 6.7.3, 6.8.3, 6.9.7</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2021-44907</td>
+                        <td><span class="badge ">N/A</span></td>
+                        <td>N/A</td>
+                        <td>6.7.0</td>
+                        <td>6.8.1</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>semver (6.3.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-25883</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>6.3.0</td>
+                        <td>5.7.2, 6.3.1, 7.5.2</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>semver (6.3.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-25883</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>6.3.0</td>
+                        <td>5.7.2, 6.3.1, 7.5.2</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>semver (5.7.1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-25883</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>5.7.1</td>
+                        <td>5.7.2, 6.3.1, 7.5.2</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>semver (7.3.5)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-25883</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>7.3.5</td>
+                        <td>5.7.2, 6.3.1, 7.5.2</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>semver (7.3.7)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-25883</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>7.3.7</td>
+                        <td>5.7.2, 6.3.1, 7.5.2</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>semver (7.3.5)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-25883</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>7.3.5</td>
+                        <td>5.7.2, 6.3.1, 7.5.2</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>semver (6.3.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-25883</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>6.3.0</td>
+                        <td>5.7.2, 6.3.1, 7.5.2</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>semver (6.3.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2022-25883</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>6.3.0</td>
+                        <td>5.7.2, 6.3.1, 7.5.2</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>send (0.17.1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-43799</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>4.7</td>
+                        <td>0.17.1</td>
+                        <td>0.19.0</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>serve-static (1.14.1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-43800</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>4.7</td>
+                        <td>1.14.1</td>
+                        <td>1.16.0, 2.1.0</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>ssl_client (1.36.1-r2)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2023-42364</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r7</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-42365</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r7</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-42363</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r7</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2023-42366</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.5</td>
+                        <td>1.36.1-r2</td>
+                        <td>1.36.1-r6</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>tar (6.1.11)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2020-8244</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>6.5</td>
+                        <td>6.1.11</td>
+                        <td>6.1.12</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2024-28863</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>6.5</td>
+                        <td>6.1.11</td>
+                        <td>6.2.1</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>tmpl (1.0.4)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2021-3777</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>1.0.4</td>
+                        <td>1.0.5</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>tough-cookie (4.0.0)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2023-26136</td>
+                        <td><span class="badge badge-critical">CRITICAL</span></td>
+                        <td>9.8</td>
+                        <td>4.0.0</td>
+                        <td>4.1.3</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>word-wrap (1.2.3)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2023-26115</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>1.2.3</td>
+                        <td>1.2.4</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card resource-section">
+            <h3>ws (7.4.5)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CVE</th>
+                        <th>Severity</th>
+                        <th>CVSS Score</th>
+                        <th>Affected Version</th>
+                        <th>Fixed Version</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>CVE-2024-37890</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>7.5</td>
+                        <td>7.4.5</td>
+                        <td>5.2.4, 6.2.3, 7.5.10, 8.17.1</td>
+                    </tr>
+
+                    <tr>
+                        <td>CVE-2021-32640</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>5.3</td>
+                        <td>7.4.5</td>
+                        <td>5.2.3, 6.2.2, 7.4.6</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

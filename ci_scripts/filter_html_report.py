@@ -56,8 +56,24 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
                     except Exception as e:
                         logging.warning(f"Could not extract ignored CVEs from JSON report: {str(e)}")
         
-        # Fallback to example CVEs if we still have none
+        # Fallback to config file if we still have none
         if ignored_cves is None or len(ignored_cves) == 0:
+            config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ignored_cves_config.json")
+            if os.path.exists(config_file):
+                try:
+                    with open(config_file, 'r') as f:
+                        config = json.load(f)
+                        if 'ignored_cves' in config:
+                            ignored_cves = config['ignored_cves']
+                            logging.info(f"Loaded {len(ignored_cves)} ignored CVEs from config file")
+                except Exception as e:
+                    logging.warning(f"Error reading config file: {str(e)}")
+        
+        # Make sure ignored_cves list is properly formatted and all are lowercase for case-insensitive matching
+        if ignored_cves:
+            ignored_cves = [cve.strip() for cve in ignored_cves]
+            logging.info(f"Will filter out these CVEs: {', '.join(ignored_cves)}")
+        else:
             ignored_cves = []
             logging.warning("No ignored CVEs found from any source. Report will remain unchanged.")
             
@@ -66,28 +82,43 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         
         # Find vulnerability sections - more targeted approach
         removed_count = 0
+        removed_cves = []
+        
         for cve_id in ignored_cves:
-            # Look for table rows containing the CVE ID
-            vuln_rows = soup.find_all('tr', string=lambda text: text and cve_id in text)
+            cve_pattern = re.compile(re.escape(cve_id), re.IGNORECASE)
+            found_for_this_cve = False
+            
+            # Look for table rows containing the CVE ID (case insensitive)
+            vuln_rows = soup.find_all('tr', string=lambda text: text and cve_pattern.search(text))
+            for row in vuln_rows:
+                row.decompose()
+                removed_count += 1
+                found_for_this_cve = True
             
             # If no rows found, look for any elements containing the CVE ID
-            if not vuln_rows:
+            if not vuln_rows or not found_for_this_cve:
                 # First try to find td elements containing the CVE
-                vuln_cells = soup.find_all('td', string=lambda text: text and cve_id in text)
+                vuln_cells = soup.find_all('td', string=lambda text: text and cve_pattern.search(text))
                 for cell in vuln_cells:
                     row = cell.find_parent('tr')
                     if row:
                         row.decompose()
                         removed_count += 1
+                        found_for_this_cve = True
                 
                 # Then look for any text containing the CVE
-                vuln_elements = soup.find_all(string=lambda text: text and cve_id in text)
+                vuln_elements = soup.find_all(string=lambda text: text and cve_pattern.search(text))
                 for element in vuln_elements:
                     # Try to find the closest parent element that would represent a whole vulnerability entry
-                    container = element.find_parent(['div', 'tr', 'section', 'table', 'li'])
-                    if container:
+                    container = element.find_parent(['div', 'tr', 'section', 'table', 'li', 'ul'])
+                    if container and container.name in ['tr', 'div', 'section']:
                         container.decompose()
                         removed_count += 1
+                        found_for_this_cve = True
+            
+            if found_for_this_cve:
+                removed_cves.append(cve_id)
+                logging.info(f"Removed entries for {cve_id}")
         
         # Update summary statistics if they exist
         # Look for elements with numeric content that might be counts
@@ -140,7 +171,7 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
             # Add details of removed CVEs
             if removed_count > 0:
                 cve_list = soup.new_tag('p')
-                cve_list.string = f"Removed {removed_count} entries related to ignored vulnerabilities: {', '.join(ignored_cves)}"
+                cve_list.string = f"Removed {removed_count} entries related to ignored vulnerabilities: {', '.join(removed_cves)}"
                 notice_div.append(cve_list)
             
             # Insert at the beginning of the body
