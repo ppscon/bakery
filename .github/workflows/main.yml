@@ -43,7 +43,7 @@ jobs:
         run: echo "${{ secrets.CI_TOKEN }}" | head -c 5
 
       - id: docker-login
-        run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ppcon --password-stdin
+        run: echo "${{ secrets.CI_TOKEN }}" | docker login ghcr.io -u ppscon --password-stdin
 
       - name: Build and Push Docker Image
         run: |
