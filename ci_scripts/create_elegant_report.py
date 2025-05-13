@@ -51,15 +51,46 @@ def create_elegant_report(input_json, output_html, ignored_cves=None):
         resource_vulns = []
         direct_vulns = []
         
+        # Map severity scores to categories
+        def map_severity(score, severity_str=None):
+            if severity_str and isinstance(severity_str, str):
+                severity = severity_str.lower()
+                if severity in ['critical', 'high', 'medium', 'low', 'negligible']:
+                    return severity
+            
+            # Use score-based mapping if severity string is not present or not recognized
+            if score is not None:
+                try:
+                    score_val = float(score)
+                    if score_val >= 9.0:
+                        return 'critical'
+                    elif score_val >= 7.0:
+                        return 'high'
+                    elif score_val >= 4.0:
+                        return 'medium'
+                    elif score_val >= 0.1:
+                        return 'low'
+                    else:
+                        return 'negligible'
+                except (ValueError, TypeError):
+                    pass
+            
+            return 'unknown'
+        
         if 'resources' in scan_data:
             for resource in scan_data['resources']:
                 if 'vulnerabilities' in resource:
                     for vuln in resource['vulnerabilities']:
-                        severity = vuln.get('severity', '').lower()
-                        if severity in sev_counts:
-                            sev_counts[severity] += 1
-                        else:
-                            sev_counts['unknown'] += 1
+                        # Get the score for severity mapping
+                        nvd_score = vuln.get('nvd_score_v3', 0)
+                        if not nvd_score:
+                            nvd_score = vuln.get('nvd_score', 0)
+                        
+                        # Map to a severity level
+                        severity = map_severity(nvd_score, vuln.get('severity', ''))
+                        
+                        # Update counts
+                        sev_counts[severity] += 1
                         
                         # Build detailed info for resource vulns
                         resource_vulns.append({
@@ -69,27 +100,34 @@ def create_elegant_report(input_json, output_html, ignored_cves=None):
                             'resource_version': resource.get('version', 'Unknown'),
                             'vuln_name': vuln.get('name', 'Unknown'),
                             'vuln_description': vuln.get('description', 'No description'),
-                            'vuln_severity': vuln.get('severity', 'Unknown'),
-                            'vuln_score': vuln.get('nvd_score_v3', 0),
+                            'vuln_severity': severity.capitalize(),
+                            'vuln_score': nvd_score,
                             'fix_version': vuln.get('fix_version', 'Unknown')
                         })
         
         if 'vulnerabilities' in scan_data:
             for vuln in scan_data['vulnerabilities']:
-                severity = vuln.get('severity', '').lower()
-                if severity in sev_counts:
-                    sev_counts[severity] += 1
-                else:
-                    sev_counts['unknown'] += 1
+                # Get the score for severity mapping
+                nvd_score = vuln.get('nvd_score_v3', 0)
+                if not nvd_score:
+                    nvd_score = vuln.get('nvd_score', 0)
+                
+                # Map to a severity level
+                severity = map_severity(nvd_score, vuln.get('severity', ''))
+                
+                # Update counts
+                sev_counts[severity] += 1
                 
                 # Build detailed info for direct vulns
                 direct_vulns.append({
                     'vuln_name': vuln.get('name', 'Unknown'),
                     'vuln_description': vuln.get('description', 'No description'),
-                    'vuln_severity': vuln.get('severity', 'Unknown'),
-                    'vuln_score': vuln.get('nvd_score_v3', 0),
+                    'vuln_severity': severity.capitalize(),
+                    'vuln_score': nvd_score,
                     'fix_version': vuln.get('fix_version', 'Unknown')
                 })
+        
+        logging.info(f"[DEBUG] Severity distribution: {sev_counts}")
         
         # Count all CVE IDs
         all_cves = set()
@@ -114,7 +152,7 @@ def create_elegant_report(input_json, output_html, ignored_cves=None):
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Elegant Security Report</title>
+            <title>Curated Vulnerability Report</title>
             <style>
                 body {{
                     font-family: 'Segoe UI', Arial, sans-serif;
@@ -245,7 +283,7 @@ def create_elegant_report(input_json, output_html, ignored_cves=None):
             <div class="container">
                 <h1>
                     <span class="filtered-badge">Filtered</span>
-                    Elegant Security Report
+                    Curated Vulnerability Report
                 </h1>
                 
                 <div class="summary">
