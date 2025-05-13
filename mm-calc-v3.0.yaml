@@ -1,0 +1,113 @@
+# REACT App
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mm-calc-2
+  namespace: calc-2
+  labels:
+    environment: "production"
+    app: "mm-calc-2"
+    component: "webapp"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "3.0.0"
+    compliance: "PCI-DSS"
+    cost-center: "2001"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mm-calc-2
+  template:
+    metadata:
+      labels:
+        environment: "production"
+        app: "mm-calc-2"
+        component: "webapp"
+        confidentiality: "high"
+        owner: "security-team"
+        version: "3.0.0"
+        compliance: "PCI-DSS"
+        cost-center: "2001"
+    spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: mm-calc-2
+        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/mm-calc:V1.7
+        #
+        ports:
+        - containerPort: 8080
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 101  # nginx POLP user
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mm-calc-service-2
+  namespace: calc-2
+  labels:
+    environment: "production"
+    app: "mm-calc-2"
+    component: "webapp"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "3.0.0"
+    compliance: "PCI-DSS"
+    cost-center: "2001"
+spec:
+  type: LoadBalancer
+  selector:
+    app: mm-calc-2
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mm-calc-ingress
+  namespace: calc-2
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+  - host: test.ppsecapp.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mm-calc-service-2
+            port:
+              number: 80

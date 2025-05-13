@@ -4,11 +4,21 @@ metadata:
   name: bakery-app
   namespace: prod
   labels:
+    pod-security.kubernetes.io/enforce: "restricted"
     environment: "production"
-    app: "bakery-app"
+    app: "skills-app"
     component: "frontend"
     confidentiality: "high"
-    owner: "app-team"
+    owner: "your-team"
+    version: "1.0.0"
+    compliance: "DORA"
+    cost-center: "1001"
+  annotations:
+    environment: "production"
+    app: "skills-app"
+    component: "frontend"
+    confidentiality: "high"
+    owner: "your-team"
     version: "1.0.0"
     compliance: "DORA"
     cost-center: "1001"
@@ -20,14 +30,7 @@ spec:
   template:
     metadata:
       labels:
-        environment: "production"
-        app: "bakery-app"
-        component: "frontend"
-        confidentiality: "high"
-        owner: "app-team"
-        version: "1.0.0"
-        compliance: "DORA"
-        cost-center: "1001"
+        app: bakery-app
     spec:
       securityContext:
         seccompProfile:
@@ -51,18 +54,19 @@ spec:
           limits:
             cpu: "500m"
             memory: "128Mi"
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: bakery-app-service
   namespace: prod
-  labels:
+  annotations:
     environment: "production"
-    app: "bakery-app"
+    app: "skills-app"
     component: "frontend"
     confidentiality: "high"
-    owner: "app-team"
+    owner: "your-team"
     version: "1.0.0"
     compliance: "DORA"
     cost-center: "1001"
@@ -71,21 +75,22 @@ spec:
   selector:
     app: bakery-app
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: bakery-app-ingress
   namespace: prod
-  labels:
+  annotations:
     environment: "production"
-    app: "bakery-app"
+    app: "skills-app"
     component: "frontend"
     confidentiality: "high"
-    owner: "app-team"
+    owner: "your-team"
     version: "1.0.0"
     compliance: "DORA"
     cost-center: "1001"

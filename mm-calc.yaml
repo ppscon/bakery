@@ -1,0 +1,103 @@
+# Version without PlanHat
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mm-calc
+  namespace: calc
+  labels:
+    environment: "production"
+    app: "mm-calc"
+    component: "webapp"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "1.7.0"
+    compliance: "PCI-DSS"
+    cost-center: "2001"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mm-calc
+  template:
+    metadata:
+      labels:
+        environment: "production"
+        app: "mm-calc"
+        component: "webapp"
+        confidentiality: "high"
+        owner: "security-team"
+        version: "1.0.0"
+        compliance: "PCI-DSS"
+        cost-center: "2001"
+    spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: mm-calc
+        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/aqua-calc:v1.5
+        command: ["gunicorn"]
+        args: ["--bind", "0.0.0.0:5000", "app:app"]
+        ports:
+        - containerPort: 5000
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "64Mi"
+          limits:
+            cpu: "500m"
+            memory: "128Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mm-calc-service
+  namespace: calc
+  labels:
+    environment: "production"
+    app: "mm-calc"
+    component: "webapp"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "1.7.0"
+    compliance: "PCI-DSS"
+    cost-center: "2001"
+spec:
+  type: LoadBalancer
+  selector:
+    app: mm-calc
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mm-calc-ingress
+  namespace: calc
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+  - host: ppsecapp.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mm-calc-service
+            port:
+              number: 80
+

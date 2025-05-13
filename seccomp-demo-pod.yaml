@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: seccomp-demo
+spec:
+  containers:
+  - name: seccomp-demo
+    image: ubuntu:latest
+    command: ["sleep", "infinity"]
+    securityContext:
+      privileged: true  # Needed for some operations, use with caution

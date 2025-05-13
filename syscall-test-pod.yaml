@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: syscall-test
+spec:
+  containers:
+  - name: syscall-test
+    image: ubuntu
+    command: ["sleep", "infinity"]
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault

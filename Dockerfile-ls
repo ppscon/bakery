@@ -1,0 +1,9 @@
+# Use an official Ubuntu as a parent image
+FROM ubuntu:latest
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y strace
+
+# Define the default command to run strace on ls
+CMD ["strace", "-c", "ls"]
+

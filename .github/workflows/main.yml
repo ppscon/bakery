@@ -51,12 +51,6 @@ jobs:
           docker build --label "com.aqua.security.policy=immutable" -t ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }} .
           docker push ghcr.io/${{ github.repository }}/$IMAGE_NAME:${{ github.sha }}
 
-
-
-
-
-
-
   aqua_scan:
       runs-on: ubuntu-latest
       needs: build_image
@@ -80,9 +74,6 @@ jobs:
           with:
             name: aqua-reports
             path: artifacts/
-
-
-
 
   assign_task:
     runs-on: ubuntu-latest
@@ -257,7 +248,7 @@ jobs:
               path: ./metadata
 
           - name: Deploy to GitHub Pages
-            uses: peaceiris/actions-gh-pages@v3
+            uses: peaceiris/actions-gh-pages@v4
             with:
               github_token: ${{ secrets.CI_TOKEN }}
               publish_dir: ./metadata

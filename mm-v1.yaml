@@ -1,3 +1,4 @@
+# Tests version for the Bakery App
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -41,7 +42,7 @@ spec:
         - containerPort: 5000
         securityContext:
           runAsNonRoot: true
-          runAsUser: 0
+          runAsUser: 1000  # non-root user
           allowPrivilegeEscalation: false
           capabilities:
             drop:

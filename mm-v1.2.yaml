@@ -1,3 +1,4 @@
+# Test MM with Planhat
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -9,11 +10,11 @@ metadata:
     component: "webapp"
     confidentiality: "high"
     owner: "security-team"
-    version: "1.0.0"
+    version: "1.7.0"
     compliance: "PCI-DSS"
     cost-center: "2001"
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: aqua-maturity
@@ -25,7 +26,7 @@ spec:
         component: "webapp"
         confidentiality: "high"
         owner: "security-team"
-        version: "1.0.0"
+        version: "1.7.0"
         compliance: "PCI-DSS"
         cost-center: "2001"
     spec:
@@ -34,7 +35,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: aqua-maturity
-        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/aqua-calc:v1.6
+        image: 633291361733.dkr.ecr.eu-west-2.amazonaws.com/aqua-calc:v1.7
         command: ["gunicorn"]
         args: ["--bind", "0.0.0.0:5000", "app:app"]
         ports:
