@@ -419,6 +419,9 @@ jobs:
               </body>
               </html>
               EOL
+              
+              # Process the index.html file to replace variables
+              python3 ci_scripts/process_index_page.py ./security-reports/index.html
 
           - name: Deploy to GitHub Pages
             uses: peaceiris/actions-gh-pages@v4
