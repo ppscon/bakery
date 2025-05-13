@@ -1,391 +1,428 @@
 #!/usr/bin/env python3
 import json
-import os
-import sys
 import argparse
 import logging
-from datetime import datetime
+import os
+import re
+import sys
+import datetime
+from bs4 import BeautifulSoup
 
+# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def create_elegant_report(json_report_path, output_path):
+def create_elegant_report(input_json, output_html, ignored_cves=None):
     """
-    Create an elegant HTML report from the filtered Aqua JSON report.
+    Create an elegant HTML report from Aqua security scan JSON data.
     
     Args:
-        json_report_path (str): Path to the filtered JSON report
-        output_path (str): Path where to save the elegant HTML report
+        input_json (str): Path to the filtered Aqua scan JSON report
+        output_html (str): Path where the elegant HTML report will be saved
+        ignored_cves (list): List of CVE IDs that have been filtered out
     """
     try:
-        with open(json_report_path, 'r') as f:
-            report_data = json.load(f)
+        with open(input_json, 'r') as f:
+            scan_data = json.load(f)
         
-        logging.info(f"Loaded filtered JSON report from {json_report_path}")
+        logging.info(f"[DEBUG] Loaded JSON scan data from {input_json}")
         
-        # Extract vulnerabilities for summary
-        all_vulnerabilities = []
-        total_critical = 0
-        total_high = 0
-        total_medium = 0
-        total_low = 0
+        # Get a count of all vulnerabilities
+        vuln_count = 0
+        if 'resources' in scan_data:
+            for resource in scan_data['resources']:
+                if 'vulnerabilities' in resource:
+                    vuln_count += len(resource['vulnerabilities'])
         
-        # Process resources
-        resources_with_vulnerabilities = []
+        if 'vulnerabilities' in scan_data:
+            vuln_count += len(scan_data['vulnerabilities'])
         
-        if 'resources' in report_data:
-            for resource in report_data['resources']:
-                if 'vulnerabilities' in resource and resource['vulnerabilities']:
-                    # Count severities
+        logging.info(f"[DEBUG] Found {vuln_count} vulnerabilities in the JSON data")
+        
+        # Create a summary file with vulnerability counts by severity
+        sev_counts = {
+            'critical': 0,
+            'high': 0,
+            'medium': 0,
+            'low': 0,
+            'negligible': 0,
+            'unknown': 0
+        }
+        
+        resource_vulns = []
+        direct_vulns = []
+        
+        if 'resources' in scan_data:
+            for resource in scan_data['resources']:
+                if 'vulnerabilities' in resource:
                     for vuln in resource['vulnerabilities']:
-                        all_vulnerabilities.append(vuln)
-                        severity = vuln.get('aqua_severity', '').lower()
-                        if severity == 'critical':
-                            total_critical += 1
-                        elif severity == 'high':
-                            total_high += 1
-                        elif severity == 'medium':
-                            total_medium += 1
-                        elif severity == 'low':
-                            total_low += 1
-                    
-                    # Add to resources with vulnerabilities
-                    resources_with_vulnerabilities.append(resource)
+                        severity = vuln.get('severity', '').lower()
+                        if severity in sev_counts:
+                            sev_counts[severity] += 1
+                        else:
+                            sev_counts['unknown'] += 1
+                        
+                        # Build detailed info for resource vulns
+                        resource_vulns.append({
+                            'resource_name': resource.get('name', 'Unknown'),
+                            'resource_path': resource.get('path', 'Unknown'),
+                            'resource_type': resource.get('type', 'Unknown'),
+                            'resource_version': resource.get('version', 'Unknown'),
+                            'vuln_name': vuln.get('name', 'Unknown'),
+                            'vuln_description': vuln.get('description', 'No description'),
+                            'vuln_severity': vuln.get('severity', 'Unknown'),
+                            'vuln_score': vuln.get('nvd_score_v3', 0),
+                            'fix_version': vuln.get('fix_version', 'Unknown')
+                        })
         
-        # Process direct vulnerabilities if present
-        if 'vulnerabilities' in report_data:
-            for vuln in report_data['vulnerabilities']:
-                all_vulnerabilities.append(vuln)
-                severity = vuln.get('aqua_severity', '').lower()
-                if severity == 'critical':
-                    total_critical += 1
-                elif severity == 'high':
-                    total_high += 1
-                elif severity == 'medium':
-                    total_medium += 1
-                elif severity == 'low':
-                    total_low += 1
-        
-        # Generate HTML
-        html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elegant Security Report - Filtered</title>
-    <style>
-        :root {{
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --background-color: #f8f9fa;
-            --card-background: white;
-            --text-color: #333;
-            --border-color: #e1e4e8;
-            --critical-color: #e74c3c;
-            --high-color: #e67e22;
-            --medium-color: #f1c40f;
-            --low-color: #2ecc71;
-        }}
-        
-        body {{
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            margin: 0;
-            padding: 0;
-        }}
-        
-        .container {{
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }}
-        
-        header {{
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px 0;
-            margin-bottom: 30px;
-        }}
-        
-        header .container {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }}
-        
-        h1, h2, h3, h4 {{
-            color: var(--primary-color);
-            margin-top: 0;
-        }}
-        
-        header h1 {{
-            margin: 0;
-            color: white;
-        }}
-        
-        .summary-cards {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }}
-        
-        .card {{
-            background-color: var(--card-background);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            transition: transform 0.3s ease;
-        }}
-        
-        .card:hover {{
-            transform: translateY(-5px);
-        }}
-        
-        .summary-card {{
-            text-align: center;
-            border-top: 4px solid var(--secondary-color);
-        }}
-        
-        .summary-card.critical {{
-            border-top-color: var(--critical-color);
-        }}
-        
-        .summary-card.high {{
-            border-top-color: var(--high-color);
-        }}
-        
-        .summary-card.medium {{
-            border-top-color: var(--medium-color);
-        }}
-        
-        .summary-card.low {{
-            border-top-color: var(--low-color);
-        }}
-        
-        .summary-number {{
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin: 10px 0;
-        }}
-        
-        .summary-card.critical .summary-number {{
-            color: var(--critical-color);
-        }}
-        
-        .summary-card.high .summary-number {{
-            color: var(--high-color);
-        }}
-        
-        .summary-card.medium .summary-number {{
-            color: var(--medium-color);
-        }}
-        
-        .summary-card.low .summary-number {{
-            color: var(--low-color);
-        }}
-        
-        .resource-section {{
-            margin-bottom: 40px;
-        }}
-        
-        table {{
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }}
-        
-        th, td {{
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }}
-        
-        th {{
-            background-color: var(--primary-color);
-            color: white;
-        }}
-        
-        tr:nth-child(even) {{
-            background-color: rgba(0, 0, 0, 0.02);
-        }}
-        
-        tr:hover {{
-            background-color: rgba(0, 0, 0, 0.05);
-        }}
-        
-        .badge {{
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 4px;
-            color: white;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }}
-        
-        .badge-critical {{
-            background-color: var(--critical-color);
-        }}
-        
-        .badge-high {{
-            background-color: var(--high-color);
-        }}
-        
-        .badge-medium {{
-            background-color: var(--medium-color);
-        }}
-        
-        .badge-low {{
-            background-color: var(--low-color);
-        }}
-        
-        .badge-filtered {{
-            background-color: #27ae60;
-        }}
-        
-        .timestamp {{
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin-bottom: 30px;
-        }}
-        
-        .filter-notice {{
-            background-color: #e8f4f8;
-            border-left: 4px solid #27ae60;
-            padding: 15px;
-            margin-bottom: 30px;
-            border-radius: 4px;
-        }}
-        
-        @media (max-width: 768px) {{
-            .summary-cards {{
-                grid-template-columns: 1fr 1fr;
-            }}
-        }}
-        
-        @media (max-width: 480px) {{
-            .summary-cards {{
-                grid-template-columns: 1fr;
-            }}
-        }}
-    </style>
-</head>
-<body>
-    <header>
-        <div class="container">
-            <h1>Aqua Security Scan Report</h1>
-            <span class="badge badge-filtered">FILTERED</span>
-        </div>
-    </header>
-    
-    <div class="container">
-        <div class="timestamp">
-            Report generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-        </div>
-        
-        <div class="filter-notice">
-            <strong>Filtered Report:</strong> This security report has been filtered to exclude CVEs that are marked as ignored.
-        </div>
-        
-        <h2>Vulnerability Summary</h2>
-        <div class="summary-cards">
-            <div class="card summary-card critical">
-                <h3>Critical</h3>
-                <div class="summary-number">{total_critical}</div>
-            </div>
-            <div class="card summary-card high">
-                <h3>High</h3>
-                <div class="summary-number">{total_high}</div>
-            </div>
-            <div class="card summary-card medium">
-                <h3>Medium</h3>
-                <div class="summary-number">{total_medium}</div>
-            </div>
-            <div class="card summary-card low">
-                <h3>Low</h3>
-                <div class="summary-number">{total_low}</div>
-            </div>
-            <div class="card summary-card">
-                <h3>Total</h3>
-                <div class="summary-number">{len(all_vulnerabilities)}</div>
-            </div>
-        </div>
-        
-        <h2>Vulnerabilities by Resource</h2>
-"""
-        
-        # Add vulnerabilities by resource
-        for resource in resources_with_vulnerabilities:
-            resource_name = resource.get('resource', {}).get('name', 'Unknown')
-            resource_version = resource.get('resource', {}).get('version', 'N/A')
-            
-            html += f"""
-        <div class="card resource-section">
-            <h3>{resource_name} ({resource_version})</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>CVE</th>
-                        <th>Severity</th>
-                        <th>CVSS Score</th>
-                        <th>Affected Version</th>
-                        <th>Fixed Version</th>
-                    </tr>
-                </thead>
-                <tbody>
-"""
-            
-            for vuln in resource.get('vulnerabilities', []):
-                cve_id = vuln.get('name', 'N/A')
-                severity = vuln.get('aqua_severity', 'N/A').lower()
-                cvss_score = vuln.get('aqua_score', 'N/A')
-                version = resource_version
-                fix_version = vuln.get('fix_version', 'N/A')
+        if 'vulnerabilities' in scan_data:
+            for vuln in scan_data['vulnerabilities']:
+                severity = vuln.get('severity', '').lower()
+                if severity in sev_counts:
+                    sev_counts[severity] += 1
+                else:
+                    sev_counts['unknown'] += 1
                 
-                severity_class = f"badge-{severity}" if severity in ['critical', 'high', 'medium', 'low'] else ""
+                # Build detailed info for direct vulns
+                direct_vulns.append({
+                    'vuln_name': vuln.get('name', 'Unknown'),
+                    'vuln_description': vuln.get('description', 'No description'),
+                    'vuln_severity': vuln.get('severity', 'Unknown'),
+                    'vuln_score': vuln.get('nvd_score_v3', 0),
+                    'fix_version': vuln.get('fix_version', 'Unknown')
+                })
+        
+        # Count all CVE IDs
+        all_cves = set()
+        if 'resources' in scan_data:
+            for resource in scan_data['resources']:
+                if 'vulnerabilities' in resource:
+                    for vuln in resource['vulnerabilities']:
+                        if 'name' in vuln and vuln['name'].startswith('CVE-'):
+                            all_cves.add(vuln['name'])
+        
+        if 'vulnerabilities' in scan_data:
+            for vuln in scan_data['vulnerabilities']:
+                if 'name' in vuln and vuln['name'].startswith('CVE-'):
+                    all_cves.add(vuln['name'])
+        
+        logging.info(f"[DEBUG] Found {len(all_cves)} unique CVE IDs in the data: {', '.join(sorted(all_cves)[:10])}...")
+        
+        # Create an HTML report that shows all this data
+        html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Elegant Security Report</title>
+            <style>
+                body {{
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    background-color: #f8f9fa;
+                    margin: 0;
+                    padding: 20px;
+                }}
+                .container {{
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    background: white;
+                    padding: 20px;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                    border-radius: 5px;
+                }}
+                h1, h2, h3 {{
+                    color: #2c3e50;
+                }}
+                h1 {{
+                    border-bottom: 2px solid #3498db;
+                    padding-bottom: 10px;
+                }}
+                .summary {{
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 15px;
+                    margin: 20px 0;
+                }}
+                .summary-card {{
+                    flex: 1;
+                    min-width: 180px;
+                    background: #f1f8ff;
+                    border-left: 4px solid #3498db;
+                    padding: 15px;
+                    border-radius: 3px;
+                }}
+                .severity-chart {{
+                    display: flex;
+                    height: 30px;
+                    border-radius: 4px;
+                    overflow: hidden;
+                    margin: 20px 0;
+                }}
+                .severity-critical {{
+                    background-color: #d9534f;
+                    color: white;
+                    text-align: center;
+                }}
+                .severity-high {{
+                    background-color: #f0ad4e;
+                    color: white;
+                    text-align: center;
+                }}
+                .severity-medium {{
+                    background-color: #5bc0de;
+                    color: white;
+                    text-align: center;
+                }}
+                .severity-low {{
+                    background-color: #5cb85c;
+                    color: white;
+                    text-align: center;
+                }}
+                .severity-negligible {{
+                    background-color: #777;
+                    color: white;
+                    text-align: center;
+                }}
+                table {{
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                }}
+                th, td {{
+                    padding: 12px 15px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                }}
+                th {{
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }}
+                tr:hover {{
+                    background-color: #f5f5f5;
+                }}
+                .filtered-badge {{
+                    display: inline-block;
+                    background-color: #28a745;
+                    color: white;
+                    padding: 3px 8px;
+                    border-radius: 3px;
+                    font-size: 0.8em;
+                    margin-right: 8px;
+                }}
+                .cve-id {{
+                    font-family: monospace;
+                    padding: 2px 4px;
+                    background: #eee;
+                    border-radius: 3px;
+                }}
+                .severity-badge {{
+                    display: inline-block;
+                    padding: 3px 8px;
+                    border-radius: 3px;
+                    font-size: 0.8em;
+                    color: white;
+                }}
+                .severity-badge.critical {{
+                    background-color: #d9534f;
+                }}
+                .severity-badge.high {{
+                    background-color: #f0ad4e;
+                }}
+                .severity-badge.medium {{
+                    background-color: #5bc0de;
+                }}
+                .severity-badge.low {{
+                    background-color: #5cb85c;
+                }}
+                .severity-badge.negligible {{
+                    background-color: #777;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>
+                    <span class="filtered-badge">Filtered</span>
+                    Elegant Security Report
+                </h1>
+                
+                <div class="summary">
+                    <div class="summary-card">
+                        <h3>Scan Overview</h3>
+                        <p><strong>Scan Date:</strong> {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+                        <p><strong>Total Vulnerabilities:</strong> {vuln_count}</p>
+                        <p><strong>Unique CVEs:</strong> {len(all_cves)}</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <h3>Severity Distribution</h3>
+                        <p><strong>Critical:</strong> {sev_counts['critical']}</p>
+                        <p><strong>High:</strong> {sev_counts['high']}</p>
+                        <p><strong>Medium:</strong> {sev_counts['medium']}</p>
+                        <p><strong>Low:</strong> {sev_counts['low']}</p>
+                        <p><strong>Negligible:</strong> {sev_counts['negligible']}</p>
+                    </div>
+                </div>
+                
+                <div class="severity-chart">
+                    <div class="severity-critical" style="width: {max(1, sev_counts['critical'] / max(1, vuln_count) * 100)}%;">
+                        {sev_counts['critical']}
+                    </div>
+                    <div class="severity-high" style="width: {max(1, sev_counts['high'] / max(1, vuln_count) * 100)}%;">
+                        {sev_counts['high']}
+                    </div>
+                    <div class="severity-medium" style="width: {max(1, sev_counts['medium'] / max(1, vuln_count) * 100)}%;">
+                        {sev_counts['medium']}
+                    </div>
+                    <div class="severity-low" style="width: {max(1, sev_counts['low'] / max(1, vuln_count) * 100)}%;">
+                        {sev_counts['low']}
+                    </div>
+                    <div class="severity-negligible" style="width: {max(1, sev_counts['negligible'] / max(1, vuln_count) * 100)}%;">
+                        {sev_counts['negligible']}
+                    </div>
+                </div>
+        """
+        
+        if ignored_cves:
+            html += f"""
+                <div style="background-color: #f8f9fa; border-left: 4px solid #28a745; padding: 10px 15px; margin: 20px 0;">
+                    <p><strong>Note:</strong> This report excludes {len(ignored_cves)} ignored vulnerabilities:</p>
+                    <ul>
+            """
+            for cve in ignored_cves:
+                html += f"        <li><span class='cve-id'>{cve}</span></li>\n"
+            html += "    </ul>\n</div>\n"
+        
+        # Add resource vulnerabilities table
+        if resource_vulns:
+            html += """
+                <h2>Package Vulnerabilities</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Package</th>
+                            <th>Path</th>
+                            <th>Version</th>
+                            <th>CVE / Vulnerability</th>
+                            <th>Severity</th>
+                            <th>Score</th>
+                            <th>Fix Version</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            """
+            
+            for vuln in resource_vulns:
+                severity_class = vuln['vuln_severity'].lower() if vuln['vuln_severity'].lower() in ['critical', 'high', 'medium', 'low', 'negligible'] else 'low'
                 
                 html += f"""
                     <tr>
-                        <td>{cve_id}</td>
-                        <td><span class="badge {severity_class}">{severity.upper()}</span></td>
-                        <td>{cvss_score}</td>
-                        <td>{version}</td>
-                        <td>{fix_version}</td>
+                        <td>{vuln['resource_name']}</td>
+                        <td>{vuln['resource_path']}</td>
+                        <td>{vuln['resource_version']}</td>
+                        <td>
+                            <span class="cve-id">{vuln['vuln_name']}</span>
+                            <div style="font-size: 0.9em; color: #666;">{vuln['vuln_description'][:100]}...</div>
+                        </td>
+                        <td><span class="severity-badge {severity_class}">{vuln['vuln_severity']}</span></td>
+                        <td>{vuln['vuln_score']}</td>
+                        <td>{vuln['fix_version']}</td>
                     </tr>
-"""
+                """
             
             html += """
-                </tbody>
-            </table>
-        </div>
-"""
+                    </tbody>
+                </table>
+            """
         
-        # Close the HTML
+        # Add direct vulnerabilities if any
+        if direct_vulns:
+            html += """
+                <h2>Direct Vulnerabilities</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CVE / Vulnerability</th>
+                            <th>Severity</th>
+                            <th>Score</th>
+                            <th>Fix Version</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            """
+            
+            for vuln in direct_vulns:
+                severity_class = vuln['vuln_severity'].lower() if vuln['vuln_severity'].lower() in ['critical', 'high', 'medium', 'low', 'negligible'] else 'low'
+                
+                html += f"""
+                    <tr>
+                        <td>
+                            <span class="cve-id">{vuln['vuln_name']}</span>
+                            <div style="font-size: 0.9em; color: #666;">{vuln['vuln_description'][:100]}...</div>
+                        </td>
+                        <td><span class="severity-badge {severity_class}">{vuln['vuln_severity']}</span></td>
+                        <td>{vuln['vuln_score']}</td>
+                        <td>{vuln['fix_version']}</td>
+                    </tr>
+                """
+            
+            html += """
+                    </tbody>
+                </table>
+            """
+        
         html += """
-    </div>
-</body>
-</html>
-"""
+            </div>
+        </body>
+        </html>
+        """
         
         # Write the elegant report
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_html, 'w', encoding='utf-8') as f:
             f.write(html)
         
-        logging.info(f"Created elegant HTML report at {output_path}")
-        return True
+        logging.info(f"[DEBUG] Created elegant HTML report at {output_html}")
         
+        return True
+    
     except Exception as e:
         logging.error(f"Error creating elegant report: {str(e)}")
+        logging.error(f"Exception details: {str(e.__class__.__name__)}: {str(e)}")
+        import traceback
+        logging.error(traceback.format_exc())
         return False
 
 def main():
-    parser = argparse.ArgumentParser(description='Create an elegant HTML report from filtered Aqua scan data')
-    parser.add_argument('json_report', help='Path to the filtered JSON report')
-    parser.add_argument('output_path', help='Path where to save the elegant HTML report')
+    parser = argparse.ArgumentParser(description='Create an elegant HTML report from Aqua security scan JSON data')
+    parser.add_argument('input_json', help='Path to the filtered Aqua scan JSON report')
+    parser.add_argument('output_html', help='Path where the elegant HTML report will be saved')
+    parser.add_argument('--ignored-cves', nargs='+', help='List of CVE IDs that have been filtered out')
     
     args = parser.parse_args()
-    success = create_elegant_report(args.json_report, args.output_path)
+    
+    # Try to determine ignored CVEs if not provided
+    ignored_cves = args.ignored_cves
+    if not ignored_cves:
+        # Look for ignored_cves.json in the same directory as the input
+        ignored_cves_file = os.path.join(os.path.dirname(args.input_json), 'ignored_cves.json')
+        if os.path.exists(ignored_cves_file):
+            try:
+                with open(ignored_cves_file, 'r') as f:
+                    data = json.load(f)
+                    if 'ignored_cves' in data:
+                        ignored_cves = data['ignored_cves']
+                        logging.info(f"[DEBUG] Loaded {len(ignored_cves)} ignored CVEs from file")
+            except Exception as e:
+                logging.warning(f"Error loading ignored CVEs from file: {str(e)}")
+    
+    # Fallback to hardcoded values if we still don't have any
+    if not ignored_cves:
+        ignored_cves = ["CVE-2025-27789", "CVE-2024-45590"]
+        logging.info(f"[DEBUG] Using hardcoded ignored CVEs: {', '.join(ignored_cves)}")
+    
+    success = create_elegant_report(args.input_json, args.output_html, ignored_cves)
     
     sys.exit(0 if success else 1)
 

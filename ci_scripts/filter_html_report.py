@@ -126,67 +126,65 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         removed_count = 0
         removed_cves = []
         
-        # Most effective approach: find links with CVE IDs directly
+        # Debug: Save original HTML structure before filtering
+        debug_original_html = os.path.join(os.path.dirname(output_file), "debug_original_html_structure.txt")
+        try:
+            with open(debug_original_html, 'w', encoding='utf-8') as f:
+                tables = soup.find_all('table')
+                f.write(f"Number of tables in original HTML: {len(tables)}\n")
+                
+                vuln_tables = [t for t in tables if 'vulnerability' in str(t).lower() or 'cve' in str(t).lower()]
+                f.write(f"Number of vulnerability tables: {len(vuln_tables)}\n")
+                
+                rows = soup.find_all('tr')
+                f.write(f"Number of rows in original HTML: {len(rows)}\n")
+                
+                # Look for all CVE references
+                all_cves = set()
+                cve_pattern = re.compile(r'\bCVE-\d{4}-\d+\b', re.IGNORECASE)
+                for text in soup.find_all(string=cve_pattern):
+                    match = cve_pattern.search(text)
+                    if match:
+                        all_cves.add(match.group())
+                
+                f.write(f"\nAll CVEs found in original HTML ({len(all_cves)}):\n")
+                for cve in sorted(all_cves):
+                    f.write(f"  - {cve}\n")
+        except Exception as e:
+            logging.error(f"Error creating original HTML structure debug file: {str(e)}")
+            
+        # NEW APPROACH: More careful filtering that won't break the table structure
+        
+        # 1. First identify the vulnerability table sections
+        vuln_tables = [t for t in soup.find_all('table') if 'vulnerability' in str(t).lower() or 'cve' in str(t).lower()]
+        
+        # 2. For each ignored CVE, find rows that contain the exact CVE ID and remove only those rows
         for cve_id in ignored_cves:
-            # Use more precise pattern matching with word boundaries
+            # We'll use exact pattern matching with word boundaries
             cve_pattern = re.compile(r'\b' + re.escape(cve_id) + r'\b', re.IGNORECASE)
             found_for_this_cve = False
             
-            # Find all direct links to the CVE
-            cve_links = soup.find_all('a', href=lambda href: href and cve_pattern.search(href))
-            for link in cve_links:
-                # Navigate up to find the table row or container
-                row = link.find_parent('tr')
-                if row:
-                    logging.info(f"[DEBUG] Found and removing row containing CVE link for {cve_id}")
+            # Find all rows in all tables
+            for table in vuln_tables:
+                rows_with_cve = []
+                for row in table.find_all('tr'):
+                    if cve_pattern.search(str(row)):
+                        rows_with_cve.append(row)
+                
+                # Remove only those specific rows
+                for row in rows_with_cve:
+                    logging.info(f"[DEBUG] Found and removing row with {cve_id}")
                     row.decompose()
                     removed_count += 1
                     found_for_this_cve = True
-                    continue
-                
-                # If no row, look for other container elements
-                container = link.find_parent(['div', 'section', 'li'])
-                if container:
-                    logging.info(f"[DEBUG] Found and removing container with CVE link for {cve_id}")
-                    container.decompose()
-                    removed_count += 1
-                    found_for_this_cve = True
             
-            # Secondary approach: find any text nodes with the CVE ID
-            if not found_for_this_cve:
-                # Look for text nodes with the CVE
-                text_nodes = soup.find_all(string=cve_pattern)
-                for node in text_nodes:
-                    # Get the parent element and navigate up to find the row or container
-                    parent = node.parent
-                    
-                    # First try to find a table row
-                    row = parent.find_parent('tr')
-                    if row:
-                        logging.info(f"[DEBUG] Found and removing row with CVE text for {cve_id}")
-                        row.decompose()
-                        removed_count += 1
-                        found_for_this_cve = True
-                        continue
-                    
-                    # If no row, try to find a cell
-                    cell = parent.find_parent('td')
-                    if cell:
-                        row = cell.find_parent('tr')
-                        if row:
-                            logging.info(f"[DEBUG] Found and removing row with cell containing {cve_id}")
-                            row.decompose()
-                            removed_count += 1
-                            found_for_this_cve = True
-                            continue
-                    
-                    # If no row or cell, try other containers
-                    container = parent.find_parent(['div', 'section', 'li'])
-                    if container and ('vulnerability' in str(container).lower() or 'cve' in str(container).lower()) and cve_id.lower() in str(container).lower():
-                        logging.info(f"[DEBUG] Found and removing container with CVE text for {cve_id}")
-                        container.decompose()
-                        removed_count += 1
-                        found_for_this_cve = True
+            # Also look for any standalone CVE items (often in list items)
+            cve_items = soup.find_all(['li', 'div', 'span'], string=cve_pattern)
+            for item in cve_items:
+                logging.info(f"[DEBUG] Found and removing standalone item with {cve_id}")
+                item.decompose()
+                removed_count += 1
+                found_for_this_cve = True
             
             if found_for_this_cve:
                 removed_cves.append(cve_id)
@@ -254,6 +252,46 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         # Write the filtered report
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(str(soup))
+        
+        # Add another debugging step - dump table structure after filtering
+        debug_tables_file = os.path.join(os.path.dirname(output_file), "debug_tables_after_filtering.txt")
+        try:
+            with open(debug_tables_file, 'w', encoding='utf-8') as f:
+                tables = soup.find_all('table')
+                f.write(f"Number of tables after filtering: {len(tables)}\n\n")
+                
+                for i, table in enumerate(tables):
+                    f.write(f"TABLE {i+1}:\n")
+                    f.write(f"Number of rows: {len(table.find_all('tr'))}\n")
+                    
+                    # Check if table has headers
+                    headers = table.find_all('th')
+                    if headers:
+                        f.write("Headers: " + ", ".join([h.get_text().strip() for h in headers]) + "\n")
+                    
+                    # Sample some rows
+                    rows = table.find_all('tr')
+                    f.write(f"First 5 rows sample:\n")
+                    for j, row in enumerate(rows[:5]):
+                        f.write(f"  Row {j+1}: {row.get_text().strip()[:100]}...\n")
+                    
+                    f.write("\n")
+        except Exception as e:
+            logging.error(f"Error creating table structure debug file: {str(e)}")
+            
+        # Count vulnerabilities after filtering
+        try:
+            vuln_count = 0
+            vuln_tables = [t for t in soup.find_all('table') if 'vulnerability' in str(t).lower() or 'cve' in str(t).lower()]
+            for table in vuln_tables:
+                vuln_count += len(table.find_all('tr')) - 1  # Subtract header row
+            
+            logging.info(f"[DEBUG] After filtering, found approximately {vuln_count} vulnerability entries")
+            
+            with open(os.path.join(os.path.dirname(output_file), "debug_vuln_count.txt"), 'w') as f:
+                f.write(f"Vulnerability count after filtering: {vuln_count}\n")
+        except Exception as e:
+            logging.error(f"Error counting vulnerabilities: {str(e)}")
         
         # Add debugging output of filtered HTML for analysis
         debug_html_file = os.path.join(os.path.dirname(output_file), "debug_filtered_html_structure.txt")
