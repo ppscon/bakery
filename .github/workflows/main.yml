@@ -107,7 +107,15 @@ jobs:
             "comment": "These CVEs have been marked as ignored in the Aqua UI"
           }
           EOL
-          python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts
+          # Use explicit CVE list to avoid any configuration issues
+          python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts --ignored-cves CVE-2025-27789 CVE-2024-45590
+          
+          # Add debugging info about the filtered output
+          echo "=== FILTERED OUTPUT DEBUG INFO ==="
+          ls -la filtered-artifacts/
+          echo "Checking if ignored CVEs are still present in the JSON:"
+          grep -c "CVE-2025-27789\|CVE-2024-45590" filtered-artifacts/aqua-scan-filtered.json || echo "No matches found (this is good)"
+          echo "==================================="
       - name: Create elegant report
         run: python ci_scripts/create_elegant_report.py filtered-artifacts/aqua-scan-filtered.json filtered-artifacts/elegant-report.html
       - name: Upload Filtered Aqua Reports as Artifacts
@@ -422,15 +430,25 @@ jobs:
               EOL
               
               # Process the index.html file to replace variables
-              python3 ci_scripts/process_index_page_new.py ./security-reports/index.html
+              python3 ci_scripts/process_index_page.py ./security-reports/index.html
+              
+              # Debug info for pages deployment
+              echo "=== GITHUB PAGES DEPLOYMENT DEBUG INFO ==="
+              echo "Security reports directory contents:"
+              ls -la ./security-reports/
+              echo "Current commit: ${GITHUB_SHA}"
+              echo "Process index page output:"
+              cat ./security-reports/index.html | grep -A 2 "Commit:"
+              echo "============================================"
 
           - name: Deploy to GitHub Pages
             uses: peaceiris/actions-gh-pages@v4
             with:
               github_token: ${{ secrets.CI_TOKEN }}
-              publish_dir: ./
-              keep_files: true
+              publish_dir: ./security-reports
               publish_branch: gh-pages
+              force_orphan: true
+              commit_message: "Deploy security reports from ${{ github.sha }}"
 
   promote_to_aws_ecr:
     runs-on: ubuntu-latest

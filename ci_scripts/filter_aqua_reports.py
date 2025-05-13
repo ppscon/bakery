@@ -6,6 +6,7 @@ import sys
 import subprocess
 import shutil
 import json
+import datetime
 
 # Configure logging
 logging.basicConfig(
@@ -120,6 +121,91 @@ def filter_reports(input_dir, output_dir, ignored_cves=None, config_file=None):
             logging.info(f"Stored ignored CVE information to {cve_info_file}")
         except Exception as e:
             logging.error(f"Error saving ignored CVE information: {str(e)}")
+    
+    # Create a detailed debug report
+    debug_file = os.path.join(output_dir, 'debug_filtering.txt')
+    try:
+        with open(debug_file, 'w') as f:
+            f.write("DEBUG REPORT FOR VULNERABILITY FILTERING\n")
+            f.write("=======================================\n\n")
+            
+            f.write(f"Date and time: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write(f"Script version: 2025-05-13-updated\n\n")
+            
+            f.write(f"Input JSON: {json_input}\n")
+            f.write(f"Output JSON: {json_output}\n")
+            f.write(f"Input HTML: {html_input}\n")
+            f.write(f"Output HTML: {html_output}\n\n")
+            
+            f.write(f"Ignored CVEs ({len(ignored_cves) if ignored_cves else 0}):\n")
+            if ignored_cves:
+                for cve in ignored_cves:
+                    f.write(f"  - {cve}\n")
+            else:
+                f.write("  None\n")
+            
+            # Check if the filtered files exist and have expected content
+            if os.path.exists(json_output):
+                f.write(f"\nFiltered JSON file size: {os.path.getsize(json_output)} bytes\n")
+                try:
+                    with open(json_output, 'r') as jf:
+                        filtered_data = json.load(jf)
+                        
+                    # Count vulnerabilities in the filtered report
+                    resource_count = 0
+                    direct_count = 0
+                    
+                    if 'resources' in filtered_data:
+                        for resource in filtered_data['resources']:
+                            if 'vulnerabilities' in resource:
+                                resource_count += len(resource['vulnerabilities'])
+                    
+                    if 'vulnerabilities' in filtered_data:
+                        direct_count = len(filtered_data['vulnerabilities'])
+                    
+                    f.write(f"\nVulnerability counts in filtered report:\n")
+                    f.write(f"  - Resources vulnerabilities: {resource_count}\n")
+                    f.write(f"  - Direct vulnerabilities: {direct_count}\n")
+                    f.write(f"  - Total: {resource_count + direct_count}\n")
+                    
+                    # Check if any ignored CVEs remain in the filtered data
+                    remaining_ignored = []
+                    
+                    if ignored_cves:
+                        if 'resources' in filtered_data:
+                            for resource in filtered_data['resources']:
+                                if 'vulnerabilities' in resource:
+                                    for vuln in resource['vulnerabilities']:
+                                        if 'name' in vuln and any(cve.lower() == vuln['name'].lower() for cve in ignored_cves):
+                                            remaining_ignored.append(f"{vuln['name']} (in resources)")
+                        
+                        if 'vulnerabilities' in filtered_data:
+                            for vuln in filtered_data['vulnerabilities']:
+                                if 'name' in vuln and any(cve.lower() == vuln['name'].lower() for cve in ignored_cves):
+                                    remaining_ignored.append(f"{vuln['name']} (in direct)")
+                    
+                    if remaining_ignored:
+                        f.write("\nWARNING: Found ignored CVEs still present in filtered report:\n")
+                        for cve in remaining_ignored:
+                            f.write(f"  - {cve}\n")
+                    else:
+                        f.write("\nNo ignored CVEs found in filtered report. Filtering appears successful.\n")
+                        
+                except Exception as e:
+                    f.write(f"\nError analyzing filtered JSON: {str(e)}\n")
+            else:
+                f.write("\nWARNING: Filtered JSON file not found!\n")
+                
+            if os.path.exists(html_output):
+                f.write(f"\nFiltered HTML file size: {os.path.getsize(html_output)} bytes\n")
+            else:
+                f.write("\nWARNING: Filtered HTML file not found!\n")
+                
+            f.write("\n\nEnd of debug report\n")
+        
+        logging.info(f"Created detailed debug report at {debug_file}")
+    except Exception as e:
+        logging.error(f"Error creating debug report: {str(e)}")
     
     return True
 

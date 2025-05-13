@@ -47,7 +47,7 @@ def test_filtering():
                 # Filter out ignored vulnerabilities
                 filtered_vulns = []
                 for vuln in resource['vulnerabilities']:
-                    if 'name' in vuln and any(re.match(f"{cve}", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
+                    if 'name' in vuln and any(re.match(f"^{re.escape(cve)}$", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
                         removed_count += 1
                         logging.info(f"Filtering out resource vuln: {vuln['name']}")
                     else:
@@ -64,7 +64,7 @@ def test_filtering():
         
         filtered_vulns = []
         for vuln in sample_data['vulnerabilities']:
-            if 'name' in vuln and any(re.match(f"{cve}", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
+            if 'name' in vuln and any(re.match(f"^{re.escape(cve)}$", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
                 removed_count += 1
                 logging.info(f"Filtering out direct vuln: {vuln['name']}")
             else:
