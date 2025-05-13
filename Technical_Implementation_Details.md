@@ -4,52 +4,75 @@ This document provides technical details for developers and DevOps engineers who
 
 ## Architecture Overview
 
-The solution consists of three Python scripts that form a processing pipeline:
+The solution consists of several Python scripts that form a processing pipeline:
 
 ```
-Aqua Scan Reports → filter_ignored_vulnerabilities.py → filter_html_report.py → create_elegant_report.py → GitHub Pages
+Aqua Scan Reports → filter_aqua_reports.py → process_index_page.py → create_elegant_report.py → GitHub Pages
 ```
 
 ## Script Descriptions
 
-### 1. `filter_ignored_vulnerabilities.py` (JSON Processing)
+### 1. `filter_aqua_reports.py` (Orchestration)
 
-This script processes the JSON report from Aqua Security to remove ignored vulnerabilities.
+This script coordinates the filtering of Aqua Security reports.
 
 **Key Components:**
-- JSON parsing and manipulation
-- Dynamic detection of ignored vulnerabilities from report metadata
-- List-based filtering of vulnerability objects
 - Command-line argument parsing
-- Logging for operational visibility
+- Configuration management
+- Ignored CVE detection and handling
+- Coordinating the execution of other scripts
 
 **Dependencies:**
 - Standard Python libraries: `json`, `sys`, `os`, `argparse`, `logging`, `re`
 
 **Extension Points:**
-- The vulnerability detection logic can be enhanced to handle different Aqua Security report formats
-- The filtering logic can be enhanced to use other attributes (beyond name/CVE ID)
-- Summary statistics recalculation can be implemented based on report structure
+- Additional configuration sources can be added
+- Pre/post processing steps can be integrated
+- More extensive CVE management can be implemented
 
-### 2. `filter_html_report.py` (HTML Processing)
+### 2. `process_index_page.py` (HTML Processing)
 
-This script processes the HTML report to remove ignored vulnerabilities and enhance presentation.
+This script processes HTML reports to fix severity values and replace variables.
 
 **Key Components:**
 - HTML parsing with BeautifulSoup
-- DOM manipulation to remove elements
-- Integration with JSON filtering to ensure consistent handling of ignored CVEs
-- CSS styling additions for visual indicators
-- Regex-based element selection
+- Variable substitution for ${GITHUB_SHA} and $(date)
+- Severity mapping from CVE scores
+- Severity badge updating
+- Summary metrics recalculation
+- Chart visualization improvement
+- Title and header updating
+- Detailed logging and metrics collection
 
 **Dependencies:**
 - BeautifulSoup4 (`bs4`) - External dependency
 - Standard Python libraries: `re`, `os`, `sys`, `argparse`, `logging`, `json`
 
 **Extension Points:**
-- The element selection strategy can be refined based on HTML structure
-- The styling and notification elements can be customized
-- Additional summary statistics can be updated
+- Support for additional variable substitutions
+- Custom severity mapping rules
+- Enhanced visualization components
+- Support for different report formats
+
+**Severity Mapping:**
+```python
+def map_severity_from_score(score_str):
+    try:
+        score = float(score_str)
+        if score >= 9.0:
+            return "Critical"
+        elif score >= 7.0:
+            return "High"
+        elif score >= 4.0:
+            return "Medium"
+        elif score > 0.0:
+            return "Low"
+        else:
+            return "Negligible"
+    except (ValueError, TypeError):
+        # If score can't be converted to float, return Medium as default
+        return "Medium"
+```
 
 ### 3. `create_elegant_report.py` (Enhanced Report Generation)
 
@@ -69,20 +92,26 @@ This script generates a modern, responsive HTML dashboard from filtered vulnerab
 - Additional visualizations can be added
 - The styling can be modified to match corporate design guidelines
 
-### 4. `filter_aqua_reports.py` (Wrapper Script)
+### 4. `test_filtering.py` (Testing Module)
 
-This script provides a unified interface for the filtering pipeline.
+This script provides automated testing of the filtering and processing pipeline.
 
 **Key Components:**
-- Process coordination
-- Input/output path management
-- Automatic ignored CVE detection coordination
-- Dependency checking
-- Single-command operation for the entire pipeline
+- Sample vulnerability data for filtering tests
+- Test HTML generation
+- Processing script execution and validation
+- Severity mapping verification
+- Variable substitution testing
+- Output metrics validation
 
 **Dependencies:**
-- All dependencies from the individual scripts
-- Imports the other scripts as modules
+- All dependencies from the other scripts
+- Standard Python libraries: `subprocess`, `json`, `re`, `os`, `sys`, `logging`
+
+**Extension Points:**
+- Additional test cases can be added
+- Performance testing can be integrated
+- Coverage metrics can be implemented
 
 ## GitHub Actions Integration
 
@@ -108,7 +137,20 @@ filter_aqua_reports:
         name: aqua-reports
         path: artifacts/
     - name: Filter ignored vulnerabilities
-      run: python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts
+      run: |
+        # Create a copy of the config file for reference
+        cat > ci_scripts/ignored_cves_config.json << 'EOL'
+        {
+          "ignored_cves": [
+            "CVE-2025-27789",
+            "CVE-2024-45590"
+          ],
+          "comment": "These CVEs have been marked as ignored in the Aqua UI"
+        }
+        EOL
+        
+        # Use explicit CVE list to avoid any configuration issues
+        python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts --ignored-cves CVE-2025-27789 CVE-2024-45590
     - name: Create elegant report
       run: python ci_scripts/create_elegant_report.py filtered-artifacts/aqua-scan-filtered.json filtered-artifacts/elegant-report.html
     - name: Upload Filtered Aqua Reports as Artifacts
@@ -118,9 +160,37 @@ filter_aqua_reports:
         path: filtered-artifacts/
 ```
 
+```yaml
+publish_to_gh_pages:
+  runs-on: ubuntu-latest
+  needs: record_metadata
+  steps:
+    # ... other steps ...
+    - name: Create index page for reports
+      run: |
+        mkdir -p ./security-reports
+        cat > ./security-reports/index.html << 'EOL'
+        # HTML content for the index page
+        EOL
+        
+        # Install required dependencies
+        pip install beautifulsoup4 
+        
+        # Process the index.html file to replace variables
+        python3 ci_scripts/process_index_page.py ./security-reports/index.html ./security-reports/index.html
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.CI_TOKEN }}
+        publish_dir: ./security-reports
+        publish_branch: gh-pages
+        force_orphan: true
+        commit_message: "Deploy security reports from ${{ github.sha }}"
+```
+
 ## Dynamic Detection of Ignored Vulnerabilities
 
-The solution now automatically detects and filters out vulnerabilities that have been marked as ignored in the Aqua UI:
+The solution automatically detects and filters out vulnerabilities that have been marked as ignored in the Aqua UI:
 
 1. **Automatic Detection**: The system examines the JSON report to identify vulnerabilities with "ignored" status
 2. **Environment Variables**: You can specify CVEs to ignore via the `AQUA_IGNORED_CVES` environment variable 
@@ -143,59 +213,182 @@ if (vuln.get('status') == 'ignored' or
         ignored_cves.append(vuln['name'])
 ```
 
-### Using a Configuration File
+## HTML Report Processing
 
-You can create a JSON configuration file to specify CVEs to ignore:
+The system processes HTML reports to fix severity values and replace variables:
 
-```json
-{
-  "ignored_cves": [
-    "CVE-2025-27789",
-    "CVE-2023-12345",
-    "CVE-2024-56789"
-  ]
+### Variable Substitution
+
+The `process_index_page.py` script replaces shell-style variables in the HTML report:
+
+```python
+# Replace shell-style variables
+github_sha = os.environ.get('GITHUB_SHA', 'latest')
+current_date = os.environ.get('BUILD_DATE', 
+                             os.popen('date "+%Y-%m-%d %H:%M:%S"').read().strip())
+
+vars_replaced = 0
+html_content_new = re.sub(r'\${GITHUB_SHA}', github_sha, html_content)
+if html_content_new != html_content:
+    vars_replaced += 1
+    html_content = html_content_new
+    
+html_content_new = re.sub(r'\$\(date\)', current_date, html_content)
+if html_content_new != html_content:
+    vars_replaced += 1
+    html_content = html_content_new
+```
+
+### Severity Mapping
+
+The script maps CVE scores to severity levels:
+
+```python
+# For table cells with severity "Unknown"
+if severity_text == "Unknown":
+    # For score 0 or non-numeric scores, default to Medium
+    if not score_text or score_text == "0":
+        new_severity = "Medium"
+    else:
+        new_severity = map_severity_from_score(score_text)
+    
+    # Update the text and class in the severity cell
+    severity_span = severity_cell.find('span', class_='severity-badge')
+    if severity_span:
+        # Remove old class
+        for cls in list(severity_span.get('class', [])):
+            if cls != 'severity-badge':
+                severity_span['class'].remove(cls)
+        
+        # Add new class and text
+        severity_span['class'].append(new_severity.lower())
+        severity_span.string = new_severity
+```
+
+### Summary Statistics
+
+The script updates summary cards with accurate severity counts:
+
+```python
+# Update the summary card with our counts
+paragraphs = card.find_all('p')
+for p in paragraphs:
+    text = p.get_text()
+    if 'Critical:' in text:
+        p.clear()
+        p.append(soup.new_tag('strong'))
+        p.strong.string = 'Critical:'
+        p.append(f" {severity_counts['Critical']}")
+```
+
+### Chart Visualization
+
+The script updates the severity chart with proper proportional widths:
+
+```python
+# Update the severity chart
+chart_updated = False
+total = sum(severity_counts.values())
+chart = soup.find('div', class_='severity-chart')
+if chart:
+    critical_bar = chart.find('div', class_='severity-critical')
+    high_bar = chart.find('div', class_='severity-high')
+    # ...
+    
+    if critical_bar:
+        critical_width = max(1, (severity_counts['Critical'] / max(1, total) * 100))
+        critical_bar['style'] = f'width: {critical_width}%;'
+        critical_bar.string = str(severity_counts['Critical'])
+```
+
+## Testing and Verification
+
+The solution includes automated testing through `test_filtering.py`:
+
+### Test Case Generation
+
+```python
+def create_test_html():
+    """Create a test HTML file with known vulnerability data for testing."""
+    html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Elegant Security Report</title>
+        <style>
+            /* ... */
+        </style>
+    </head>
+    <body>
+        <!-- Test HTML content with vulnerabilities -->
+    </body>
+    </html>
+    """
+    
+    test_dir = "test-filtering"
+    os.makedirs(test_dir, exist_ok=True)
+    
+    test_html_path = os.path.join(test_dir, "test_report.html")
+    with open(test_html_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    
+    return test_html_path
+```
+
+### Process Execution
+
+```python
+def run_test():
+    """Run tests on the process_index_page.py script."""
+    test_html_path = create_test_html()
+    output_html_path = os.path.join("test-filtering", "processed_report.html")
+    
+    # Run the processing script
+    script_path = os.path.join("ci_scripts", "process_index_page.py")
+    cmd = [sys.executable, script_path, test_html_path, output_html_path]
+    
+    process = subprocess.run(cmd, capture_output=True, text=True)
+    
+    # Check output and verify results
+    # ...
+```
+
+### Verification
+
+```python
+# Check if severity values were updated
+expected_mappings = {
+    "CVE-2023-1234": "Critical",  # 9.8
+    "CVE-2023-5678": "High",      # 8.2
+    # ...
 }
+
+# Check if variables were replaced
+if "${GITHUB_SHA}" in processed_html:
+    logging.error("Variable ${GITHUB_SHA} was not replaced")
+    success = False
+
+# Check if title was updated
+if "Elegant Security Report" in processed_html and "Curated Vulnerability Report" not in processed_html:
+    logging.error("Title was not updated to 'Curated Vulnerability Report'")
+    success = False
 ```
 
-Then run the filtering with:
+## Recent Improvements
 
-```bash
-python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts --config-file ignored_cves_config.json
-```
+The solution has received several recent improvements:
 
-### Using Environment Variables
-
-You can also set CVEs to ignore using environment variables:
-
-```bash
-export AQUA_IGNORED_CVES="CVE-2025-27789,CVE-2023-12345,CVE-2024-56789"
-python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts
-```
-
-## GitHub Pages Publishing
-
-The filtered reports are published to GitHub Pages through the `publish_to_gh_pages` job:
-
-```yaml
-publish_to_gh_pages:
-  runs-on: ubuntu-latest
-  needs: record_metadata
-  steps:
-    # ... other steps ...
-    - name: Create index page for reports
-      run: |
-        mkdir -p ./security-reports
-        cat > ./security-reports/index.html << 'EOL'
-        # HTML content for the index page
-        EOL
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.CI_TOKEN }}
-        publish_dir: ./
-        keep_files: true
-        publish_branch: gh-pages
-```
+1. **Fixed Filtering Logic**: Corrected issues where ignored CVEs were being shown instead of removed
+2. **Variable Substitution**: Added detection and replacement of shell variables in HTML reports
+3. **Severity Mapping**: Implemented proper mapping from CVE scores to severity levels
+4. **Metrics Calculation**: Fixed severity metrics to display actual counts instead of zeroes
+5. **Chart Enhancements**: Updated severity chart to display proper proportional widths
+6. **Title Update**: Changed title from "Elegant Security Report" to "Curated Vulnerability Report"
+7. **Enhanced Logging**: Added detailed logging and metrics about changes made during processing
+8. **Automated Testing**: Implemented comprehensive testing via test_filtering.py
+9. **Process Metrics**: Added summary statistics about processing operations for debugging
 
 ## Deployment Requirements
 
@@ -204,9 +397,7 @@ publish_to_gh_pages:
 - GitHub repository with Actions and Pages enabled
 - Appropriate permissions for GitHub Pages publishing
 
-## Testing and Verification
-
-### Local Testing
+## Local Testing
 
 1. Generate Aqua Security scan reports
    ```bash
@@ -217,7 +408,7 @@ publish_to_gh_pages:
 
 2. Run the filtering pipeline
    ```bash
-   python ci_scripts/filter_aqua_reports.py --input-dir test_artifacts --output-dir filtered_test
+   python ci_scripts/filter_aqua_reports.py --input-dir test_artifacts --output-dir filtered_test --ignored-cves CVE-2025-27789 CVE-2024-45590
    ```
 
 3. Generate the elegant report
@@ -225,176 +416,62 @@ publish_to_gh_pages:
    python ci_scripts/create_elegant_report.py filtered_test/aqua-scan-filtered.json filtered_test/elegant-report.html
    ```
 
-4. Verify results
+4. Process HTML reports
    ```bash
-   # Check for presence of filtered CVEs
-   grep "CVE-2025-27789" filtered_test/aqua-scan-filtered.json
-   # Should return no results
-   
-   # Open reports in browser
-   open filtered_test/elegant-report.html
+   python ci_scripts/process_index_page.py filtered_test/elegant-report.html filtered_test/processed-report.html
    ```
 
-### CI/CD Verification
-
-1. Check GitHub Actions workflow run
-2. Verify artifacts were created
-3. Confirm GitHub Pages deployment
-4. Access reports at `https://[username].github.io/[repo]/security-reports/`
+5. Run the automated tests
+   ```bash
+   python ci_scripts/test_filtering.py
+   ```
 
 ## Troubleshooting
 
 ### Common Issues
 
 **Issue**: HTML Parsing Failures
-- **Symptom**: Error in `filter_html_report.py`
-- **Cause**: HTML structure changes in Aqua reports
-- **Solution**: Update the element selection logic
+- **Symptom**: Error in BeautifulSoup processing
+- **Solution**: Install the required dependencies: `pip install beautifulsoup4`
 
-**Issue**: Missing Dependencies
-- **Symptom**: ImportError for BeautifulSoup
-- **Cause**: Missing Python package
-- **Solution**: Ensure `pip install beautifulsoup4` runs in the workflow
+**Issue**: Variable Substitution Not Working
+- **Symptom**: ${GITHUB_SHA} still appears in the processed report
+- **Solution**: Ensure the GITHUB_SHA environment variable is set, or use the --set-vars flag
 
-**Issue**: GitHub Pages Not Updating
-- **Symptom**: Old or missing reports on GitHub Pages
-- **Cause**: Publishing or permission issues
-- **Solution**: Check CI_TOKEN permissions and workflow logs
+**Issue**: Incorrect Severity Counts
+- **Symptom**: The severity counts still show 0 despite vulnerabilities being present
+- **Solution**: Check that the severity mapping logic is working and that the HTML structure matches what's expected
 
-**Issue**: No CVEs Detected as Ignored
-- **Symptom**: Reports show no filtering occurring
-- **Cause**: Automatic detection couldn't find ignored vulnerabilities
-- **Solution**: Use a configuration file or environment variable to specify CVEs
+**Issue**: Missing Filtered CVEs
+- **Symptom**: Ignored CVEs still appear in the report
+- **Solution**: Verify the ignored CVEs list is correct and the filtering script is being run with proper parameters
 
-## Maintenance
+### Debugging
 
-### Manually Specifying Ignored CVEs
+The `process_index_page.py` script provides a detailed processing summary:
 
-If the automatic detection is not finding all ignored vulnerabilities, you can:
+```
+==================================================
+REPORT PROCESSING SUMMARY
+==================================================
+Variables replaced: 2
+Severity values updated: 10
+Summary metrics updated: 5
+Chart updated: Yes
+Title updated: Yes
+Total vulnerabilities: 10
+Severity distribution: Critical=2, High=2, Medium=3, Low=3, Negligible=0
+==================================================
+```
 
-1. Create a configuration file:
-   ```json
-   {
-     "ignored_cves": [
-       "CVE-2025-27789",
-       "CVE-YYYY-NNNNN"
-     ]
-   }
-   ```
-
-2. Update the CI workflow to use it:
-   ```yaml
-   - name: Filter ignored vulnerabilities
-     run: python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts --config-file ignored_cves_config.json
-   ```
-
-### Modifying Report Appearance
-
-1. Edit the HTML and CSS in `create_elegant_report.py`
-2. For major styling changes, consider extracting CSS to an external file
-
-### Updating GitHub Pages Layout
-
-1. Modify the HTML content in the `Create index page for reports` step in `main.yml`
+This summary helps identify whether each component of the processing pipeline is working as expected.
 
 ## Future Enhancements
 
-1. ✅ Dynamic CVE Filtering
-   - ✅ Read ignored CVEs from a configuration file
-   - ✅ Dynamically detect ignored status from Aqua reports
-   - Add API integration to query Aqua directly
+Planned future enhancements for the solution include:
 
-2. Enhanced Visualization
-   - Add trend analysis over time
-   - Include resource-based aggregations and filtering
-
-3. Automated Testing
-   - Add unit tests for filtering logic
-   - Create reference fixtures for verification
-
-## Support
-
-For issues or enhancements, please contact the DevOps team or submit a GitHub issue.
-
-## Handling Ignored Vulnerabilities
-
-The solution now offers multiple approaches to identify and filter ignored vulnerabilities:
-
-### 1. Configuration File
-
-A JSON configuration file (`ci_scripts/ignored_cves_config.json`) is now used to maintain a list of ignored CVEs:
-
-```json
-{
-  "ignored_cves": [
-    "CVE-2025-27789",
-    "CVE-2024-45590"
-  ],
-  "comment": "These CVEs have been marked as ignored in the Aqua UI"
-}
-```
-
-This is the most reliable approach, as it explicitly lists CVEs that should be filtered out.
-
-### 2. Auto-Detection from Reports
-
-The solution attempts to automatically detect ignored vulnerabilities from Aqua reports by checking for various indicators:
-
-```python
-# Check for standard and custom fields that might indicate an ignored status
-if (vuln.get('status') == 'ignored' or 
-    vuln.get('compliance_status') == 'ignored' or
-    vuln.get('is_ignored', False) == True or
-    vuln.get('is_compliant', False) == True or
-    vuln.get('compliant', False) == True or
-    'ignored' in vuln.get('status_label', '').lower() or
-    'ignored' in vuln.get('audit_status', '').lower() or
-    # Some Aqua reports use different fields
-    'ignored' in str(vuln.get('labels', '')).lower() or
-    'ignore' in str(vuln.get('labels', '')).lower() or
-    # Sometimes the ignore status is in a nested field
-    ('assurance' in vuln and 'ignored' in str(vuln['assurance']).lower()) or
-    # Custom field added by Aqua UI when marking as ignored
-    (vuln.get('custom_fields') and 'ignored' in str(vuln.get('custom_fields')).lower())):
-    
-    if 'name' in vuln and vuln['name'].startswith('CVE-'):
-        ignored_cves.append(vuln['name'])
-```
-
-This approach is more dynamic but may not work with all Aqua report formats.
-
-### 3. GitHub Actions Parameter
-
-The GitHub Actions workflow has been updated to explicitly specify CVEs to filter out:
-
-```yaml
-- name: Filter ignored vulnerabilities
-  run: python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts --ignored-cves CVE-2025-27789 CVE-2024-45590
-```
-
-This ensures consistent filtering even if the auto-detection fails.
-
-### 4. Fallback Mechanism
-
-As a last resort, the script includes a hardcoded list of known ignored CVEs:
-
-```python
-# Add our explicitly known ignored CVEs (this is a fallback if all else fails)
-known_ignored = ["CVE-2025-27789", "CVE-2024-45590"]
-for cve in known_ignored:
-    if cve not in ignored_cves:
-        ignored_cves.append(cve)
-        logging.info(f"Added known ignored CVE: {cve}")
-```
-
-This ensures that even if all other detection methods fail, critical ignored CVEs will still be filtered out.
-
-## Maintaining Ignored CVEs
-
-When a new CVE is marked as ignored in the Aqua UI, you should:
-
-1. Add it to the `ignored_cves_config.json` file
-2. Update the hardcoded fallback list in `filter_ignored_vulnerabilities.py`
-3. Update the GitHub Actions workflow command if needed
-
-Alternatively, you could set up a script to periodically query the Aqua API for ignored vulnerabilities and update the configuration file automatically. 
+1. Support for additional Aqua Security report formats
+2. Integration with other security scanning tools
+3. More customizable reporting options
+4. Enhanced severity mapping with configurable thresholds
+5. API-based reporting for integration with other systems 

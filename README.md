@@ -11,6 +11,8 @@ This repository contains a CI/CD pipeline configured with GitHub Actions. It cov
     - Image is scanned against Aqua's Golden Image Policy
     - Failed scans will fail the build
     - Passed scans will continue the build
+    - **NEW**: Ignored CVEs are filtered out of reports
+    - **NEW**: Reports include accurate severity metrics and proper variable substitution
     - notification is sent to Teams, see next steps:
 - Assigning Tasks
     - Assigning tasks to product teams based on scan results
@@ -23,9 +25,9 @@ This repository contains a CI/CD pipeline configured with GitHub Actions. It cov
 - Signing and Verifying Docker Images
 - Recording Metadata
     - Publishing Metadata to GitHub Pages
-  - Deploying to GitHub Pages
-    - Publishing Metadata to GitHub Pages 
-  - Promoting Docker Images to AWS ECR
+- Deploying to GitHub Pages
+    - Publishing Security Reports to GitHub Pages 
+- Promoting Docker Images to AWS ECR
     - image-bakery is immutable 
 
 ## Workflow File
@@ -52,6 +54,14 @@ The main workflow is defined in: `.github/workflows/main.yml`.
 - Run Aqua Security scan against the Docker image
 - Upload Aqua scan reports as artifacts
 
+### Filter Aqua Reports
+
+- Download Aqua scan reports
+- Filter out ignored vulnerabilities
+- Process HTML reports to fix severity metrics and replace variables
+- Create an elegant, curated vulnerability report
+- Upload filtered reports as artifacts
+
 ### Assign Task
 
 - Setup Python environment
@@ -59,8 +69,8 @@ The main workflow is defined in: `.github/workflows/main.yml`.
 
 ### Notify Teams
 
-- Download Aqua scan reports
-- Notify Teams with scan results
+- Download filtered Aqua scan reports
+- Notify Teams with curated scan results
 
 ### Generate SBOM
 
@@ -80,12 +90,34 @@ The main workflow is defined in: `.github/workflows/main.yml`.
 
 ### Publish to GitHub Pages
 
-- Deploy metadata to GitHub Pages
+- Download filtered security reports
+- Create index page for reports
+- Process index page to replace variables
+- Deploy security reports and metadata to GitHub Pages
+- Access reports at: https://ppscon.github.io/bakery/security-reports/
 
 ### Promote to AWS ECR
 
 - Pull the image from GitHub Container Registry
 - Tag and push the image to AWS ECR
+
+## Recent Improvements
+
+### Vulnerability Filtering and Reporting Enhancements (May 2025)
+
+We've implemented significant improvements to the Aqua vulnerability reporting system:
+
+1. **Filtered Vulnerability Reports**: Ignored CVEs are completely removed from reports, aligning with our previous PA Prisma workflow
+2. **Fixed Severity Metrics**: Accurate counts of Critical, High, Medium, Low, and Negligible vulnerabilities
+3. **Variable Substitution**: Shell variables like ${GITHUB_SHA} are properly replaced in HTML reports
+4. **Enhanced Visualization**: Severity charts show proportional representation of vulnerabilities
+5. **Improved Readability**: Report title changed from "Elegant Security Report" to "Curated Vulnerability Report"
+6. **Detailed Metrics**: Process logs include comprehensive statistics about all changes made
+7. **Automated Testing**: Test suite validates all filtering and processing logic
+
+For more detailed information, see:
+- [Technical Implementation Details](./Technical_Implementation_Details.md)
+- [Vulnerability Filter Solution Guide](./Vulnerability_Filter_Solution_Guide.md)
 
 ## Secrets
 
@@ -105,7 +137,15 @@ The following secrets need to be configured in GitHub:
 
 To run this pipeline, make a push to the `main` branch.
 
+## Accessing Reports
 
+Security reports are available at:
+- https://ppscon.github.io/bakery/security-reports/
+
+The page provides access to:
+- **Elegant Report**: Modern dashboard view of filtered vulnerabilities
+- **HTML Report**: Standard format with ignored vulnerabilities removed
+- **JSON Data**: Filtered data for integration with other tools
 
 ## Golden Image
 
