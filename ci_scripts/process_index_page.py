@@ -39,17 +39,25 @@ def process_html_report(input_file, output_file):
         with open(input_file, 'r', encoding='utf-8') as f:
             html_content = f.read()
         
-        logging.info(f"[DEBUG] Processing HTML file: {input_file}")
+        logging.info(f"Processing HTML file: {input_file}")
         
         # 1. Replace shell-style variables
         github_sha = os.environ.get('GITHUB_SHA', 'latest')
         current_date = os.environ.get('BUILD_DATE', 
                                      os.popen('date "+%Y-%m-%d %H:%M:%S"').read().strip())
         
-        html_content = re.sub(r'\${GITHUB_SHA}', github_sha, html_content)
-        html_content = re.sub(r'\$\(date\)', current_date, html_content)
-        
-        logging.info(f"[DEBUG] Replaced variables: GITHUB_SHA={github_sha}, date={current_date}")
+        vars_replaced = 0
+        html_content_new = re.sub(r'\${GITHUB_SHA}', github_sha, html_content)
+        if html_content_new != html_content:
+            vars_replaced += 1
+            html_content = html_content_new
+            
+        html_content_new = re.sub(r'\$\(date\)', current_date, html_content)
+        if html_content_new != html_content:
+            vars_replaced += 1
+            html_content = html_content_new
+            
+        logging.info(f"Replaced {vars_replaced} variable occurrences: GITHUB_SHA={github_sha}, date={current_date}")
         
         # 2. Parse HTML with BeautifulSoup
         soup = BeautifulSoup(html_content, 'html.parser')
@@ -117,14 +125,15 @@ def process_html_report(input_file, output_file):
                         rows_updated += 1
                         severity_counts[new_severity] += 1
             except Exception as e:
-                logging.warning(f"[DEBUG] Error processing row: {str(e)}")
+                logging.warning(f"Error processing row: {str(e)}")
                 continue
         
-        logging.info(f"[DEBUG] Updated {rows_updated} severity values")
-        logging.info(f"[DEBUG] Severity counts: {severity_counts}")
+        logging.info(f"Updated {rows_updated} severity values")
+        logging.info(f"Severity distribution: Critical={severity_counts['Critical']}, High={severity_counts['High']}, Medium={severity_counts['Medium']}, Low={severity_counts['Low']}, Negligible={severity_counts['Negligible']}")
         
         # 4. Update the summary metrics in the page
         summary_cards = soup.find_all('div', class_='summary-card')
+        metrics_updated = 0
         for card in summary_cards:
             if card.find('h3') and card.find('h3').get_text() == 'Severity Distribution':
                 # Update the summary card with our counts
@@ -136,28 +145,36 @@ def process_html_report(input_file, output_file):
                         p.append(soup.new_tag('strong'))
                         p.strong.string = 'Critical:'
                         p.append(f" {severity_counts['Critical']}")
+                        metrics_updated += 1
                     elif 'High:' in text:
                         p.clear()
                         p.append(soup.new_tag('strong'))
                         p.strong.string = 'High:'
                         p.append(f" {severity_counts['High']}")
+                        metrics_updated += 1
                     elif 'Medium:' in text:
                         p.clear()
                         p.append(soup.new_tag('strong'))
                         p.strong.string = 'Medium:'
                         p.append(f" {severity_counts['Medium']}")
+                        metrics_updated += 1
                     elif 'Low:' in text:
                         p.clear()
                         p.append(soup.new_tag('strong'))
                         p.strong.string = 'Low:'
                         p.append(f" {severity_counts['Low']}")
+                        metrics_updated += 1
                     elif 'Negligible:' in text:
                         p.clear()
                         p.append(soup.new_tag('strong'))
                         p.strong.string = 'Negligible:'
                         p.append(f" {severity_counts['Negligible']}")
+                        metrics_updated += 1
+        
+        logging.info(f"Updated {metrics_updated} severity metrics in summary cards")
         
         # 5. Update the severity chart
+        chart_updated = False
         total = sum(severity_counts.values())
         chart = soup.find('div', class_='severity-chart')
         if chart:
@@ -191,11 +208,16 @@ def process_html_report(input_file, output_file):
                 negligible_width = max(1, (severity_counts['Negligible'] / max(1, total) * 100))
                 negligible_bar['style'] = f'width: {negligible_width}%;'
                 negligible_bar.string = str(severity_counts['Negligible'])
+            
+            chart_updated = True
+            logging.info(f"Updated severity chart with calculated widths based on {total} total vulnerabilities")
         
         # 6. Change the title to "Curated Vulnerability Report" if needed
+        title_updated = False
         title_tag = soup.find('title')
         if title_tag and "Elegant" in title_tag.string:
             title_tag.string = "Curated Vulnerability Report"
+            title_updated = True
             
         h1_tag = soup.find('h1')
         if h1_tag and "Elegant" in h1_tag.get_text():
@@ -203,19 +225,37 @@ def process_html_report(input_file, output_file):
                 if isinstance(child, str) and "Elegant" in child:
                     new_text = child.replace("Elegant Security Report", "Curated Vulnerability Report")
                     h1_tag.contents[h1_tag.contents.index(child)] = new_text
+                    title_updated = True
+        
+        if title_updated:
+            logging.info("Updated report title to 'Curated Vulnerability Report'")
         
         # 7. Write the processed file
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(str(soup))
         
-        logging.info(f"[DEBUG] Saved processed report to {output_file}")
+        logging.info(f"Successfully processed report and saved to {output_file}")
         
         # Create a backup of the original for debugging
         backup_file = f"{input_file}.bak"
         with open(backup_file, 'w', encoding='utf-8') as f:
             f.write(html_content)
         
-        logging.info(f"[DEBUG] Created backup of original file at {backup_file}")
+        logging.info(f"Created backup of original file at {backup_file}")
+        
+        # Print a summary of all modifications
+        print("=" * 50)
+        print("REPORT PROCESSING SUMMARY")
+        print("=" * 50)
+        print(f"Variables replaced: {vars_replaced}")
+        print(f"Severity values updated: {rows_updated}")
+        print(f"Summary metrics updated: {metrics_updated}")
+        print(f"Chart updated: {'Yes' if chart_updated else 'No'}")
+        print(f"Title updated: {'Yes' if title_updated else 'No'}")
+        print(f"Total vulnerabilities: {total}")
+        print(f"Severity distribution: Critical={severity_counts['Critical']}, High={severity_counts['High']}, " +
+              f"Medium={severity_counts['Medium']}, Low={severity_counts['Low']}, Negligible={severity_counts['Negligible']}")
+        print("=" * 50)
         
         return True
         

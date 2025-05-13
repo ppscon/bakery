@@ -442,7 +442,19 @@ def run_test():
         logging.error(f"Error running process_index_page.py: {process.stderr}")
         return False
     
-    logging.info(f"Script output: {process.stdout}")
+    logging.info(f"Script output:\n{process.stdout}")
+    
+    # Parse the summary output to verify metrics
+    metrics = {}
+    if "REPORT PROCESSING SUMMARY" in process.stdout:
+        logging.info("Found processing summary in output")
+        for line in process.stdout.split('\n'):
+            if ':' in line:
+                key, value = line.split(':', 1)
+                metrics[key.strip()] = value.strip()
+    
+    if metrics:
+        logging.info(f"Extracted metrics from output: {metrics}")
     
     # Verify the results
     with open(output_html_path, "r", encoding="utf-8") as f:
@@ -511,6 +523,26 @@ def run_test():
                 f.write(f"❌ {severity} count not updated correctly\n")
                 success = False
         
+        f.write("\nPROCESSING SUMMARY\n")
+        f.write("=================\n\n")
+        if metrics:
+            # Check metrics from script output
+            f.write("Script output metrics:\n")
+            for key, value in metrics.items():
+                f.write(f"- {key}: {value}\n")
+            
+            if "Variables replaced" in metrics and int(metrics.get("Variables replaced", "0")) > 0:
+                f.write("✅ Variables were successfully replaced\n")
+            else:
+                f.write("❌ Variables replacement tracking failed\n")
+                
+            if "Total vulnerabilities" in metrics and int(metrics.get("Total vulnerabilities", "0")) == sum(expected_counts.values()):
+                f.write(f"✅ Total vulnerability count matches expected: {sum(expected_counts.values())}\n")
+            else:
+                f.write(f"❌ Total vulnerability count mismatch. Expected: {sum(expected_counts.values())}, Got: {metrics.get('Total vulnerabilities', 'N/A')}\n")
+        else:
+            f.write("❌ No processing metrics found in script output\n")
+            
         f.write("\nOVERALL RESULT\n")
         f.write("=============\n\n")
         f.write("✅ Test passed\n" if success else "❌ Test failed\n")

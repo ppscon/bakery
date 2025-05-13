@@ -441,7 +441,7 @@ jobs:
               pip install beautifulsoup4 
               
               # Process the index.html file to replace variables
-              python3 ci_scripts/process_index_page.py ./security-reports/index.html
+              python3 ci_scripts/process_index_page.py ./security-reports/index.html ./security-reports/index.html
               
               # Debug info for pages deployment
               echo "=== GITHUB PAGES DEPLOYMENT DEBUG INFO ==="
