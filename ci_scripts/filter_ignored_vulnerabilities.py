@@ -147,12 +147,14 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
                     # Filter out ignored vulnerabilities
                     filtered_vulns = []
                     for vuln in resource['vulnerabilities']:
-                        if 'name' in vuln and any(cve.lower() == vuln['name'].lower() for cve in ignored_cves):
+                        if 'name' in vuln and any(re.match(f"{cve}", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
                             removed_count += 1
                             logging.info(f"Filtering out {vuln['name']}")
                         else:
                             filtered_vulns.append(vuln)
                     
+                    # IMPORTANT: Replace the original list with the filtered list
+                    # This ensures we keep all vulnerabilities EXCEPT the ignored ones
                     resource['vulnerabilities'] = filtered_vulns
         
         # Process direct vulnerabilities array if present
@@ -162,12 +164,14 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
             
             filtered_vulns = []
             for vuln in scan_data['vulnerabilities']:
-                if 'name' in vuln and any(cve.lower() == vuln['name'].lower() for cve in ignored_cves):
+                if 'name' in vuln and any(re.match(f"{cve}", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
                     removed_count += 1
                     logging.info(f"Filtering out {vuln['name']}")
                 else:
                     filtered_vulns.append(vuln)
             
+            # IMPORTANT: Replace the original list with the filtered list
+            # This ensures we keep all vulnerabilities EXCEPT the ignored ones
             scan_data['vulnerabilities'] = filtered_vulns
         
         # Update summary counts if they exist
