@@ -75,7 +75,16 @@ def process_html_report(input_file, output_file):
                 score_text = score_cell.get_text(strip=True)
                 severity_text = severity_cell.get_text(strip=True)
                 
-                # Only update if severity is "Unknown" and we have a score
+                # First check if there's already a severity badge with a valid value
+                severity_span = severity_cell.find('span', class_='severity-badge')
+                if severity_span:
+                    current_severity = severity_span.get_text(strip=True)
+                    if current_severity in severity_counts:
+                        # Count existing severities if they're valid
+                        severity_counts[current_severity] += 1
+                        continue
+                
+                # Only update if severity is "Unknown"
                 if severity_text == "Unknown":
                     # For score 0 or non-numeric scores, default to Medium
                     if not score_text or score_text == "0":
