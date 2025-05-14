@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bakery Project Security Reports</title>
+<style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+      color: #2c3e50;
+    }
+    .report-card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .report-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .report-title {
+      margin-top: 0;
+      color: #2980b9;
+    }
+    .report-date {
+      color: #7f8c8d;
+      font-size: 0.9em;
+      margin-bottom: 15px;
+    }
+    .report-link {
+      display: inline-block;
+      background: #3498db;
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    .report-link:hover {
+      background: #2980b9;
+    }
+    .report-link.elegant {
+      background: #27ae60;
+    }
+    .report-link.elegant:hover {
+      background: #219653;
+    }
+    .report-link.raw {
+      background: #7f8c8d;
+    }
+    .report-link.raw:hover {
+      background: #6c7a89;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 0.8em;
+      margin-right: 8px;
+      color: white;
+    }
+    .badge-filtered {
+      background-color: #27ae60;
+    }
+    .card-description {
+      margin-bottom: 20px;
+    }
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .build-info {
+      background-color: #f1f8ff;
+      border-left: 4px solid #3498db;
+      padding: 10px 15px;
+      margin-bottom: 30px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+<div class="header-container">
+<h1>Bakery Project Security Reports</h1>
+<span class="badge badge-filtered">FILTERED</span>
+</div>
+<div class="build-info">
+<p><strong>Repository:</strong> ppscon/bakery</p>
+<p><strong>Commit:</strong> 5ceaf5e5d39e35a4734c0e15f66e43c9f4f221f7</p>
+<p><strong>Build Date:</strong> 2025-05-13 14:20:43</p>
+</div>
+<div class="report-card">
+<h2 class="report-title">
+<span class="badge badge-filtered">FILTERED</span>
+      Aqua Security Scan
+    </h2>
+<div class="report-date">Generated: 2025-05-13 14:20:43</div>
+<p class="card-description">This security scan report has been filtered to remove ignored vulnerabilities, providing a clean view of actionable security issues.</p>
+<a class="report-link elegant" href="elegant-report.html">View Elegant Report</a>
+<a class="report-link" href="aqua-scan-filtered.html">View HTML Report</a>
+<a class="report-link raw" href="aqua-scan-filtered.json">Download JSON Data</a>
+</div>
+</body>
+</html>
