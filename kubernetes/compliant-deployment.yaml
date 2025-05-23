@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pss-demo-compliant
+  labels:
+    app: pss-demo-compliant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pss-demo-compliant
+  template:
+    metadata:
+      labels:
+        app: pss-demo-compliant
+    spec:
+      # Proper security context at pod level (PSS compliant)
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: pss-demo
+        image: ppcratestacr.azurecr.io/pss@sha256:a84dfbbb4511c03baeea7b7ff7d2274b7928e8794dd665848edfaf8815036018
+        ports:
+        - containerPort: 8080
+        # Container security context (PSS compliant)
+        securityContext:
+          privileged: false
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          readOnlyRootFilesystem: true
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        # Using emptyDir instead of hostPath (PSS compliant)
+        volumeMounts:
+        - mountPath: /app/data
+          name: app-data
+      volumes:
+      - name: app-data
+        emptyDir: {}
+      # Using non-root user and restricting privileges (PSS compliant) 

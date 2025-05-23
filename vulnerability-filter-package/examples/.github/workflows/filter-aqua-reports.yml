@@ -1,0 +1,66 @@
+name: Filter Aqua Security Reports
+
+on:
+  workflow_run:
+    workflows: ["Aqua Security Scan"]
+    types:
+      - completed
+
+jobs:
+  filter_aqua_reports:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          
+      - name: Install dependencies
+        run: pip install beautifulsoup4
+        
+      - name: Download Aqua Reports
+        uses: actions/download-artifact@v4
+        with:
+          name: aqua-reports
+          path: artifacts/
+          
+      - name: Filter ignored vulnerabilities
+        run: |
+          # Configure which CVEs to ignore (optional)
+          cat > ignored_cves_config.json << 'EOL'
+          {
+            "ignored_cves": [
+              "CVE-2025-27789",
+              "CVE-2024-45590"
+            ],
+            "comment": "These CVEs have been marked as ignored in the Aqua UI"
+          }
+          EOL
+          
+          # Run filtering pipeline
+          python scripts/filter_aqua_reports.py --input-dir artifacts --output-dir filtered-artifacts --config-file ignored_cves_config.json
+          
+      - name: Create elegant report
+        run: python scripts/create_elegant_report.py filtered-artifacts/aqua-scan-filtered.json filtered-artifacts/elegant-report.html
+        
+      - name: Process HTML reports
+        run: python scripts/process_index_page.py filtered-artifacts/elegant-report.html filtered-artifacts/processed-elegant-report.html
+        
+      - name: Upload Filtered Aqua Reports as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqua-filtered-reports
+          path: filtered-artifacts/
+          
+      - name: Deploy to GitHub Pages (optional)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./filtered-artifacts
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: "Deploy filtered security reports" 

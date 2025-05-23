@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pss-demo
+  namespace: prod
+  labels:
+    pod-security.kubernetes.io/enforce: "restricted"
+    environment: "production"
+    app: "pss-demo"
+    component: "security-demo"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "1.0.0"
+    compliance: "PSS"
+    cost-center: "1001"
+  annotations:
+    environment: "production"
+    app: "pss-demo"
+    component: "security-demo"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "1.0.0"
+    compliance: "PSS"
+    cost-center: "1001"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pss-demo
+  template:
+    metadata:
+      labels:
+        app: pss-demo
+    spec:
+      # Add pod-level security context for PSS compliance
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 0
+        runAsGroup: 3000
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: pss-demo
+        image: ppcratestacr.azurecr.io/pss@sha256:a84dfbbb4511c03baeea7b7ff7d2274b7928e8794dd665848edfaf8815036018
+        ports:
+        - containerPort: 8080
+        # Update container security context for PSS compliance
+        securityContext:
+          privileged: false
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          readOnlyRootFilesystem: true
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "64Mi"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        # Replace hostPath with emptyDir for PSS compliance
+        volumeMounts:
+        - mountPath: /app/data
+          name: app-data
+      volumes:
+      - name: app-data
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pss-demo-service
+  namespace: prod
+  annotations:
+    environment: "production"
+    app: "pss-demo"
+    component: "security-demo"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "1.0.0"
+    compliance: "PSS"
+    cost-center: "1001"
+spec:
+  type: ClusterIP
+  selector:
+    app: pss-demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pss-demo-ingress
+  namespace: prod
+  annotations:
+    environment: "production"
+    app: "pss-demo"
+    component: "security-demo"
+    confidentiality: "high"
+    owner: "security-team"
+    version: "1.0.0"
+    compliance: "PSS"
+    cost-center: "1001"
+    # kubernetes.io/ingress.class: "nginx" - deprecated
+spec:
+  ingressClassName: "nginx"
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pss-demo-service
+            port:
+              number: 80 

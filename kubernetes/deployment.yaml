@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pss-demo
+  labels:
+    app: pss-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pss-demo
+  template:
+    metadata:
+      labels:
+        app: pss-demo
+    spec:
+      # No securityContext at pod level (intentional PSS violation)
+      containers:
+      - name: pss-demo
+        image: ppcratestacr.azurecr.io/pss@sha256:a84dfbbb4511c03baeea7b7ff7d2274b7928e8794dd665848edfaf8815036018
+        ports:
+        - containerPort: 8080
+        # Container runs as root (PSS violation)
+        securityContext:
+          privileged: true  # PSS violation
+          allowPrivilegeEscalation: true  # PSS violation
+          capabilities:
+            add: ["SYS_ADMIN", "NET_ADMIN"]  # PSS violation - excessive capabilities
+          readOnlyRootFilesystem: false  # PSS violation - writeable filesystem
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        # Intentionally mounting host filesystem (PSS violation)
+        volumeMounts:
+        - mountPath: /host
+          name: hostpath-volume
+      volumes:
+      - name: hostpath-volume
+        hostPath:
+          path: /  # PSS violation - mounting host root 
