@@ -44,7 +44,7 @@ def replace_variables(text):
     
     return text
 
-def filter_html_report(input_file, output_file, ignored_cves=None):
+def filter_html_report(input_file, output_file, ignored_cves=None, severity_filter=None):
     """
     Filter out ignored vulnerabilities from Aqua security HTML report.
     
@@ -52,6 +52,7 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
         input_file (str): Path to the original Aqua scan HTML report
         output_file (str): Path where the filtered report will be saved
         ignored_cves (list): List of CVE IDs that should be filtered out
+        severity_filter (list): List of severity levels to include (e.g., ['high', 'critical'])
     """
     try:
         with open(input_file, 'r', encoding='utf-8') as f:
@@ -155,40 +156,69 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
             
         # NEW APPROACH: More careful filtering that won't break the table structure
         
+        # Normalize severity filter
+        if severity_filter:
+            severity_filter = [s.lower().strip() for s in severity_filter]
+            logging.info(f"[DEBUG] Will filter for these severity levels: {', '.join(severity_filter)}")
+        
         # 1. First identify the vulnerability table sections
         vuln_tables = [t for t in soup.find_all('table') if 'vulnerability' in str(t).lower() or 'cve' in str(t).lower()]
         
-        # 2. For each ignored CVE, find rows that contain the exact CVE ID and remove only those rows
-        for cve_id in ignored_cves:
-            # We'll use exact pattern matching with word boundaries
-            cve_pattern = re.compile(r'\b' + re.escape(cve_id) + r'\b', re.IGNORECASE)
-            found_for_this_cve = False
-            
-            # Find all rows in all tables
-            for table in vuln_tables:
-                rows_with_cve = []
-                for row in table.find_all('tr'):
-                    if cve_pattern.search(str(row)):
-                        rows_with_cve.append(row)
+        # 2. Filter by CVE IDs if provided
+        if ignored_cves:
+            for cve_id in ignored_cves:
+                # We'll use exact pattern matching with word boundaries
+                cve_pattern = re.compile(r'\b' + re.escape(cve_id) + r'\b', re.IGNORECASE)
+                found_for_this_cve = False
                 
-                # Remove only those specific rows
-                for row in rows_with_cve:
-                    logging.info(f"[DEBUG] Found and removing row with {cve_id}")
-                    row.decompose()
+                # Find all rows in all tables
+                for table in vuln_tables:
+                    rows_with_cve = []
+                    for row in table.find_all('tr'):
+                        if cve_pattern.search(str(row)):
+                            rows_with_cve.append(row)
+                    
+                    # Remove only those specific rows
+                    for row in rows_with_cve:
+                        logging.info(f"[DEBUG] Found and removing row with {cve_id}")
+                        row.decompose()
+                        removed_count += 1
+                        found_for_this_cve = True
+                
+                # Also look for any standalone CVE items (often in list items)
+                cve_items = soup.find_all(['li', 'div', 'span'], string=cve_pattern)
+                for item in cve_items:
+                    logging.info(f"[DEBUG] Found and removing standalone item with {cve_id}")
+                    item.decompose()
                     removed_count += 1
                     found_for_this_cve = True
+                
+                if found_for_this_cve:
+                    removed_cves.append(cve_id)
+                    logging.info(f"[DEBUG] Successfully removed entries for {cve_id}")
+        
+        # 3. Filter by severity if provided
+        if severity_filter:
+            removed_severities = []
+            # Common severity patterns in HTML
+            severity_patterns = ['critical', 'high', 'medium', 'low', 'negligible', 'unknown']
             
-            # Also look for any standalone CVE items (often in list items)
-            cve_items = soup.find_all(['li', 'div', 'span'], string=cve_pattern)
-            for item in cve_items:
-                logging.info(f"[DEBUG] Found and removing standalone item with {cve_id}")
-                item.decompose()
-                removed_count += 1
-                found_for_this_cve = True
-            
-            if found_for_this_cve:
-                removed_cves.append(cve_id)
-                logging.info(f"[DEBUG] Successfully removed entries for {cve_id}")
+            for table in vuln_tables:
+                for row in table.find_all('tr'):
+                    row_text = str(row).lower()
+                    # Check if row contains severity information
+                    found_severity = None
+                    for sev in severity_patterns:
+                        if sev in row_text:
+                            found_severity = sev
+                            break
+                    
+                    # If we found a severity and it's NOT in our filter list, remove the row
+                    if found_severity and found_severity not in severity_filter:
+                        logging.info(f"[DEBUG] Removing row with severity: {found_severity}")
+                        row.decompose()
+                        removed_count += 1
+                        removed_severities.append(found_severity)
         
         # Create a summary file for debugging
         debug_summary_file = os.path.join(os.path.dirname(output_file), "debug_html_filter_summary.txt")
@@ -197,9 +227,15 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
             f.write(f"---------------------\n")
             f.write(f"Removed entries: {removed_count}\n\n")
             
-            f.write(f"CVEs successfully filtered ({len(removed_cves)}):\n")
-            for cve in sorted(set(removed_cves)):
-                f.write(f"  - {cve}\n")
+            if removed_cves:
+                f.write(f"CVEs successfully filtered ({len(removed_cves)}):\n")
+                for cve in sorted(set(removed_cves)):
+                    f.write(f"  - {cve}\n")
+            
+            if severity_filter:
+                f.write(f"\nSeverity filter applied - only including: {', '.join(severity_filter)}\n")
+                if 'removed_severities' in locals():
+                    f.write(f"Removed entries by severity: {len(removed_severities)}\n")
                 
             f.write("\n\nThis file was created by filter_html_report.py for debugging purposes.\n")
             f.write(f"Version: 2025-05-13 - Fixed filtering to REMOVE ignored CVEs\n")
@@ -235,13 +271,20 @@ def filter_html_report(input_file, output_file, ignored_cves=None):
             
             badge_span = soup.new_tag('span')
             badge_span['class'] = 'filtered-badge'
-            badge_span.string = 'Aqua Vulnerability Report'
             
-            notice_div.append(badge_span)
-            notice_div.append(' This report has been filtered to exclude ignored vulnerabilities')
+            # Customize badge and message based on filtering type
+            if severity_filter:
+                badge_span.string = 'FILTERED'
+                badge_span['style'] = 'background-color: #e74c3c;'  # Red for severity filter
+                notice_div.append(badge_span)
+                notice_div.append(f' This report has been filtered to show only {", ".join(severity_filter).upper()} severity vulnerabilities')
+            else:
+                badge_span.string = 'FILTERED'
+                notice_div.append(badge_span)
+                notice_div.append(' This report has been filtered to exclude ignored vulnerabilities')
             
             # Add details of removed CVEs
-            if removed_count > 0:
+            if removed_count > 0 and removed_cves:
                 cve_list = soup.new_tag('p')
                 cve_list.string = f"Removed {removed_count} entries related to ignored vulnerabilities: {', '.join(removed_cves)}"
                 notice_div.append(cve_list)

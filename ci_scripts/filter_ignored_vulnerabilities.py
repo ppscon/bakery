@@ -105,7 +105,7 @@ def find_ignored_vulnerabilities_in_report(scan_data):
     logging.info(f"[DEBUG] Found {len(ignored_cves)} CVEs marked as ignored in the report: {', '.join(ignored_cves) if ignored_cves else 'None'}")
     return ignored_cves
 
-def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
+def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None, severity_filter=None):
     """
     Filter out ignored vulnerabilities from Aqua security scan reports.
     
@@ -113,6 +113,7 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
         input_file (str): Path to the original Aqua scan JSON report
         output_file (str): Path where the filtered report will be saved
         ignored_cves (list): List of CVE IDs that should be filtered out
+        severity_filter (list): List of severity levels to include (e.g., ['high', 'critical'])
     """
     try:
         with open(input_file, 'r') as f:
@@ -132,15 +133,26 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
                     logging.info(f"[DEBUG] Using {len(ignored_cves)} ignored CVEs from environment variable")
         
         # Make sure ignored_cves list is properly formatted
-        ignored_cves = [cve.strip() for cve in ignored_cves]
-        logging.info(f"[DEBUG] Will filter out these CVEs: {', '.join(ignored_cves)}")
+        if ignored_cves:
+            ignored_cves = [cve.strip() for cve in ignored_cves]
+            logging.info(f"[DEBUG] Will filter out these CVEs: {', '.join(ignored_cves)}")
+        
+        # Normalize severity filter
+        if severity_filter:
+            severity_filter = [s.lower().strip() for s in severity_filter]
+            logging.info(f"[DEBUG] Will filter for these severity levels: {', '.join(severity_filter)}")
         
         # Create a file with the list of CVEs to filter for debugging
         debug_file = os.path.join(os.path.dirname(output_file), "debug_filter_list.txt")
         with open(debug_file, 'w') as f:
-            f.write(f"CVEs to filter out:\n")
-            for cve in ignored_cves:
-                f.write(f"{cve}\n")
+            if ignored_cves:
+                f.write(f"CVEs to filter out:\n")
+                for cve in ignored_cves:
+                    f.write(f"{cve}\n")
+            if severity_filter:
+                f.write(f"\nSeverity levels to include:\n")
+                for sev in severity_filter:
+                    f.write(f"{sev}\n")
             f.write("\n\nThis file was created by filter_ignored_vulnerabilities.py for debugging purposes.\n")
             f.write(f"Version: 2025-05-13 - Fixed filtering to REMOVE ignored CVEs\n")
         
@@ -161,10 +173,26 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
                     # Filter out ignored vulnerabilities
                     filtered_vulns = []
                     for vuln in resource['vulnerabilities']:
-                        if 'name' in vuln and any(re.match(f"^{re.escape(cve)}$", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
+                        # Check if we should filter out by CVE
+                        should_remove_cve = False
+                        if ignored_cves and 'name' in vuln:
+                            should_remove_cve = any(re.match(f"^{re.escape(cve)}$", vuln['name'], re.IGNORECASE) for cve in ignored_cves)
+                        
+                        # Check if we should filter by severity
+                        should_remove_severity = False
+                        if severity_filter:
+                            vuln_severity = vuln.get('aqua_severity', vuln.get('nvd_severity_v3', '')).lower()
+                            should_remove_severity = vuln_severity not in severity_filter
+                        
+                        if should_remove_cve:
                             removed_count += 1
                             all_removed_cves.append(vuln['name'])
-                            logging.info(f"[DEBUG] Filtering out {vuln['name']} - REMOVED from output")
+                            logging.info(f"[DEBUG] Filtering out {vuln['name']} - REMOVED from output (ignored CVE)")
+                        elif should_remove_severity:
+                            removed_count += 1
+                            if 'name' in vuln:
+                                all_removed_cves.append(f"{vuln['name']} (severity: {vuln_severity})")
+                            logging.info(f"[DEBUG] Filtering out {vuln.get('name', 'unknown')} - REMOVED from output (severity: {vuln_severity})")
                         else:
                             filtered_vulns.append(vuln)
                             kept_count += 1
@@ -183,10 +211,26 @@ def filter_ignored_vulnerabilities(input_file, output_file, ignored_cves=None):
             
             filtered_vulns = []
             for vuln in scan_data['vulnerabilities']:
-                if 'name' in vuln and any(re.match(f"^{re.escape(cve)}$", vuln['name'], re.IGNORECASE) for cve in ignored_cves):
+                # Check if we should filter out by CVE
+                should_remove_cve = False
+                if ignored_cves and 'name' in vuln:
+                    should_remove_cve = any(re.match(f"^{re.escape(cve)}$", vuln['name'], re.IGNORECASE) for cve in ignored_cves)
+                
+                # Check if we should filter by severity
+                should_remove_severity = False
+                if severity_filter:
+                    vuln_severity = vuln.get('aqua_severity', vuln.get('nvd_severity_v3', '')).lower()
+                    should_remove_severity = vuln_severity not in severity_filter
+                
+                if should_remove_cve:
                     removed_count += 1
                     all_removed_cves.append(vuln['name'])
-                    logging.info(f"[DEBUG] Filtering out {vuln['name']} - REMOVED from output")
+                    logging.info(f"[DEBUG] Filtering out {vuln['name']} - REMOVED from output (ignored CVE)")
+                elif should_remove_severity:
+                    removed_count += 1
+                    if 'name' in vuln:
+                        all_removed_cves.append(f"{vuln['name']} (severity: {vuln_severity})")
+                    logging.info(f"[DEBUG] Filtering out {vuln.get('name', 'unknown')} - REMOVED from output (severity: {vuln_severity})")
                 else:
                     filtered_vulns.append(vuln)
                     kept_count += 1

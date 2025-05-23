@@ -132,9 +132,46 @@ jobs:
           name: aqua-filtered-reports
           path: filtered-artifacts/
 
+  filter_high_critical_vulnerabilities:
+    runs-on: ubuntu-latest
+    needs: aqua_scan
+    if: always()  # This ensures the job runs even if aqua_scan fails
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: pip install beautifulsoup4
+      - name: Download Aqua Reports
+        uses: actions/download-artifact@v4
+        with:
+          name: aqua-reports
+          path: artifacts/
+      - name: Filter only high and critical vulnerabilities
+        run: |
+          echo "=== Filtering for HIGH and CRITICAL vulnerabilities only ==="
+          python ci_scripts/filter_aqua_reports.py --input-dir artifacts --output-dir high-critical-artifacts --severity-filter high critical
+          
+          # Add debugging info about the severity filtered output
+          echo "=== HIGH/CRITICAL FILTERED OUTPUT DEBUG INFO ==="
+          ls -la high-critical-artifacts/
+          echo "Checking severity levels in the JSON:"
+          cat high-critical-artifacts/aqua-scan-filtered.json | python3 -c "import json, sys; data=json.load(sys.stdin); severities=set(); [severities.add(v.get('aqua_severity', v.get('nvd_severity_v3', 'unknown'))) for r in data.get('resources', []) for v in r.get('vulnerabilities', [])]; [severities.add(v.get('aqua_severity', v.get('nvd_severity_v3', 'unknown'))) for v in data.get('vulnerabilities', [])]; print('Found severities:', severities)"
+          echo "==================================="
+      - name: Create elegant report for high/critical vulnerabilities
+        run: python ci_scripts/create_elegant_report.py high-critical-artifacts/aqua-scan-filtered.json high-critical-artifacts/elegant-report.html
+      - name: Upload High/Critical Filtered Reports as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqua-high-critical-reports
+          path: high-critical-artifacts/
+
   assign_task:
     runs-on: ubuntu-latest
-    needs: filter_aqua_reports
+    needs: [filter_aqua_reports, filter_high_critical_vulnerabilities]
     if: always()  # This ensures the job runs even if filter_aqua_reports fails
     steps:
       - name: Checkout code
@@ -307,6 +344,12 @@ jobs:
             with:
               name: aqua-filtered-reports
               path: ./security-reports
+          
+          - name: Download High/Critical Filtered Reports
+            uses: actions/download-artifact@v4
+            with:
+              name: aqua-high-critical-reports
+              path: ./security-reports/high-critical
 
           - name: Create index page for reports
             run: |
@@ -424,14 +467,27 @@ jobs:
                 <div class="report-card">
                   <h2 class="report-title">
                     <span class="badge badge-filtered">FILTERED</span>
-                    Aqua Security Scan
+                    Aqua Security Scan - Ignored CVEs Removed
                   </h2>
                   <div class="report-date">Generated: $(date)</div>
-                  <p class="card-description">This security scan report has been filtered to remove ignored vulnerabilities, providing a clean view of actionable security issues.</p>
+                  <p class="card-description">This security scan report has been filtered to remove ignored vulnerabilities (CVE-2025-27789, CVE-2024-45590), providing a clean view of actionable security issues.</p>
                   
                   <a href="elegant-report.html" class="report-link elegant">View Elegant Report</a>
                   <a href="aqua-scan-filtered.html" class="report-link">View HTML Report</a>
                   <a href="aqua-scan-filtered.json" class="report-link raw">Download JSON Data</a>
+                </div>
+                
+                <div class="report-card">
+                  <h2 class="report-title">
+                    <span class="badge badge-filtered" style="background-color: #e74c3c;">HIGH/CRITICAL ONLY</span>
+                    Aqua Security Scan - High & Critical Vulnerabilities
+                  </h2>
+                  <div class="report-date">Generated: $(date)</div>
+                  <p class="card-description">This report shows ONLY high and critical severity vulnerabilities, filtering out all low and medium severity issues to focus on the most important security concerns.</p>
+                  
+                  <a href="high-critical/elegant-report.html" class="report-link elegant">View Elegant Report</a>
+                  <a href="high-critical/aqua-scan-filtered.html" class="report-link">View HTML Report</a>
+                  <a href="high-critical/aqua-scan-filtered.json" class="report-link raw">Download JSON Data</a>
                 </div>
               </body>
               </html>

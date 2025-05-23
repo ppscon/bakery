@@ -3,3 +3,4 @@ app/node_modules
 *.DS_Store
 *tgz
 junit.xml
+.mcp.json

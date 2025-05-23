@@ -14,7 +14,7 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-def filter_reports(input_dir, output_dir, ignored_cves=None, config_file=None):
+def filter_reports(input_dir, output_dir, ignored_cves=None, config_file=None, severity_filter=None):
     """
     Filter both JSON and HTML Aqua security reports to remove ignored vulnerabilities.
     
@@ -23,6 +23,7 @@ def filter_reports(input_dir, output_dir, ignored_cves=None, config_file=None):
         output_dir (str): Directory where filtered reports will be saved
         ignored_cves (list): List of CVE IDs to filter out
         config_file (str): Path to a configuration file containing ignored CVEs
+        severity_filter (list): List of severity levels to include (e.g., ['high', 'critical'])
     """
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
@@ -71,7 +72,7 @@ def filter_reports(input_dir, output_dir, ignored_cves=None, config_file=None):
                 except Exception as e:
                     logging.error(f"Error detecting ignored CVEs: {str(e)}")
             
-            result = filter_ignored_vulnerabilities(json_input, json_output, ignored_cves)
+            result = filter_ignored_vulnerabilities(json_input, json_output, ignored_cves, severity_filter)
             if result:
                 logging.info(f"Successfully filtered JSON report to {json_output}")
             else:
@@ -90,7 +91,7 @@ def filter_reports(input_dir, output_dir, ignored_cves=None, config_file=None):
             
             if os.path.exists(html_input):
                 logging.info(f"Filtering HTML report from {html_input}")
-                result = filter_html_report(html_input, html_output, ignored_cves)
+                result = filter_html_report(html_input, html_output, ignored_cves, severity_filter)
                 if result:
                     logging.info(f"Successfully filtered HTML report to {html_output}")
                 else:
@@ -143,6 +144,10 @@ def filter_reports(input_dir, output_dir, ignored_cves=None, config_file=None):
                     f.write(f"  - {cve}\n")
             else:
                 f.write("  None\n")
+            
+            if severity_filter:
+                f.write(f"\nSeverity Filter Applied: {', '.join(severity_filter).upper()}\n")
+                f.write("Only vulnerabilities with these severity levels are included in the report.\n")
             
             # Check if the filtered files exist and have expected content
             if os.path.exists(json_output):
@@ -215,10 +220,11 @@ def main():
     parser.add_argument('--output-dir', default='filtered-artifacts', help='Directory where filtered reports will be saved')
     parser.add_argument('--ignored-cves', nargs='+', help='List of CVE IDs to filter out')
     parser.add_argument('--config-file', help='Path to a configuration file containing ignored CVEs')
+    parser.add_argument('--severity-filter', nargs='+', help='List of severity levels to include (e.g., high critical)')
     
     args = parser.parse_args()
     
-    success = filter_reports(args.input_dir, args.output_dir, args.ignored_cves, args.config_file)
+    success = filter_reports(args.input_dir, args.output_dir, args.ignored_cves, args.config_file, args.severity_filter)
     
     sys.exit(0 if success else 1)
 

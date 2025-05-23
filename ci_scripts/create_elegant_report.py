@@ -20,6 +20,10 @@ def create_elegant_report(input_json, output_html, ignored_cves=None):
         output_html (str): Path where the elegant HTML report will be saved
         ignored_cves (list): List of CVE IDs that have been filtered out
     """
+    # Try to detect filtering type from output directory path
+    filtering_type = "standard"
+    if "high-critical" in output_html.lower():
+        filtering_type = "severity"
     try:
         with open(input_json, 'r') as f:
             scan_data = json.load(f)
@@ -146,6 +150,10 @@ def create_elegant_report(input_json, output_html, ignored_cves=None):
         logging.info(f"[DEBUG] Found {len(all_cves)} unique CVE IDs in the data: {', '.join(sorted(all_cves)[:10])}...")
         
         # Create an HTML report that shows all this data
+        badge_style = 'style="background-color: #e74c3c;"' if filtering_type == "severity" else ''
+        badge_text = 'HIGH/CRITICAL ONLY' if filtering_type == "severity" else 'FILTERED'
+        filter_notice = '<div style="background-color: #fff3cd; border-left: 4px solid #e74c3c; padding: 10px 15px; margin: 20px 0;"><p><strong>Important:</strong> This report has been filtered to show ONLY high and critical severity vulnerabilities. Low and medium severity vulnerabilities have been excluded.</p></div>' if filtering_type == "severity" else ''
+        
         html = f"""
         <!DOCTYPE html>
         <html>
@@ -282,9 +290,13 @@ def create_elegant_report(input_json, output_html, ignored_cves=None):
         <body>
             <div class="container">
                 <h1>
-                    <span class="filtered-badge">Filtered</span>
+                    <span class="filtered-badge" {badge_style}>
+                        {badge_text}
+                    </span>
                     Curated Vulnerability Report
                 </h1>
+                
+                {filter_notice}
                 
                 <div class="summary">
                     <div class="summary-card">
