@@ -1,0 +1,14 @@
+HTML FILTERING SUMMARY:
+---------------------
+Removed entries: 50
+
+CVEs successfully filtered (2):
+  - CVE-2024-45590
+  - CVE-2025-27789
+
+Severity filter applied - only including: high, critical
+Removed entries by severity: 46
+
+
+This file was created by filter_html_report.py for debugging purposes.
+Version: 2025-05-13 - Fixed filtering to REMOVE ignored CVEs
