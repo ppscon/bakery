@@ -1,0 +1,63 @@
+FILTERING SUMMARY:
+----------------
+Total vulnerabilities: 83
+Kept vulnerabilities: 81
+Removed vulnerabilities: 2
+
+CVEs removed (2):
+  - CVE-2024-45590
+  - CVE-2025-27789
+
+CVEs kept (48):
+  - CVE-2020-28275
+  - CVE-2020-8244
+  - CVE-2021-23343
+  - CVE-2021-32640
+  - CVE-2021-3777
+  - CVE-2021-41720
+  - CVE-2021-44906
+  - CVE-2021-44907
+  - CVE-2022-24999
+  - CVE-2022-25883
+  - CVE-2022-3517
+  - CVE-2022-38778
+  - CVE-2022-38900
+  - CVE-2022-46175
+  - CVE-2023-26115
+  - CVE-2023-26136
+  - CVE-2023-4039
+  - CVE-2023-42363
+  - CVE-2023-42364
+  - CVE-2023-42365
+  - CVE-2023-42366
+  - CVE-2023-45133
+  - CVE-2023-5363
+  - CVE-2023-5678
+  - CVE-2023-6129
+  - CVE-2023-6237
+  - CVE-2024-0727
+  - CVE-2024-13176
+  - CVE-2024-21538
+  - CVE-2024-2511
+  - CVE-2024-28863
+  - CVE-2024-29041
+  - CVE-2024-29415
+  - CVE-2024-37890
+  - CVE-2024-4067
+  - CVE-2024-4068
+  - CVE-2024-43796
+  - CVE-2024-43799
+  - CVE-2024-43800
+  - CVE-2024-4603
+  - CVE-2024-4741
+  - CVE-2024-47764
+  - CVE-2024-52798
+  - CVE-2024-5535
+  - CVE-2024-6119
+  - CVE-2024-9143
+  - CVE-2025-26519
+  - CVE-2025-46653
+
+
+This file was created by filter_ignored_vulnerabilities.py for debugging purposes.
+Version: 2025-05-13 - Fixed filtering to REMOVE ignored CVEs

@@ -1,0 +1,717 @@
+Number of tables after filtering: 49
+
+TABLE 1:
+Number of rows: 1
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+
+TABLE 2:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2023-45133...
+
+TABLE 3:
+Number of rows: 1
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+
+TABLE 4:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-4068...
+
+TABLE 5:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-4068...
+
+TABLE 6:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2023-42364...
+
+TABLE 7:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2023-42365...
+
+TABLE 8:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2020-28275...
+
+TABLE 9:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-47764...
+
+TABLE 10:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-21538...
+
+TABLE 11:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-21538...
+
+TABLE 12:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-38900...
+
+TABLE 13:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-24999...
+
+TABLE 14:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2025-46653...
+
+TABLE 15:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-29415...
+
+TABLE 16:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-46175...
+
+TABLE 17:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-5535...
+
+TABLE 18:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2023-4039...
+
+TABLE 19:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-5535...
+
+TABLE 20:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2023-4039...
+
+TABLE 21:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2021-41720...
+
+TABLE 22:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-4067...
+
+TABLE 23:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-4067...
+
+TABLE 24:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-3517...
+
+TABLE 25:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2021-44906...
+
+TABLE 26:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2025-26519...
+
+TABLE 27:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2025-26519...
+
+TABLE 28:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2021-23343...
+
+TABLE 29:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-52798...
+
+TABLE 30:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-24999...
+
+TABLE 31:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-25883...
+
+TABLE 32:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-25883...
+
+TABLE 33:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-25883...
+
+TABLE 34:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-25883...
+
+TABLE 35:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-25883...
+
+TABLE 36:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-25883...
+
+TABLE 37:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-25883...
+
+TABLE 38:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2022-25883...
+
+TABLE 39:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-43799...
+
+TABLE 40:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-43800...
+
+TABLE 41:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2023-42366...
+
+TABLE 42:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-28863...
+
+TABLE 43:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2021-3777...
+
+TABLE 44:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2023-26136...
+
+TABLE 45:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2023-26115...
+
+TABLE 46:
+Number of rows: 2
+Headers: Name, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Per...
+  Row 2: CVE-2024-37890...
+
+TABLE 47:
+Number of rows: 82
+Headers: Name, Resource, Custom Severity, Severity, Score, Fix Version, CISA Published Date, CISA Due Date, EPSS Score, EPSS Percentile, EPSS Date, Acknowledged, Exploit Availability, Exploit Type, Exploit Reference
+First 5 rows sample:
+  Row 1: Name
+Resource
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score...
+  Row 2: CVE-2023-45133@babel/traverse
+ 
+
+high
+
+8.8
+7.23.2, 8.0.0-alpha.4
+
+0.00069
+0
+2025-05-27...
+  Row 3: CVE-2024-4068braces
+ 
+
+high
+
+7.5
+3.0.3
+
+0.0047
+0
+2025-05-27...
+  Row 4: CVE-2024-4068braces
+ 
+
+high
+
+7.5
+3.0.3
+
+0.0047
+0
+2025-05-27...
+  Row 5: CVE-2023-42364busybox
+ 
+
+medium
+
+5.5
+1.36.1-r7
+
+0.00032
+0
+2025-05-27...
+
+TABLE 48:
+Number of rows: 2
+Headers: Path, Type
+First 5 rows sample:
+  Row 1: Path
+Type...
+  Row 2: No sensitive data found during scan...
+
+TABLE 49:
+Number of rows: 2
+Headers: Path, Type
+First 5 rows sample:
+  Row 1: Path
+Type...
+  Row 2: No malware detected during scan...
+

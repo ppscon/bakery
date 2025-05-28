@@ -1,0 +1,8 @@
+{
+  "ignored_cves": [
+    "CVE-2024-45590",
+    "CVE-2025-27789"
+  ],
+  "count": 2,
+  "source": "auto-detected"
+}

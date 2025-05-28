@@ -1,0 +1,11 @@
+CVEs to filter out:
+CVE-2024-45590
+CVE-2025-27789
+
+Severity levels to include:
+high
+critical
+
+
+This file was created by filter_ignored_vulnerabilities.py for debugging purposes.
+Version: 2025-05-13 - Fixed filtering to REMOVE ignored CVEs

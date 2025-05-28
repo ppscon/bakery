@@ -1,0 +1,31 @@
+DEBUG REPORT FOR VULNERABILITY FILTERING
+=======================================
+
+Date and time: 2025-05-28 13:09:07
+Script version: 2025-05-13-updated
+
+Input JSON: artifacts/aqua-scan.json
+Output JSON: high-critical-artifacts/aqua-scan-filtered.json
+Input HTML: artifacts/aqua-scan.html
+Output HTML: high-critical-artifacts/aqua-scan-filtered.html
+
+Ignored CVEs (2):
+  - CVE-2024-45590
+  - CVE-2025-27789
+
+Severity Filter Applied: HIGH, CRITICAL
+Only vulnerabilities with these severity levels are included in the report.
+
+Filtered JSON file size: 106869 bytes
+
+Vulnerability counts in filtered report:
+  - Resources vulnerabilities: 35
+  - Direct vulnerabilities: 0
+  - Total: 35
+
+No ignored CVEs found in filtered report. Filtering appears successful.
+
+Filtered HTML file size: 139830 bytes
+
+
+End of debug report

@@ -1,0 +1,268 @@
+HTML STRUCTURE AFTER FILTERING:
+============================
+
+Number of tables: 49
+Number of vulnerability-related elements: 0
+
+WARNING: Found 2 ignored CVEs still present in filtered HTML:
+  - CVE-2024-45590
+  - CVE-2025-27789
+
+Sample of table rows in the filtered report:
+
+Row 1:
+
+Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Percentile
+EPSS DateAcknowledgedExploit Availability
+Exploit Type
+Exploit Reference...
+
+Row 2:
+
+Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Percentile
+EPSS DateAcknowledgedExploit Availability
+Exploit Type
+Exploit Reference...
+
+Row 3:
+
+
+CVE-2023-45133
+
+
+ ...
+
+Row 4:
+
+Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Percentile
+EPSS DateAcknowledgedExploit Availability
+Exploit Type
+Exploit Reference...
+
+Row 5:
+
+Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Percentile
+EPSS DateAcknowledgedExploit Availability
+Exploit Type
+Exploit Reference...
+
+Row 6:
+
+
+CVE-2024-4068
+
+
+ ...
+
+Row 7:
+
+Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Percentile
+EPSS DateAcknowledgedExploit Availability
+Exploit Type
+Exploit Reference...
+
+Row 8:
+
+
+CVE-2024-4068
+
+
+ ...
+
+Row 9:
+
+Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Percentile
+EPSS DateAcknowledgedExploit Availability
+Exploit Type
+Exploit Reference...
+
+Row 10:
+
+
+CVE-2023-42364
+
+
+ ...
+
+Row 11:
+
+
+CVE-2023-42366
+
+
+ ...
+
+Row 12:
+
+
+CVE-2023-42363
+
+
+ 
+
+medium
+
+5.5
+1.36.1-r7
+
+0.00026
+0
+2025-05-27
+
+
+...
+
+Row 13:
+
+
+CVE-2023-42365
+
+
+ 
+
+medium
+
+5.5
+1.36.1-r7
+
+0.00032
+0
+2025-05-27
+
+
+...
+
+Row 14:
+
+Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Percentile
+EPSS DateAcknowledgedExploit Availability
+Exploit Type
+Exploit Reference...
+
+Row 15:
+
+
+CVE-2023-42365
+
+
+ ...
+
+Row 16:
+
+
+CVE-2023-42366
+
+
+ ...
+
+Row 17:
+
+
+CVE-2023-42363
+
+
+ 
+
+medium
+
+5.5
+1.36.1-r7
+
+0.00026
+0
+2025-05-27
+
+
+...
+
+Row 18:
+
+
+CVE-2023-42364
+
+
+ 
+
+medium
+
+5.5
+1.36.1-r7
+
+0.00032
+0
+2025-05-27
+
+
+...
+
+Row 19:
+
+Name
+Custom Severity
+Severity
+Score
+Fix VersionCISA Published Date
+CISA Due Date
+EPSS Score
+EPSS Percentile
+EPSS DateAcknowledgedExploit Availability
+Exploit Type
+Exploit Reference...
+
+Row 20:
+
+
+											CVE-2020-28275
+
+ ...
+
+This file was created by filter_html_report.py for debugging purposes.
